@@ -74,6 +74,12 @@ function calculateDrawdown(trades) {
 }
 
 function calculateResults() {
+    // Track calculation event
+    gtag('event', 'calculate_probability', {
+        'event_category': 'Calculator',
+        'event_label': 'Calculate Button Click'
+    });
+    
     // Get input values
     const initialBalance = parseFloat(document.getElementById('accountBalance').value);
     const riskPerTrade = parseFloat(document.getElementById('riskPerTrade').value);
@@ -400,6 +406,12 @@ function formatPercentage(value) {
 }
 
 function updateChart(finalBalances, initialBalance) {
+    // Track chart update event
+    gtag('event', 'update_chart', {
+        'event_category': 'Visualization',
+        'event_label': 'Chart Update'
+    });
+    
     // Prepare data for histogram
     const binSize = (Math.max(...finalBalances) - Math.min(...finalBalances)) / 30;
     const bins = {};

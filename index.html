@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Trading Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+        <div class="container">
+            <h1>Advanced Trading Calculator</h1>
+            <div class="calculator">
+                <div class="grid-inputs">
+                    <div class="input-group">
+                        <label for="accountBalance">Initial Balance</label>
+                        <input type="number" id="accountBalance" value="1000" placeholder="Enter your starting balance">
+                    </div>
+                    <div class="input-group">
+                        <label for="riskPerTrade">Risk Per Trade (%)</label>
+                        <input type="number" id="riskPerTrade" value="1" placeholder="e.g., 1.5" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <label for="winRate">Win Rate (%)</label>
+                        <input type="number" id="winRate" value="60" placeholder="e.g., 55" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <label for="profitLossRatio">Reward/Risk Ratio <span class="tooltip-icon" title="Your profit target divided by your risk amount. Example: If you risk $100 to make $200, your ratio is 2.">ⓘ</span></label>
+                        <input type="number" id="profitLossRatio" value="1" placeholder="e.g., 2" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <label for="numberOfTrades">Number of Trades</label>
+                        <input type="number" id="numberOfTrades" value="100" placeholder="e.g., 100">
+                    </div>
+                    <div class="input-group">
+                        <label for="commission">Commission per Trade (%) <span class="tooltip-icon" title="The percentage fee charged by your broker for each trade">ⓘ</span></label>
+                        <input type="number" id="commission" value="0.0035" placeholder="e.g., 0.1" step="0.0001">
+                    </div>
+                </div>
+                <div class="commission-group">
+                    <div class="input-group">
+                        <label for="simulations">Monte Carlo Simulations <span class="tooltip-icon" title="Number of times to simulate your trading strategy to get a range of possible outcomes">ⓘ</span></label>
+                        <input type="number" id="simulations" placeholder="e.g., 1000" value="1000">
+                    </div>
+                </div>
+                <button onclick="calculateResults()">Calculate Results</button>
+            </div>
+
+            <div class="simulation-results">
+                <h2>Monte Carlo Analysis</h2>
+                <div class="stat-grid">
+                    <div class="stat-card" onclick="showSimulationDetails(0)">
+                        <div class="stat-label">Best Case Return</div>
+                        <div class="stat-value" id="bestCase">0%</div>
+                        <div class="stat-note">Click to view trades</div>
+                    </div>
+                    <div class="stat-card" onclick="showSimulationDetails(1)">
+                        <div class="stat-label">Average Return</div>
+                        <div class="stat-value" id="averageCase">0%</div>
+                        <div class="stat-note">Click to view trades</div>
+                    </div>
+                    <div class="stat-card" onclick="showSimulationDetails(2)">
+                        <div class="stat-label">Worst Case Return</div>
+                        <div class="stat-value" id="worstCase">0%</div>
+                        <div class="stat-note">Click to view trades</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Probability of Profit</div>
+                        <div class="stat-value" id="profitProb">0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results" id="results">
+                <h2>Expected Results</h2>
+                <div class="result-item hidden">
+                    <span>Expected Profit:</span>
+                    <span id="expectedProfit">$0</span>
+                </div>
+                <div class="result-item hidden">
+                    <span>Final Balance:</span>
+                    <span id="finalBalance">$0</span>
+                </div>
+                <div class="result-item hidden">
+                    <span>Return on Investment:</span>
+                    <span id="roi">0%</span>
+                </div>
+                <div class="result-item hidden">
+                    <span>Total Commission Cost:</span>
+                    <span id="totalCommission">$0</span>
+                </div>
+                <div class="expected-chart-container">
+                    <canvas id="expectedBalanceChart"></canvas>
+                </div>
+                <div class="balance-drawdown-container">
+                    <canvas id="balanceDrawdownChart"></canvas>
+                </div>
+                <div class="drawdown-container">
+                    <canvas id="drawdownChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="balanceChart"></canvas>
+            </div>
+
+            <div id="tradeDetails" class="trade-details-section">
+                <h2 id="tradeDetailsTitle">Trade Details</h2>
+                <div class="trade-summary">
+                    <div class="stat-group balance-group">
+                        <h3>Balance Summary</h3>
+                        <div>Initial Balance: <span id="modalInitialBalance">$0</span></div>
+                        <div>Final Balance: <span id="modalFinalBalance" class="value-colored">$0</span></div>
+                        <div>Total Return: <span id="modalTotalReturn" class="value-colored">0%</span></div>
+                        <div>Trade Profit: <span id="modalExpectedProfit" class="value-colored">$0</span></div>
+                        <div>Total Commission: <span id="modalTotalCommission">$0</span></div>
+                    </div>
+                    <div class="stat-group performance-group">
+                        <h3>Performance Metrics</h3>
+                        <div>Profit Factor: <span id="modalProfitFactor" class="value-colored">0</span></div>
+                        <div>Best Trade: <span id="modalBestTrade" class="positive-value">$0</span></div>
+                        <div>Worst Trade: <span id="modalWorstTrade" class="negative-value">$0</span></div>
+                    </div>
+                    <div class="stat-group drawdown-group">
+                        <h3>Drawdown Analysis</h3>
+                        <div>Max Drawdown: <span id="modalMaxDrawdown">0%</span></div>
+                        <div>Average Drawdown: <span id="modalAvgDrawdown">0%</span></div>
+                    </div>
+                    <div class="stat-group streak-group">
+                        <h3>Streak Statistics</h3>
+                        <div>Max Wins in Row: <span id="modalMaxWinsRow">0</span></div>
+                        <div>Max Losses in Row: <span id="modalMaxLossesRow">0</span></div>
+                        <div>Average Win Streak: <span id="modalAvgWinStreak">0</span></div>
+                        <div>Average Loss Streak: <span id="modalAvgLossStreak">0</span></div>
+                    </div>
+                </div>
+                <div class="trade-list" id="tradeList">
+                    <!-- Trade details will be inserted here -->
+                </div>
+            </div>
+        </div>
+        <div class="contact-bubble" id="contactBubble">
+            <div class="contact-icon">?</div>
+            <div class="contact-popup" id="contactPopup">
+                Contact email: fhaleen6@gmail.com
+            </div>
+        </div>
+        <script src="script.js"></script>
+    </body>
+</html>

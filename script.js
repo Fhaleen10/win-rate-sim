@@ -7,36 +7,45 @@ let isCompounding = true;
 function runMonteCarloSimulation(initialBalance, riskPerTrade, winRate, profitLossRatio, numberOfTrades, commissionPercent, numSimulations) {
     const results = [];
     simulationTradeHistory = [];
+    const riskType = document.getElementById('riskType').value;
     const isCompoundingValue = isCompounding;
     
     for (let sim = 0; sim < numSimulations; sim++) {
         let balance = initialBalance;
         const trades = [];
-        const fixedRiskAmount = initialBalance * (riskPerTrade / 100);
+        let riskAmount;
+        
+        if (riskType === 'percent') {
+            riskAmount = initialBalance * (riskPerTrade / 100);
+        } else {
+            riskAmount = riskPerTrade;
+        }
         
         for (let trade = 0; trade < numberOfTrades; trade++) {
-            const riskAmount = isCompoundingValue ? (balance * (riskPerTrade / 100)) : fixedRiskAmount;
-            const isWin = Math.random() * 100 < winRate;
+            let currentRiskAmount = riskAmount;
+            if (isCompoundingValue && riskType === 'percent') {
+                currentRiskAmount = balance * (riskPerTrade / 100);
+            }
             const commission = balance * (commissionPercent / 100);
             
             // Subtract commission
             balance -= commission;
             
             let tradeResult;
-            if (isWin) {
-                tradeResult = riskAmount * profitLossRatio;
+            if (Math.random() * 100 < winRate) {
+                tradeResult = currentRiskAmount * profitLossRatio;
                 balance += tradeResult;
             } else {
-                tradeResult = -riskAmount;
+                tradeResult = -currentRiskAmount;
                 balance += tradeResult;
             }
             
             trades.push({
                 tradeNumber: trade + 1,
-                isWin,
+                isWin: tradeResult > 0,
                 startBalance: balance - tradeResult,
                 endBalance: balance,
-                riskAmount,
+                riskAmount: currentRiskAmount,
                 tradeResult,
                 commission
             });

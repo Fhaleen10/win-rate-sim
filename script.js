@@ -2,17 +2,20 @@ let balanceChart = null;
 let balanceDrawdownChart = null;
 let drawdownChart = null;
 let simulationTradeHistory = [];
+let isCompounding = true;
 
 function runMonteCarloSimulation(initialBalance, riskPerTrade, winRate, profitLossRatio, numberOfTrades, commissionPercent, numSimulations) {
     const results = [];
     simulationTradeHistory = [];
+    const isCompoundingValue = isCompounding;
     
     for (let sim = 0; sim < numSimulations; sim++) {
         let balance = initialBalance;
         const trades = [];
+        const fixedRiskAmount = initialBalance * (riskPerTrade / 100);
         
         for (let trade = 0; trade < numberOfTrades; trade++) {
-            const riskAmount = (balance * (riskPerTrade / 100));
+            const riskAmount = isCompoundingValue ? (balance * (riskPerTrade / 100)) : fixedRiskAmount;
             const isWin = Math.random() * 100 < winRate;
             const commission = balance * (commissionPercent / 100);
             
@@ -719,6 +722,26 @@ function updateDrawdownChart(drawdowns) {
         }
     });
 }
+
+function toggleCompounding() {
+    const button = document.querySelector('.toggle-button');
+    
+    isCompounding = !isCompounding;
+    
+    if (isCompounding) {
+        button.textContent = 'Compounding';
+        button.classList.add('active');
+    } else {
+        button.textContent = 'Not Compounding';
+        button.classList.remove('active');
+    }
+}
+
+// Add event listener for toggle
+document.addEventListener('DOMContentLoaded', function() {
+    const button = document.querySelector('.toggle-button');
+    button.addEventListener('click', toggleCompounding);
+});
 
 // Contact bubble functionality
 document.addEventListener('DOMContentLoaded', function() {

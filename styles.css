@@ -17,7 +17,7 @@
     --stat-card-bg: #242731;
     --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
     --trade-list-zlato: #ffd700;
-    --success-color: #3fb86a;
+    --success-color: #10b981;
     --danger-color: #ef4444;
 }
 
@@ -523,7 +523,199 @@ canvas {
     cursor: help;
 }
 
-/* Contact Bubble */
+/* Tooltip Styles */
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+    cursor: help;
+}
+
+.tooltip {
+    visibility: hidden;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 200px;
+    max-width: 300px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 0.9em;
+    opacity: 0;
+    transition: opacity 0.3s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+}
+
+.tooltip-container:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Metric Value Colors */
+.excellent-value {
+    color: #00c853 !important; /* Bright green */
+    font-weight: 600;
+}
+
+.very-good-value {
+    color: #64dd17 !important; /* Light green */
+    font-weight: 600;
+}
+
+.good-value {
+    color: #ffd700 !important; /* Gold */
+    font-weight: 600;
+}
+
+.poor-value {
+    color: #ff5252 !important; /* Red */
+    font-weight: 600;
+}
+
+/* Add transition for smooth color changes */
+.value-colored {
+    transition: color 0.3s ease;
+}
+
+/* Adjust stat groups for new metrics */
+.stat-group {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+.stat-group h3 {
+    margin-bottom: 12px;
+    color: #e0e0e0;
+}
+
+.stat-group div {
+    margin: 8px 0;
+    line-height: 1.4;
+}
+
+/* Kelly Criterion Styles */
+.kelly-group {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.kelly-info {
+    color: var(--text-muted);
+    margin: 10px 0;
+    font-size: 0.9em;
+    line-height: 1.4;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
+}
+
+.kelly-metrics-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.kelly-metric-row {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
+
+.kelly-metric-row:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.kelly-label {
+    flex: 2;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.kelly-value {
+    flex: 1;
+    text-align: right;
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 500;
+}
+
+.kelly-recommendation {
+    margin-top: 15px;
+    padding: 12px 15px;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.03);
+    line-height: 1.4;
+}
+
+.kelly-high {
+    color: var(--danger-color);
+}
+
+.kelly-medium {
+    color: var(--trade-list-zlato);
+}
+
+.kelly-low {
+    color: var(--success-color);
+}
+
+.kelly-group .tooltip-container {
+    width: 100%;
+}
+
+.kelly-group .tooltip {
+    width: 280px;
+    left: 50%;
+    transform: translateX(-50%);
+    line-height: 1.4;
+    padding: 10px 12px;
+}
+
+/* Risk Level Indicators */
+.risk-level {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.risk-level.high {
+    background-color: var(--danger-color);
+}
+
+.risk-level.medium {
+    background-color: var(--trade-list-zlato);
+}
+
+.risk-level.low {
+    background-color: var(--success-color);
+}
+
 .contact-bubble {
     position: fixed;
     bottom: 20px;
@@ -535,53 +727,119 @@ canvas {
     width: 40px;
     height: 40px;
     background: var(--primary-color);
-    color: var(--bg-color);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     font-weight: bold;
+    color: var(--bg-color);
     box-shadow: var(--card-shadow);
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
 }
 
 .contact-icon:hover {
     background: var(--primary-hover);
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 .contact-popup {
     position: absolute;
     bottom: 50px;
     right: 0;
-    background: var(--stat-card-bg);
-    color: var(--text-color);
-    padding: 10px 15px;
-    border-radius: 6px;
+    background: var(--card-bg);
+    padding: 15px 20px;
+    border-radius: 8px;
     border: 1px solid var(--border-color);
     box-shadow: var(--card-shadow);
+    color: var(--text-color);
+    font-size: 0.9rem;
     white-space: nowrap;
-    visibility: hidden;
     opacity: 0;
-    transition: visibility 0s, opacity 0.3s ease;
-    z-index: 1001;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.2s ease;
 }
 
 .contact-popup.show {
-    visibility: visible;
     opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.analysis-container {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-top: 2rem;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border-color);
+}
+
+.analysis-container h2 {
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+}
+
+.analysis-section {
+    background: var(--stat-card-bg);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border-color);
+}
+
+.analysis-section:last-child {
+    margin-bottom: 0;
+}
+
+.analysis-section h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.analysis-text {
+    color: var(--text-color);
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.analysis-text .warning {
+    color: #ef4444;
+    font-weight: 500;
+}
+
+.analysis-text .success {
+    color: #10b981;
+    font-weight: 500;
+}
+
+.analysis-text .note {
+    background: rgba(var(--primary-rgb), 0.1);
+    padding: 0.75rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+    font-style: italic;
+}
+
+.analysis-text ul {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+}
+
+.analysis-text li {
+    margin-bottom: 0.5rem;
+}
+
+.analysis-text strong {
+    color: var(--primary-color);
+    font-weight: 600;
 }
 
 @media (max-width: 1200px) {
@@ -593,5 +851,16 @@ canvas {
 @media (max-width: 768px) {
     .trade-summary {
         grid-template-columns: 1fr;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

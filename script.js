@@ -85,6 +85,241 @@ function calculateDrawdown(trades) {
     return maxDrawdown;
 }
 
+function calculateAdvancedMetrics(trades, initialBalance) {
+    // Calculate daily returns for risk metrics
+    const returns = trades.map((trade, index) => {
+        const prevBalance = index === 0 ? initialBalance : trades[index - 1].endBalance;
+        return (trade.endBalance - prevBalance) / prevBalance;
+    });
+
+    // Risk-free rate (assuming 2% annual)
+    const riskFreeDaily = 0.02 / 252;
+
+    // Sharpe Ratio calculation
+    const excessReturns = returns.map(r => r - riskFreeDaily);
+    const avgExcessReturn = excessReturns.reduce((a, b) => a + b, 0) / excessReturns.length;
+    const stdDev = Math.sqrt(
+        excessReturns.reduce((sum, r) => sum + Math.pow(r - avgExcessReturn, 2), 0) / excessReturns.length
+    );
+    const sharpeRatio = (avgExcessReturn / stdDev) * Math.sqrt(252);
+
+    // Sortino Ratio calculation
+    const downside = excessReturns.filter(r => r < 0);
+    const downsideDeviation = Math.sqrt(
+        downside.reduce((sum, r) => sum + Math.pow(r, 2), 0) / downside.length || 1
+    );
+    const sortinoRatio = (avgExcessReturn / downsideDeviation) * Math.sqrt(252);
+
+    // Drawdown calculations
+    let peak = initialBalance;
+    let maxDrawdown = 0;
+    let currentDrawdown = null;
+    let drawdowns = [];
+    let underwaterPeriods = 0;
+    let recoveryTrades = 0;
+    let valleyToPeakTrades = 0;
+
+    trades.forEach((trade, index) => {
+        const balance = trade.endBalance;
+
+        if (balance >= peak) {
+            peak = balance;
+            if (currentDrawdown) {
+                currentDrawdown.recoveryTrades = index - currentDrawdown.startIndex;
+                valleyToPeakTrades += currentDrawdown.recoveryTrades;
+                drawdowns.push(currentDrawdown);
+                currentDrawdown = null;
+            }
+        } else {
+            underwaterPeriods++;
+            const drawdownPercent = (peak - balance) / peak * 100;
+            if (!currentDrawdown) {
+                currentDrawdown = {
+                    startIndex: index,
+                    maxDrawdown: drawdownPercent,
+                    recoveryTrades: 0
+                };
+            } else if (drawdownPercent > currentDrawdown.maxDrawdown) {
+                currentDrawdown.maxDrawdown = drawdownPercent;
+            }
+            maxDrawdown = Math.max(maxDrawdown, drawdownPercent);
+        }
+    });
+
+    // R-Multiple and Position Impact calculations
+    const rMultiples = trades.map(trade => {
+        const riskAmount = trade.riskAmount;
+        return trade.tradeResult / riskAmount;
+    });
+
+    const avgRMultiple = rMultiples.reduce((a, b) => a + b, 0) / rMultiples.length;
+    
+    // Position Impact (ratio of actual returns to equal-sized position returns)
+    const equalSizedReturns = trades.map(trade => trade.tradeResult / trade.startBalance);
+    const actualReturns = trades.map(trade => (trade.endBalance - trade.startBalance) / trade.startBalance);
+    const positionImpact = actualReturns.reduce((a, b) => a + b, 0) / equalSizedReturns.reduce((a, b) => a + b, 0);
+
+    // Calmar Ratio calculation (using annualized return)
+    const totalReturn = (trades[trades.length - 1].endBalance - initialBalance) / initialBalance;
+    const annualizedReturn = (Math.pow(1 + totalReturn, 252 / trades.length) - 1) * 100;
+    const calmarRatio = maxDrawdown > 0 ? annualizedReturn / maxDrawdown : 0;
+
+    return {
+        sharpeRatio: sharpeRatio.toFixed(2),
+        sortinoRatio: sortinoRatio.toFixed(2),
+        calmarRatio: calmarRatio.toFixed(2),
+        maxDrawdown: maxDrawdown.toFixed(2),
+        avgDrawdown: (drawdowns.reduce((sum, d) => sum + d.maxDrawdown, 0) / drawdowns.length || 0).toFixed(2),
+        recoveryTime: (recoveryTrades / drawdowns.length || 0).toFixed(1),
+        underwaterTime: ((underwaterPeriods / trades.length) * 100).toFixed(1),
+        valleyToPeak: (valleyToPeakTrades / drawdowns.length || 0).toFixed(1),
+        rMultiple: avgRMultiple.toFixed(2),
+        positionImpact: positionImpact.toFixed(2)
+    };
+}
+
+function getMetricColor(metric, value) {
+    const colorRanges = {
+        'sharpeRatio': [
+            { threshold: 3, color: 'excellent-value' },
+            { threshold: 2, color: 'very-good-value' },
+            { threshold: 1, color: 'good-value' },
+            { threshold: -Infinity, color: 'poor-value' }
+        ],
+        'sortinoRatio': [
+            { threshold: 3, color: 'excellent-value' },
+            { threshold: 2, color: 'very-good-value' },
+            { threshold: 1, color: 'good-value' },
+            { threshold: -Infinity, color: 'poor-value' }
+        ],
+        'calmarRatio': [
+            { threshold: 3, color: 'excellent-value' },
+            { threshold: 2, color: 'very-good-value' },
+            { threshold: 1, color: 'good-value' },
+            { threshold: -Infinity, color: 'poor-value' }
+        ],
+        'rMultiple': [
+            { threshold: 2, color: 'excellent-value' },
+            { threshold: 1.5, color: 'very-good-value' },
+            { threshold: 1, color: 'good-value' },
+            { threshold: -Infinity, color: 'poor-value' }
+        ],
+        'maxDrawdown': [
+            { threshold: 5, color: 'excellent-value' },
+            { threshold: 10, color: 'very-good-value' },
+            { threshold: 20, color: 'good-value' },
+            { threshold: Infinity, color: 'poor-value' }
+        ],
+        'positionImpact': [
+            { threshold: 1.5, color: 'excellent-value' },
+            { threshold: 1.2, color: 'very-good-value' },
+            { threshold: 1, color: 'good-value' },
+            { threshold: -Infinity, color: 'poor-value' }
+        ]
+    };
+
+    if (!colorRanges[metric]) return '';
+    
+    const ranges = colorRanges[metric];
+    // For metrics where lower is better (like maxDrawdown), reverse the comparison
+    const isInverse = metric === 'maxDrawdown';
+    const numValue = parseFloat(value);
+
+    for (const range of ranges) {
+        if (isInverse ? numValue <= range.threshold : numValue >= range.threshold) {
+            return range.color;
+        }
+    }
+    return '';
+}
+
+/**
+ * Calculates the Kelly Criterion percentage and provides position sizing recommendations
+ * 
+ * The Kelly Formula is: K% = (W * R - L) / R
+ * Where:
+ * - W is win rate (e.g., 0.65 for 65%)
+ * - R is reward/risk ratio (e.g., 2 means you make $2 for every $1 risked)
+ * - L is loss rate (1 - W, e.g., 0.35 for 35%)
+ * 
+ * Example:
+ * With 65% win rate and 2:1 reward/risk:
+ * K% = (0.65 * 2 - 0.35) / 2 = 0.475 or 47.5%
+ * 
+ * Full Kelly: 47.5% (very aggressive)
+ * Half Kelly: 23.75% (balanced)
+ * Quarter Kelly: 11.875% (conservative)
+ * 
+ * @param {number} winRate - Win rate as decimal (e.g., 0.65 for 65%)
+ * @param {number} rewardRiskRatio - Reward to risk ratio (e.g., 2 for 2:1)
+ * @returns {Object} Kelly percentages and recommendations
+ */
+function calculateKellyCriterion(winRate, rewardRiskRatio) {
+    // Convert win rate from percentage to decimal
+    winRate = winRate / 100;
+    
+    // Calculate loss rate (complement of win rate)
+    const lossRate = 1 - winRate;
+    
+    // Calculate full Kelly percentage
+    // Formula: (win_rate * reward_risk_ratio - loss_rate) / reward_risk_ratio
+    const fullKelly = ((winRate * rewardRiskRatio - lossRate) / rewardRiskRatio) * 100;
+    
+    // Calculate expected value per trade
+    // Formula: (win_rate * reward) - (loss_rate * risk)
+    // For $1 risk, reward = rewardRiskRatio * $1
+    const expectedValue = (winRate * rewardRiskRatio) - lossRate;
+
+    // Calculate conservative position sizes
+    const halfKelly = fullKelly / 2;
+    const quarterKelly = fullKelly / 4;
+
+    // Get recommendation based on Kelly percentage
+    const recommendation = getKellyRecommendation(fullKelly, expectedValue);
+
+    return {
+        fullKelly: Math.max(0, fullKelly).toFixed(2),
+        halfKelly: Math.max(0, halfKelly).toFixed(2),
+        quarterKelly: Math.max(0, quarterKelly).toFixed(2),
+        expectedValue: expectedValue.toFixed(4),
+        recommendation: recommendation
+    };
+}
+
+/**
+ * Determines the appropriate Kelly recommendation based on risk levels
+ * 
+ * Risk Level Guidelines:
+ * - High Risk (Full Kelly > 25%): Very aggressive, use Quarter Kelly
+ * - Medium Risk (Full Kelly 15-25%): Good potential, use Half Kelly
+ * - Low Risk (Full Kelly < 15%): Conservative, can use up to Half Kelly
+ * 
+ * These thresholds are based on common trading wisdom:
+ * - Most professional traders never risk more than 2-3% per trade
+ * - Even great strategies rarely have Full Kelly above 25%
+ * - Higher Kelly % means higher returns but also higher volatility
+ */
+function getKellyRecommendation(fullKelly, expectedValue) {
+    // Add absolute maximum recommended risk
+    const MAX_RECOMMENDED_RISK = 5; // 5% maximum recommended risk per trade
+    
+    let recommendation = '';
+    
+    if (expectedValue <= 0) {
+        recommendation = '⚠️ Strategy has negative expected value - Not recommended';
+    } else if (fullKelly > 25) {
+        recommendation = `⚠️ Very high risk detected - Recommended to use no more than ${MAX_RECOMMENDED_RISK}% risk per trade regardless of Kelly percentage`;
+    } else if (fullKelly > 15) {
+        recommendation = '⚠️ High potential but risky - Use Conservative (Quarter Kelly)';
+    } else if (fullKelly > 5) {
+        recommendation = '✓ Good potential - Consider using Half Kelly';
+    } else {
+        recommendation = '⚡ Low edge - Consider improving win rate or reward/risk ratio';
+    }
+    
+    return recommendation;
+}
+
 function calculateResults() {
     // Track calculation event
     gtag('event', 'calculate_probability', {
@@ -242,6 +477,29 @@ function calculateResults() {
 
     // Automatically show average case details without scrolling
     showSimulationDetails(1);
+
+    // Update the analysis
+    updateTradeAnalysis({
+        initialBalance: document.getElementById('accountBalance').value,
+        expectedProfit: document.getElementById('expectedProfit').textContent,
+        roi: document.getElementById('roi').textContent,
+        totalCommission: document.getElementById('totalCommission').textContent,
+        maxDrawdown: document.getElementById('modalMaxDrawdown').textContent,
+        sharpeRatio: document.getElementById('modalSharpeRatio').textContent,
+        sortinoRatio: document.getElementById('modalSortinoRatio').textContent,
+        calmarRatio: document.getElementById('modalCalmarRatio').textContent,
+        profitFactor: document.getElementById('modalProfitFactor').textContent,
+        bestTrade: document.getElementById('modalBestTrade').textContent,
+        worstTrade: document.getElementById('modalWorstTrade').textContent,
+        rMultiple: document.getElementById('modalRMultiple').textContent,
+        winRate: document.getElementById('winRate').value,
+        maxConsecutiveWins: document.getElementById('modalMaxWinsRow').textContent,
+        maxConsecutiveLosses: document.getElementById('modalMaxLossesRow').textContent,
+        avgWinStreak: document.getElementById('modalAvgWinStreak').textContent,
+        avgLossStreak: document.getElementById('modalAvgLossStreak').textContent,
+        kellyPercentage: document.getElementById('kellyFull').textContent.replace('%', ''),
+        underwaterTime: document.getElementById('modalUnderwaterTime').textContent
+    });
 }
 
 function showSimulationDetails(type) {
@@ -336,6 +594,10 @@ function showSimulationDetails(type) {
     const avgLossStreak = lossStreaks.length > 0 ? lossStreaks.reduce((a, b) => a + b, 0) / lossStreaks.length : 0;
     const profitFactor = totalLossAmount !== 0 ? Math.abs(totalWinAmount / totalLossAmount) : totalWinAmount > 0 ? Infinity : 0;
 
+    const advancedMetrics = calculateAdvancedMetrics(trades, initialBalance);
+
+    const kellyResults = calculateKellyCriterion(parseFloat(document.getElementById('winRate').value), parseFloat(document.getElementById('profitLossRatio').value));
+
     // Update UI with all statistics
     document.getElementById('tradeDetailsTitle').textContent = `${title} - Trade Details`;
     document.getElementById('modalInitialBalance').textContent = formatCurrency(initialBalance);
@@ -365,6 +627,29 @@ function showSimulationDetails(type) {
     document.getElementById('modalMaxLossesRow').textContent = maxLossStreak;
     document.getElementById('modalAvgWinStreak').textContent = avgWinStreak.toFixed(1);
     document.getElementById('modalAvgLossStreak').textContent = avgLossStreak.toFixed(1);
+    document.getElementById('modalSharpeRatio').textContent = advancedMetrics.sharpeRatio;
+    document.getElementById('modalSortinoRatio').textContent = advancedMetrics.sortinoRatio;
+    document.getElementById('modalCalmarRatio').textContent = advancedMetrics.calmarRatio;
+    document.getElementById('modalRMultiple').textContent = advancedMetrics.rMultiple;
+    document.getElementById('modalPositionImpact').textContent = advancedMetrics.positionImpact;
+    document.getElementById('modalMaxDrawdown').textContent = advancedMetrics.maxDrawdown + '%';
+    document.getElementById('modalAvgDrawdown').textContent = advancedMetrics.avgDrawdown + '%';
+    document.getElementById('modalRecoveryTime').textContent = advancedMetrics.recoveryTime;
+    document.getElementById('modalUnderwaterTime').textContent = advancedMetrics.underwaterTime + '%';
+    document.getElementById('modalValleyToPeak').textContent = advancedMetrics.valleyToPeak;
+
+    // Update metrics with Kelly calculations
+    document.getElementById('kellyFull').textContent = kellyResults.fullKelly + '%';
+    document.getElementById('kellyHalf').textContent = kellyResults.halfKelly + '%';
+    document.getElementById('kellyQuarter').textContent = kellyResults.quarterKelly + '%';
+    document.getElementById('kellyExpectedValue').textContent = kellyResults.expectedValue;
+    
+    const recommendationEl = document.getElementById('kellyRecommendation');
+    if (recommendationEl) {
+        recommendationEl.textContent = kellyResults.recommendation;
+        recommendationEl.className = `kelly-${kellyResults.recommendation.riskLevel}`;
+        recommendationEl.title = kellyResults.recommendation.suggestion;
+    }
 
     // Arrays to store values for charts
     const returns = [0];
@@ -394,6 +679,25 @@ function showSimulationDetails(type) {
         `;
         tradeList.appendChild(tradeEl);
     });
+
+    // Update metrics with color coding
+    const metricsToColor = {
+        'modalSharpeRatio': 'sharpeRatio',
+        'modalSortinoRatio': 'sortinoRatio',
+        'modalCalmarRatio': 'calmarRatio',
+        'modalRMultiple': 'rMultiple',
+        'modalMaxDrawdown': 'maxDrawdown',
+        'modalPositionImpact': 'positionImpact'
+    };
+
+    for (const [elementId, metricType] of Object.entries(metricsToColor)) {
+        const element = document.getElementById(elementId);
+        const value = element.textContent;
+        // Remove any existing color classes
+        element.className = 'value-colored';
+        // Add new color class
+        element.classList.add(getMetricColor(metricType, value));
+    }
 
     // Update charts with the collected data
     updateBalanceChart(returns);
@@ -752,19 +1056,154 @@ document.addEventListener('DOMContentLoaded', function() {
     button.addEventListener('click', toggleCompounding);
 });
 
-// Contact bubble functionality
+// Contact popup functionality
 document.addEventListener('DOMContentLoaded', function() {
-    const contactBubble = document.getElementById('contactBubble');
-    const popup = document.getElementById('contactPopup');
+    const contactIcon = document.querySelector('.contact-icon');
+    const contactPopup = document.querySelector('.contact-popup');
+    let isPopupVisible = false;
 
-    contactBubble.addEventListener('click', function(e) {
+    contactIcon.addEventListener('click', function(e) {
         e.stopPropagation();
-        popup.classList.toggle('show');
+        isPopupVisible = !isPopupVisible;
+        contactPopup.classList.toggle('show');
     });
 
+    // Close popup when clicking outside
     document.addEventListener('click', function(e) {
-        if (!contactBubble.contains(e.target)) {
-            popup.classList.remove('show');
+        if (isPopupVisible && !contactPopup.contains(e.target)) {
+            isPopupVisible = false;
+            contactPopup.classList.remove('show');
         }
     });
 });
+
+function updateTradeAnalysis(results) {
+    // Monte Carlo Analysis
+    const simCount = document.getElementById('simulations').value;
+    const bestCase = document.getElementById('bestCase').textContent;
+    const avgCase = document.getElementById('averageCase').textContent;
+    const worstCase = document.getElementById('worstCase').textContent;
+    const profitProb = document.getElementById('profitProb').textContent;
+
+    let monteCarloText = `Based on ${simCount} Monte Carlo simulations of your strategy:\n\n`;
+    monteCarloText += `• Average Return: ${avgCase} - This is your most likely outcome over time\n`;
+    monteCarloText += `• Best Case: ${bestCase} - Achieved in ${Math.round(100/simCount)}% of simulations\n`;
+    monteCarloText += `• Worst Case: ${worstCase} - Your maximum downside risk\n\n`;
+    monteCarloText += `${profitProb} of all simulations were profitable, which ${parseFloat(profitProb) > 70 ? 
+        "indicates a robust strategy" : parseFloat(profitProb) > 50 ? 
+        "shows promise but could be improved" : "suggests the strategy needs significant refinement"}.\n\n`;
+    monteCarloText += `<div class="note">💡 Tip: A reliable strategy should be profitable in at least 70% of simulations.</div>`;
+    
+    // Balance Analysis
+    let balanceText = `Starting with $${results.initialBalance}, your strategy shows:\n\n`;
+    balanceText += `• Current Profit: ${results.expectedProfit} (${results.roi} return)\n`;
+    balanceText += `• Commission Impact: ${results.totalCommission} (${((parseFloat(results.totalCommission.replace(/[^0-9.-]+/g, "")) / 
+        parseFloat(results.expectedProfit.replace(/[^0-9.-]+/g, ""))) * 100).toFixed(1)}% of profits)\n\n`;
+    
+    const commissionImpact = parseFloat(results.totalCommission.replace(/[^0-9.-]+/g, "")) / 
+        parseFloat(results.expectedProfit.replace(/[^0-9.-]+/g, ""));
+    balanceText += commissionImpact > 0.1 ? 
+        "<span class='warning'>⚠️ Commission costs are significantly impacting profitability. Consider reducing trade frequency.</span>" : 
+        "<span class='success'>✅ Commission costs are well-managed relative to profits.</span>";
+    
+    // Risk Analysis
+    let riskText = `Your risk metrics indicate:\n\n`;
+    riskText += `• Maximum Drawdown: ${results.maxDrawdown} - ${
+        parseFloat(results.maxDrawdown) > 20 ? "⚠️ Concerning level, needs attention" : 
+        parseFloat(results.maxDrawdown) > 10 ? "⚠️ Moderate, could be improved" : 
+        "✅ Well-controlled"}\n`;
+    riskText += `• Sharpe Ratio: ${results.sharpeRatio} - ${
+        parseFloat(results.sharpeRatio) > 2 ? "✅ Excellent risk-adjusted returns" : 
+        parseFloat(results.sharpeRatio) > 1 ? "✓ Good risk-adjusted returns" : 
+        "⚠️ Poor risk-adjusted returns"}\n`;
+    riskText += `• Sortino Ratio: ${results.sortinoRatio} - ${
+        parseFloat(results.sortinoRatio) > 2 ? "✅ Strong downside risk management" : 
+        parseFloat(results.sortinoRatio) > 1 ? "✓ Acceptable downside risk" : 
+        "⚠️ High downside risk"}\n`;
+    riskText += `• Calmar Ratio: ${results.calmarRatio} - ${
+        parseFloat(results.calmarRatio) > 5 ? "✅ Exceptional return relative to risk" : 
+        parseFloat(results.calmarRatio) > 2 ? "✓ Good return relative to risk" : 
+        "⚠️ Poor return relative to risk"}\n\n`;
+    riskText += `<div class="note">💡 Your strategy's risk-adjusted performance is ${
+        (parseFloat(results.sharpeRatio) + parseFloat(results.calmarRatio))/2 > 3 ? "excellent" : 
+        (parseFloat(results.sharpeRatio) + parseFloat(results.calmarRatio))/2 > 1.5 ? "good" : "needs improvement"}.</div>`;
+    
+    // Performance Analysis
+    let performanceText = `Performance metrics show:\n\n`;
+    performanceText += `• Profit Factor: ${results.profitFactor} - ${
+        parseFloat(results.profitFactor) > 2 ? "✅ Very strong profitability" : 
+        parseFloat(results.profitFactor) > 1.5 ? "✓ Good profitability" : 
+        "⚠️ Marginal profitability"}\n`;
+    performanceText += `• Best Trade: ${results.bestTrade}\n`;
+    performanceText += `• Worst Trade: ${results.worstTrade}\n`;
+    performanceText += `• R-Multiple: ${results.rMultiple} - You're making ${results.rMultiple}× your risk per trade\n\n`;
+    performanceText += `<div class="note">💡 ${parseFloat(results.profitFactor) < 1.5 ? 
+        "Consider increasing your reward-to-risk ratio or improving win rate" : 
+        "Your strategy shows good profit potential"}</div>`;
+    
+    // Trading Psychology
+    let psychologyText = `Psychological factors to consider:\n\n`;
+    psychologyText += `• Win Rate: ${results.winRate}% - ${
+        parseFloat(results.winRate) > 65 ? "Excellent but beware of overconfidence" : 
+        parseFloat(results.winRate) > 50 ? "Solid performance" : 
+        "Needs improvement"}\n`;
+    psychologyText += `• Longest Win Streak: ${results.maxConsecutiveWins} trades\n`;
+    psychologyText += `• Longest Loss Streak: ${results.maxConsecutiveLosses} trades\n`;
+    psychologyText += `• Average Win Streak: ${results.avgWinStreak} trades\n`;
+    psychologyText += `• Average Loss Streak: ${results.avgLossStreak} trades\n\n`;
+    psychologyText += `<div class="note">💡 Can you maintain discipline during a ${results.maxConsecutiveLosses}-trade losing streak? This is crucial for success.</div>`;
+    
+    // Position Sizing
+    let positionText = `Based on the Kelly Criterion:\n\n`;
+    positionText += `• Full Kelly (Aggressive): ${results.kellyPercentage}% per trade\n`;
+    positionText += `• Half Kelly (Balanced): ${(parseFloat(results.kellyPercentage)/2).toFixed(2)}% per trade\n`;
+    positionText += `• Quarter Kelly (Conservative): ${(parseFloat(results.kellyPercentage)/4).toFixed(2)}% per trade\n\n`;
+    
+    const quarterKelly = parseFloat(results.kellyPercentage)/4;
+    positionText += `Recommended Quarter Kelly position sizes:\n`;
+    positionText += `• $10,000 account: Risk $${(10000 * quarterKelly/100).toFixed(2)} per trade\n`;
+    positionText += `• $25,000 account: Risk $${(25000 * quarterKelly/100).toFixed(2)} per trade\n`;
+    positionText += `• $50,000 account: Risk $${(50000 * quarterKelly/100).toFixed(2)} per trade\n\n`;
+    
+    positionText += `<div class="note">💡 Risk Management Guidelines:\n`;
+    positionText += `• New Traders: Start with 1% risk maximum while learning (e.g., $100 per trade on a $10,000 account)\n`;
+    positionText += `• Prop Firm Accounts: Keep risk at 0.5% or lower to maintain account safety\n`;
+    positionText += `• Experienced Traders: Can gradually increase to 1-2% after proving consistent profitability\n`;
+    positionText += `• Never exceed Quarter Kelly size regardless of experience level</div>\n\n`;
+    
+    positionText += `<div class="warning">${parseFloat(results.kellyPercentage) > 20 ? 
+        "⚠️ High Kelly percentage detected - stick to conservative position sizes until strategy is proven over 100+ trades" : 
+        "✅ Reasonable Kelly percentage - maintain disciplined position sizing for consistent growth"}</div>`;
+    
+    // Strategy Improvements
+    let improvementsText = `Key areas for strategy optimization:\n\n`;
+    let improvements = [];
+    
+    if (parseFloat(results.maxDrawdown) > 15) {
+        improvements.push("📉 <strong>Reduce Maximum Drawdown:</strong> Consider tighter stops or smaller position sizes");
+    }
+    if (parseFloat(results.underwaterTime) > 70) {
+        improvements.push("⏳ <strong>Reduce Underwater Time:</strong> Look for better entry/exit criteria");
+    }
+    if (parseFloat(results.profitFactor) < 1.5) {
+        improvements.push("💰 <strong>Improve Profit Factor:</strong> Focus on better reward:risk ratios");
+    }
+    if (parseFloat(results.sharpeRatio) < 1.5) {
+        improvements.push("📊 <strong>Enhance Risk-Adjusted Returns:</strong> Reduce volatility while maintaining returns");
+    }
+    if (parseFloat(results.winRate) < 50) {
+        improvements.push("🎯 <strong>Increase Win Rate:</strong> Refine entry criteria and trade selection");
+    }
+    
+    improvementsText += improvements.length > 0 ? improvements.join("\n\n") : "✅ Your strategy is well-optimized! Focus on consistent execution.";
+    improvementsText += `\n\n<div class="note">💡 Remember: The best strategy is one you can execute consistently with confidence.</div>`;
+
+    // Update the DOM
+    document.getElementById('monteCarloAnalysis').innerHTML = monteCarloText;
+    document.getElementById('balanceAnalysis').innerHTML = balanceText;
+    document.getElementById('riskAnalysis').innerHTML = riskText;
+    document.getElementById('performanceAnalysis').innerHTML = performanceText;
+    document.getElementById('psychologyAnalysis').innerHTML = psychologyText;
+    document.getElementById('positionSizingAnalysis').innerHTML = positionText;
+    document.getElementById('improvementsAnalysis').innerHTML = improvementsText;
+}

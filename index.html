@@ -154,33 +154,146 @@
                 <div class="trade-summary">
                     <div class="stat-group balance-group">
                         <h3>Balance Summary</h3>
-                        <div>Initial Balance: <span id="modalInitialBalance">$0</span></div>
-                        <div>Final Balance: <span id="modalFinalBalance" class="value-colored">$0</span></div>
-                        <div>Total Return: <span id="modalTotalReturn" class="value-colored">0%</span></div>
-                        <div>Trade Profit: <span id="modalExpectedProfit" class="value-colored">$0</span></div>
-                        <div>Total Commission: <span id="modalTotalCommission">$0</span></div>
+                        <div>Initial Balance: <span id="modalInitialBalance">$999.97</span></div>
+                        <div>Final Balance: <span id="modalFinalBalance" class="value-colored positive-value">$1,211.08</span></div>
+                        <div>Total Return: <span id="modalTotalReturn" class="value-colored positive-value">21.1%</span></div>
+                        <div>Trade Profit: <span id="modalExpectedProfit" class="value-colored positive-value">$211.12</span></div>
+                        <div>Total Commission: <span id="modalTotalCommission">$3.75</span></div>
                     </div>
+                    
+                    <div class="stat-group risk-adjusted-group">
+                        <h3>Risk-Adjusted Metrics</h3>
+                        <div class="tooltip-container">
+                            Sharpe Ratio: <span id="modalSharpeRatio" class="value-colored">1.5</span>
+                            <span class="tooltip">Measures excess return per unit of risk. Higher is better. >1: Good, >2: Very Good, >3: Excellent</span>
+                        </div>
+                        <div class="tooltip-container">
+                            Sortino Ratio: <span id="modalSortinoRatio" class="value-colored">1.8</span>
+                            <span class="tooltip">Similar to Sharpe but only considers harmful volatility. Better for non-normal distributions</span>
+                        </div>
+                        <div class="tooltip-container">
+                            Calmar Ratio: <span id="modalCalmarRatio" class="value-colored">2.1</span>
+                            <span class="tooltip">Measures average annual return relative to maximum drawdown. Popular in managed futures</span>
+                        </div>
+                    </div>
+
                     <div class="stat-group performance-group">
                         <h3>Performance Metrics</h3>
-                        <div>Profit Factor: <span id="modalProfitFactor" class="value-colored">0</span></div>
-                        <div>Best Trade: <span id="modalBestTrade" class="positive-value">$0</span></div>
-                        <div>Worst Trade: <span id="modalWorstTrade" class="negative-value">$0</span></div>
+                        <div class="tooltip-container">
+                            Profit Factor: <span id="modalProfitFactor" class="value-colored positive-value">1.50</span>
+                            <span class="tooltip">Ratio of gross profits to gross losses. >1 indicates profitable strategy</span>
+                        </div>
+                        <div>Best Trade: <span id="modalBestTrade" class="positive-value">$11.99</span></div>
+                        <div>Worst Trade: <span id="modalWorstTrade" class="negative-value">-$12.11</span></div>
+                        <div class="tooltip-container">
+                            R-Multiple: <span id="modalRMultiple" class="value-colored">2.3</span>
+                            <span class="tooltip">R-Multiple shows how many times your risk you're making in profit. Example: If risking $100 per trade, an R-Multiple of 2.0 means you're making $200 on average. Values: <1.0: Losing more than risking, >1.0: Making more than risking, 2.0: Making twice your risk</span>
+                        </div>
+                        <div class="tooltip-container">
+                            Position Impact: <span id="modalPositionImpact" class="value-colored">1.2</span>
+                            <span class="tooltip">How position sizing affects overall returns. >1 indicates positive scaling</span>
+                        </div>
                     </div>
+
                     <div class="stat-group drawdown-group">
                         <h3>Drawdown Analysis</h3>
-                        <div>Max Drawdown: <span id="modalMaxDrawdown">0%</span></div>
-                        <div>Average Drawdown: <span id="modalAvgDrawdown">0%</span></div>
+                        <div class="tooltip-container">
+                            Max Drawdown: <span id="modalMaxDrawdown">4.0%</span>
+                            <span class="tooltip">Largest peak-to-valley decline in portfolio value</span>
+                        </div>
+                        <div>Average Drawdown: <span id="modalAvgDrawdown">1.1%</span></div>
+                        <div>Recovery Time: <span id="modalRecoveryTime">5</span> trades</div>
+                        <div>Underwater Time: <span id="modalUnderwaterTime">15%</span></div>
+                        <div>Valley-to-Peak: <span id="modalValleyToPeak">8</span> trades</div>
                     </div>
+
                     <div class="stat-group streak-group">
                         <h3>Streak Statistics</h3>
-                        <div>Max Wins in Row: <span id="modalMaxWinsRow">0</span></div>
-                        <div>Max Losses in Row: <span id="modalMaxLossesRow">0</span></div>
-                        <div>Average Win Streak: <span id="modalAvgWinStreak">0</span></div>
-                        <div>Average Loss Streak: <span id="modalAvgLossStreak">0</span></div>
+                        <div>Max Wins in Row: <span id="modalMaxWinsRow">7</span></div>
+                        <div>Max Losses in Row: <span id="modalMaxLossesRow">3</span></div>
+                        <div>Average Win Streak: <span id="modalAvgWinStreak">2.1</span></div>
+                        <div>Average Loss Streak: <span id="modalAvgLossStreak">1.4</span></div>
+                    </div>
+
+                    <div class="stat-group kelly-group">
+                        <h3>Position Size Calculator (Kelly Criterion)</h3>
+                        <div class="kelly-info">
+                            Helps you decide how much to risk per trade based on your win rate and reward/risk ratio.
+                        </div>
+                        <div id="kellyMetrics" class="kelly-metrics-grid">
+                            <div class="kelly-metric-row tooltip-container">
+                                <div class="kelly-label">Aggressive (Full Kelly):</div>
+                                <div class="kelly-value"><span id="kellyFull" class="value-colored">0%</span></div>
+                                <span class="tooltip">This is the mathematically optimal risk per trade, but it's too aggressive for most traders. Example: 20% means risk $2,000 on a $10,000 account.</span>
+                            </div>
+                            <div class="kelly-metric-row tooltip-container">
+                                <div class="kelly-label">Balanced (Half Kelly):</div>
+                                <div class="kelly-value"><span id="kellyHalf" class="value-colored">0%</span></div>
+                                <span class="tooltip">This is a balanced approach - half of the aggressive size. Most professional traders use this. Example: 10% means risk $1,000 on a $10,000 account.</span>
+                            </div>
+                            <div class="kelly-metric-row tooltip-container">
+                                <div class="kelly-label">Conservative (Quarter Kelly):</div>
+                                <div class="kelly-value"><span id="kellyQuarter" class="value-colored">0%</span></div>
+                                <span class="tooltip">This is the safest approach - quarter of the aggressive size. Recommended for new strategies or volatile markets. Example: 5% means risk $500 on a $10,000 account.</span>
+                            </div>
+                            <div class="kelly-metric-row tooltip-container">
+                                <div class="kelly-label">Expected Return Per Trade:</div>
+                                <div class="kelly-value"><span id="kellyExpectedValue" class="value-colored">0</span></div>
+                                <span class="tooltip">The average return you can expect per trade. Example: 0.2 means on average you'll make 0.2 times your risk amount per trade. If risking $100, expect to make $20 per trade on average.</span>
+                            </div>
+                            <div class="kelly-recommendation">
+                                <span id="kellyRecommendation"></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="trade-list" id="tradeList">
                     <!-- Trade details will be inserted here -->
+                </div>
+            </div>
+            <div class="analysis-container">
+                <h2>Trading Strategy Analysis</h2>
+                
+                <!-- Monte Carlo Results Analysis -->
+                <div class="analysis-section">
+                    <h3>📊 Monte Carlo Simulation Analysis</h3>
+                    <div id="monteCarloAnalysis" class="analysis-text"></div>
+                </div>
+
+                <!-- Balance and Returns Analysis -->
+                <div class="analysis-section">
+                    <h3>💰 Balance and Returns Analysis</h3>
+                    <div id="balanceAnalysis" class="analysis-text"></div>
+                </div>
+
+                <!-- Risk Metrics Analysis -->
+                <div class="analysis-section">
+                    <h3>⚠️ Risk Analysis</h3>
+                    <div id="riskAnalysis" class="analysis-text"></div>
+                </div>
+
+                <!-- Performance Metrics Analysis -->
+                <div class="analysis-section">
+                    <h3>📈 Performance Analysis</h3>
+                    <div id="performanceAnalysis" class="analysis-text"></div>
+                </div>
+
+                <!-- Trading Psychology Analysis -->
+                <div class="analysis-section">
+                    <h3>🧠 Trading Psychology</h3>
+                    <div id="psychologyAnalysis" class="analysis-text"></div>
+                </div>
+
+                <!-- Position Sizing Analysis -->
+                <div class="analysis-section">
+                    <h3>📏 Position Sizing Recommendations</h3>
+                    <div id="positionSizingAnalysis" class="analysis-text"></div>
+                </div>
+
+                <!-- Strategy Improvements -->
+                <div class="analysis-section">
+                    <h3>🎯 Strategy Improvements</h3>
+                    <div id="improvementsAnalysis" class="analysis-text"></div>
                 </div>
             </div>
         </div>

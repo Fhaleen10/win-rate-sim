@@ -58,6 +58,56 @@
     </header>
     <div class="container">
         <h1>Probability Calculator</h1>
+
+        <section class="introduction">
+            <h2>Master Your Trading Probability</h2>
+            <p>Understanding probability and risk management is crucial for successful trading. This advanced calculator helps you analyze potential outcomes and optimize your trading strategy through statistical analysis and Monte Carlo simulations.</p>
+            
+            <div class="key-concepts">
+                <h3>Essential Trading Concepts</h3>
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <h4>Risk Management</h4>
+                        <p>Control potential losses through proper position sizing and risk allocation per trade.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Win Rate</h4>
+                        <p>The percentage of profitable trades in relation to total trades executed.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Risk/Reward Ratio</h4>
+                        <p>The relationship between potential profit and potential loss for each trade.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Position Sizing</h4>
+                        <p>Determining the optimal trade size based on your account balance and risk tolerance.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="how-to-use">
+            <h2>How to Use the Probability Calculator</h2>
+            <ol>
+                <li>
+                    <strong>Initial Balance:</strong>
+                    <p>Enter your starting trading account balance. This will be used as the base for calculations.</p>
+                </li>
+                <li>
+                    <strong>Risk Settings:</strong>
+                    <p>Choose between percentage-based or fixed amount risk per trade. This determines how much you're willing to risk on each position.</p>
+                </li>
+                <li>
+                    <strong>Win Rate:</strong>
+                    <p>Input your expected win rate as a percentage. This can be based on historical performance or strategy backtesting.</p>
+                </li>
+                <li>
+                    <strong>Reward/Risk Ratio:</strong>
+                    <p>Set your target reward compared to risk. A ratio of 2 means you aim to make twice what you risk per trade.</p>
+                </li>
+            </ol>
+        </section>
+
         <div class="calculator">
             <div class="grid-inputs">
                 <div class="input-group">
@@ -100,6 +150,74 @@
             </div>
             <button onclick="calculateResults()">Calculate Results</button>
         </div>
+
+        <section class="trading-insights">
+            <h2>Trading Strategy Insights</h2>
+            
+            <div class="strategy-tips">
+                <h3>Keys to Successful Trading</h3>
+                <ul>
+                    <li><strong>Consistent Risk Management:</strong> Maintain disciplined position sizing across all trades</li>
+                    <li><strong>Statistical Edge:</strong> Focus on strategies with positive expected value</li>
+                    <li><strong>Psychology Management:</strong> Stay objective and follow your trading plan</li>
+                    <li><strong>Portfolio Protection:</strong> Never risk more than you can afford to lose</li>
+                </ul>
+            </div>
+
+            <div class="probability-scenarios">
+                <h3>Understanding Probability Scenarios</h3>
+                <div class="scenario-grid">
+                    <div class="scenario-card">
+                        <h4>Conservative Trading</h4>
+                        <ul>
+                            <li>Lower risk per trade (1-2%)</li>
+                            <li>Higher win rate focus</li>
+                            <li>Moderate reward/risk ratios</li>
+                        </ul>
+                    </div>
+                    <div class="scenario-card">
+                        <h4>Balanced Approach</h4>
+                        <ul>
+                            <li>Medium risk per trade (2-3%)</li>
+                            <li>Balanced win rate/RR ratio</li>
+                            <li>Consistent position sizing</li>
+                        </ul>
+                    </div>
+                    <div class="scenario-card">
+                        <h4>Aggressive Strategy</h4>
+                        <ul>
+                            <li>Higher risk per trade (3-5%)</li>
+                            <li>Lower win rate acceptable</li>
+                            <li>Higher reward/risk ratios</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="results-interpretation">
+            <h2>Understanding Your Results</h2>
+            <p>The calculator provides comprehensive analysis of your trading strategy. Here's how to interpret the key metrics:</p>
+            
+            <div class="interpretation-grid">
+                <div class="interpretation-card">
+                    <h4>Expected Profit</h4>
+                    <p>The projected profit based on your win rate, risk/reward ratio, and number of trades.</p>
+                </div>
+                <div class="interpretation-card">
+                    <h4>Maximum Drawdown</h4>
+                    <p>The largest potential decline in account value during the trading period.</p>
+                </div>
+                <div class="interpretation-card">
+                    <h4>Win/Loss Distribution</h4>
+                    <p>The statistical distribution of winning and losing trades over time.</p>
+                </div>
+                <div class="interpretation-card">
+                    <h4>Kelly Criterion</h4>
+                    <p>Optimal position sizing based on your win rate and reward/risk ratio.</p>
+                </div>
+            </div>
+        </section>
 
         <div class="simulation-results">
             <h2>Monte Carlo Analysis</h2>

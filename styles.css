@@ -1008,3 +1008,85 @@ canvas {
 .privacy-content a:hover {
     text-decoration: underline;
 }
+
+/* Content Sections */
+section {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border-color);
+}
+
+section h2 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+}
+
+section h3 {
+    color: var(--text-color);
+    margin: 1.5rem 0 1rem;
+    font-size: 1.4rem;
+}
+
+section p {
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+    opacity: 0.9;
+}
+
+section ul, section ol {
+    margin-left: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+section li {
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    opacity: 0.9;
+}
+
+.key-benefits, .tips, .win-rate-ranges {
+    background: var(--input-bg);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.introduction {
+    text-align: center;
+}
+
+.how-to-use ol {
+    list-style-type: none;
+    counter-reset: item;
+    margin-left: 0;
+}
+
+.how-to-use ol li {
+    counter-increment: item;
+    margin-bottom: 1rem;
+    padding-left: 2.5rem;
+    position: relative;
+}
+
+.how-to-use ol li:before {
+    content: counter(item);
+    background: var(--primary-color);
+    color: var(--bg-color);
+    font-weight: bold;
+    border-radius: 50%;
+    width: 1.8rem;
+    height: 1.8rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 0;
+}
+
+.win-rate-ranges li strong {
+    color: var(--primary-color);
+    margin-right: 0.5rem;
+}

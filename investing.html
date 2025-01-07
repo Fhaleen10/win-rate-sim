@@ -150,6 +150,107 @@
             color: #4CAF50;
             font-weight: 600;
         }
+        
+        .introduction {
+            margin-bottom: 3rem;
+        }
+        
+        .key-concepts {
+            margin-bottom: 2rem;
+        }
+        
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+        
+        .concept-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .concept-card h4 {
+            margin-top: 0;
+        }
+        
+        .how-to-use {
+            margin-bottom: 3rem;
+        }
+        
+        .how-to-use ol {
+            list-style: decimal;
+            padding-left: 1.5rem;
+        }
+        
+        .how-to-use li {
+            margin-bottom: 1.5rem;
+        }
+        
+        .how-to-use li strong {
+            font-weight: 600;
+        }
+        
+        .investment-strategies {
+            margin-bottom: 3rem;
+        }
+        
+        .strategy-tips {
+            margin-bottom: 2rem;
+        }
+        
+        .strategy-tips ul {
+            list-style: disc;
+            padding-left: 1.5rem;
+        }
+        
+        .strategy-tips li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .common-scenarios {
+            margin-bottom: 2rem;
+        }
+        
+        .scenario-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        
+        .scenario-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .scenario-card h4 {
+            margin-top: 0;
+        }
+        
+        .results-interpretation {
+            margin-bottom: 3rem;
+        }
+        
+        .interpretation-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+        
+        .interpretation-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .interpretation-card h4 {
+            margin-top: 0;
+        }
     </style>
 </head>
 <body>
@@ -163,6 +264,56 @@
 
     <div class="container">
         <h1>Investment Calculator</h1>
+
+        <section class="introduction">
+            <h2>Plan Your Financial Future</h2>
+            <p>Understanding the power of compound interest and regular investments is crucial for building long-term wealth. This calculator helps you visualize how your investments can grow over time through the combined effects of contributions and investment returns.</p>
+            
+            <div class="key-concepts">
+                <h3>Key Investment Concepts</h3>
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <h4>Compound Interest</h4>
+                        <p>Earn returns not just on your initial investment, but also on your accumulated earnings over time.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Regular Contributions</h4>
+                        <p>Consistently adding to your investments can significantly boost your long-term returns.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Time Horizon</h4>
+                        <p>The longer your investment period, the more time your money has to grow through compounding.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Return Rate</h4>
+                        <p>Your expected annual return rate affects how quickly your investments will grow over time.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="how-to-use">
+            <h2>How to Use the Investment Calculator</h2>
+            <ol>
+                <li>
+                    <strong>Initial Investment:</strong>
+                    <p>Enter the amount you're starting with. This could be your current savings or a lump sum you plan to invest.</p>
+                </li>
+                <li>
+                    <strong>Contribution Amount:</strong>
+                    <p>Specify how much you plan to add to your investments regularly. This could be weekly, monthly, quarterly, or yearly.</p>
+                </li>
+                <li>
+                    <strong>Expected Annual Return:</strong>
+                    <p>Input your expected rate of return as a percentage. Historical stock market returns have averaged around 7-10% annually over the long term.</p>
+                </li>
+                <li>
+                    <strong>Investment Period:</strong>
+                    <p>Enter the number of years you plan to invest. Longer periods typically benefit more from compound interest.</p>
+                </li>
+            </ol>
+        </section>
+
         <div class="calculator">
             <div class="grid-inputs">
                 <div class="input-group">
@@ -239,6 +390,74 @@
                 </div>
             </div>
         </div>
+
+        <section class="investment-strategies">
+            <h2>Investment Strategy Guidelines</h2>
+            
+            <div class="strategy-tips">
+                <h3>Tips for Successful Long-term Investing</h3>
+                <ul>
+                    <li><strong>Diversification:</strong> Spread investments across different assets to manage risk</li>
+                    <li><strong>Regular Contributions:</strong> Consistent investing helps smooth out market volatility</li>
+                    <li><strong>Long-term Perspective:</strong> Focus on long-term growth rather than short-term fluctuations</li>
+                    <li><strong>Risk Management:</strong> Adjust your portfolio based on your risk tolerance and time horizon</li>
+                </ul>
+            </div>
+
+            <div class="common-scenarios">
+                <h3>Common Investment Scenarios</h3>
+                <div class="scenario-grid">
+                    <div class="scenario-card">
+                        <h4>Retirement Planning</h4>
+                        <ul>
+                            <li>Longer investment horizon (20-40 years)</li>
+                            <li>Regular monthly contributions</li>
+                            <li>More aggressive early, conservative later</li>
+                        </ul>
+                    </div>
+                    <div class="scenario-card">
+                        <h4>Education Savings</h4>
+                        <ul>
+                            <li>Medium-term horizon (5-15 years)</li>
+                            <li>Regular contributions</li>
+                            <li>Moderate risk approach</li>
+                        </ul>
+                    </div>
+                    <div class="scenario-card">
+                        <h4>Wealth Building</h4>
+                        <ul>
+                            <li>Flexible time horizon</li>
+                            <li>Variable contribution amounts</li>
+                            <li>Balanced risk approach</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="results-interpretation">
+            <h2>Understanding Your Results</h2>
+            <p>The calculator provides a detailed breakdown of your investment growth over time. Here's how to interpret the results:</p>
+            
+            <div class="interpretation-grid">
+                <div class="interpretation-card">
+                    <h4>Total Investment Value</h4>
+                    <p>The final amount you'll have after the investment period, including your contributions and returns.</p>
+                </div>
+                <div class="interpretation-card">
+                    <h4>Total Contributions</h4>
+                    <p>The sum of your initial investment and all regular contributions over time.</p>
+                </div>
+                <div class="interpretation-card">
+                    <h4>Investment Returns</h4>
+                    <p>The amount earned through compound interest and investment returns.</p>
+                </div>
+                <div class="interpretation-card">
+                    <h4>Growth Chart</h4>
+                    <p>Visual representation of how your investment grows over time, showing the power of compound interest.</p>
+                </div>
+            </div>
+        </section>
     </div>
 
     <footer class="main-footer">

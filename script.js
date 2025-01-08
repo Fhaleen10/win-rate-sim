@@ -666,16 +666,20 @@ function showSimulationDetails(type) {
         drawdowns.push(trade.currentDrawdown);
 
         const tradeEl = document.createElement('div');
-        tradeEl.className = 'trade-item';
+        tradeEl.className = `trade-item ${trade.isWin ? 'win' : 'loss'}`;
         tradeEl.innerHTML = `
-            <div class="trade-number">#${trade.tradeNumber}</div>
-            <div class="${trade.isWin ? 'trade-win' : 'trade-loss'}">
-                ${formatCurrency(trade.tradeResult)}
+            <div class="trade-number">Trade #${trade.tradeNumber}</div>
+            <div class="trade-result ${trade.isWin ? 'win' : 'loss'}">
+                <span>Result</span>
+                <span class="trade-profit">${formatCurrency(trade.tradeResult)}</span>
             </div>
-            <div>Balance: ${formatCurrency(trade.endBalance)}</div>
+            <div class="trade-details">
+                <span>Balance: ${formatCurrency(trade.endBalance)}</span>
+                <span>Return: ${tradeReturn.toFixed(2)}%</span>
+                <span>Risk: ${formatCurrency(trade.riskAmount)}</span>
+                <span>DD: ${trade.currentDrawdown.toFixed(2)}%</span>
+            </div>
             <div class="trade-commission">Commission: ${formatCurrency(trade.commission)}</div>
-            <div class="trade-drawdown">Drawdown: <strong class="${trade.currentDrawdown === 0 ? 'positive-value' : 'negative-value'}">${trade.currentDrawdown.toFixed(2)}%</strong></div>
-            <div class="trade-return">Total Return: <strong class="${tradeReturn >= 0 ? 'positive-value' : 'negative-value'}">${tradeReturn.toFixed(2)}%</strong></div>
         `;
         tradeList.appendChild(tradeEl);
     });
@@ -947,7 +951,7 @@ function updateDrawdownChart(drawdowns) {
     const labels = Array.from({ length: drawdowns.length }, (_, i) => i);
     const maxDrawdown = Math.max(...drawdowns);
     const yAxisMax = Math.max(5, Math.ceil(maxDrawdown * 1.2)); // At least 5% or 20% above max
-    
+
     drawdownChart = new Chart(ctx, {
         type: 'line',
         data: {

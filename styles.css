@@ -188,6 +188,7 @@ button:hover {
     margin-top: 2rem;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
     height: 800px;
+    overflow: hidden;
 }
 
 canvas {
@@ -1089,4 +1090,410 @@ section li {
 .win-rate-ranges li strong {
     color: var(--primary-color);
     margin-right: 0.5rem;
+}
+
+/* Mobile Responsive Design */
+@media screen and (max-width: 768px) {
+    .container {
+        margin: 1rem auto;
+        padding: 0 1rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .calculator, .results, section {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .grid-inputs {
+        grid-template-columns: 1fr;
+    }
+
+    input, .select-input, button {
+        font-size: 16px;
+        padding: 0.7rem;
+    }
+
+    .chart-container {
+        height: 300px !important;
+        padding: 1rem;
+        margin-top: 1rem;
+        overflow: hidden;
+    }
+
+    .chart-container canvas {
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    /* Trade History Mobile Styles */
+    .trade-list {
+        margin-top: 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    .trade-list::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .trade-list::-webkit-scrollbar-track {
+        background: var(--card-bg);
+        border-radius: 0 8px 8px 0;
+    }
+
+    .trade-list::-webkit-scrollbar-thumb {
+        background: var(--border-color);
+        border-radius: 4px;
+    }
+
+    .trade-list::-webkit-scrollbar-thumb:hover {
+        background: var(--primary-color);
+    }
+
+    .trade-item {
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        gap: 0.5rem;
+        background: var(--stat-card-bg);
+    }
+
+    .trade-item:last-child {
+        border-bottom: none;
+    }
+
+    .trade-number {
+        font-weight: 600;
+        color: var(--primary-color);
+        font-size: 1.1rem;
+    }
+
+    .trade-result {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem;
+        border-radius: 6px;
+        background: var(--card-bg);
+    }
+
+    .trade-profit {
+        font-weight: 600;
+    }
+
+    .trade-details {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .trade-details span {
+        padding: 0.3rem;
+        background: var(--input-bg);
+        border-radius: 4px;
+        text-align: center;
+    }
+
+    .trade-commission {
+        text-align: right;
+        font-size: 0.8rem;
+        opacity: 0.7;
+    }
+
+    /* Style for win/loss indicators */
+    .trade-item.win {
+        border-left: 3px solid var(--success-color);
+    }
+
+    .trade-item.loss {
+        border-left: 3px solid var(--danger-color);
+    }
+
+    .trade-result.win {
+        color: var(--success-color);
+    }
+
+    .trade-result.loss {
+        color: var(--danger-color);
+    }
+}
+
+@media (max-width: 1200px) {
+    .trade-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .trade-summary {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .main-header nav {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 1rem;
+    }
+
+    .main-header a {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    h1 {
+        font-size: 1.75rem;
+    }
+
+    .calculator, .results, section {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .input-group {
+        margin-bottom: 0.75rem;
+    }
+
+    .chart-container {
+        height: 250px !important;
+        padding: 0.75rem;
+    }
+
+    button {
+        padding: 0.8rem;
+    }
+}
+
+/* iOS Input Optimization */
+@supports (-webkit-touch-callout: none) {
+    input, select, button {
+        font-size: 16px;
+    }
+}
+
+/* Desktop Layout */
+.desktop-layout {
+    display: block;
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.calculator {
+    grid-column: 1 / -1;
+}
+
+/* Mobile Layout */
+.mobile-layout {
+    display: none;
+}
+
+.mobile-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 0.8rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.tab-btn.active {
+    background: var(--primary-color);
+    color: var(--bg-color);
+    border-color: var(--primary-color);
+}
+
+.tab-panel {
+    display: none;
+    padding: 1rem;
+    background: var(--card-bg);
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+/* Responsive Breakpoints */
+@media screen and (max-width: 768px) {
+    .desktop-layout {
+        display: none;
+    }
+
+    .mobile-layout {
+        display: block;
+    }
+
+    .calculator {
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .input-group {
+        margin-bottom: 1rem;
+    }
+
+    input {
+        font-size: 16px;
+        padding: 0.8rem;
+    }
+
+    .result-group {
+        text-align: center;
+        margin-top: 1.5rem;
+    }
+
+    .win-rate {
+        font-size: 2rem;
+        color: var(--primary-color);
+        margin-top: 0.5rem;
+    }
+}
+
+/* Small Screen Optimizations */
+@media screen and (max-width: 480px) {
+    .calculator {
+        padding: 1rem;
+    }
+
+    .tab-btn {
+        padding: 0.6rem;
+        font-size: 0.9rem;
+    }
+
+    .tab-panel {
+        padding: 0.8rem;
+    }
+
+    h1 {
+        font-size: 1.75rem;
+    }
+
+    h2 {
+        font-size: 1.3rem;
+    }
+}
+
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+    .container {
+        padding: 0 1rem;
+        margin: 1rem auto;
+    }
+
+    .main-header nav {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 1rem;
+    }
+
+    .calculator {
+        padding: 1.5rem;
+    }
+
+    .grid-inputs {
+        grid-template-columns: 1fr;
+    }
+
+    /* Chart Specific Mobile Styles */
+    .chart-container {
+        height: 400px !important;
+        padding: 1rem;
+        margin-top: 1rem;
+        overflow: hidden;
+    }
+
+    .chart-container canvas {
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    /* Add visual indicator for scrollable charts */
+    .chart-container::after {
+        display: none;
+    }
+
+    /* Adjust trade details section for mobile */
+    .trade-details-section {
+        padding: 1rem;
+    }
+
+    .trade-summary {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .stat-group {
+        padding: 1rem;
+    }
+
+    /* Adjust concept cards for mobile */
+    .concept-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .concept-card {
+        padding: 1rem;
+    }
+
+    /* Adjust headings for mobile */
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.2rem;
+    }
+}
+
+/* Small mobile devices */
+@media screen and (max-width: 480px) {
+    .chart-container {
+        height: 300px !important;
+    }
+
+    .chart-container canvas {
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    .calculator {
+        padding: 1rem;
+    }
+
+    .input-group {
+        margin-bottom: 1rem;
+    }
+
+    button {
+        padding: 0.8rem;
+    }
 }

@@ -274,7 +274,7 @@ function calculateKellyCriterion(winRate, rewardRiskRatio) {
     const halfKelly = fullKelly / 2;
     const quarterKelly = fullKelly / 4;
 
-    // Get recommendation based on Kelly percentage
+    // Calculate recommendation based on Kelly percentage
     const recommendation = getKellyRecommendation(fullKelly, expectedValue);
 
     return {
@@ -668,18 +668,14 @@ function showSimulationDetails(type) {
         const tradeEl = document.createElement('div');
         tradeEl.className = `trade-item ${trade.isWin ? 'win' : 'loss'}`;
         tradeEl.innerHTML = `
-            <div class="trade-number">Trade #${trade.tradeNumber}</div>
-            <div class="trade-result ${trade.isWin ? 'win' : 'loss'}">
-                <span>Result</span>
-                <span class="trade-profit">${formatCurrency(trade.tradeResult)}</span>
-            </div>
             <div class="trade-details">
-                <span>Balance: ${formatCurrency(trade.endBalance)}</span>
-                <span>Return: ${tradeReturn.toFixed(2)}%</span>
-                <span>Risk: ${formatCurrency(trade.riskAmount)}</span>
-                <span>DD: ${trade.currentDrawdown.toFixed(2)}%</span>
+                <span class="trade-number">#${trade.tradeNumber}</span>
+                <span class="trade-result ${trade.isWin ? 'win' : 'loss'}">${trade.isWin ? 'Win' : 'Loss'}</span>
+                <div class="trade-info">
+                    <span class="trade-amount">${formatCurrency(trade.tradeResult)}</span>
+                </div>
             </div>
-            <div class="trade-commission">Commission: ${formatCurrency(trade.commission)}</div>
+            <span class="trade-commission">Commission: ${formatCurrency(trade.commission)}</span>
         `;
         tradeList.appendChild(tradeEl);
     });

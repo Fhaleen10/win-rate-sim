@@ -453,20 +453,34 @@ canvas {
 }
 
 .trade-item {
-    display: grid;
-    grid-template-columns: auto 1fr 1fr 1fr;
-    gap: 1rem;
-    padding: 1rem;
-    background: var(--stat-card-bg);
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
     align-items: center;
+    padding: 1rem;
+    background: var(--input-bg);
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    border-left: 3px solid transparent;
     transition: transform 0.2s;
 }
 
 .trade-item:hover {
     transform: translateX(4px);
-    border-color: var(--primary-color);
+}
+
+.trade-item.win {
+    border-left-color: var(--success-color);
+}
+
+.trade-item.loss {
+    border-left-color: var(--danger-color);
+}
+
+.trade-details {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
 }
 
 .trade-number {
@@ -475,26 +489,58 @@ canvas {
     min-width: 40px;
 }
 
-.trade-win {
-    color: #10b981;
+.trade-result {
     font-weight: 600;
 }
 
-.trade-loss {
-    color: #ef4444;
-    font-weight: 600;
+.trade-result.win {
+    color: var(--success-color);
+}
+
+.trade-result.loss {
+    color: var(--danger-color);
+}
+
+.trade-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 .trade-commission {
     color: var(--text-color);
     opacity: 0.8;
     font-size: 0.9rem;
+    text-align: right;
+    white-space: nowrap;
 }
 
-.trade-drawdown, .trade-return {
-    font-size: 0.9rem;
-    color: var(--text-color);
-    opacity: 0.8;
+@media screen and (max-width: 768px) {
+    .trade-item {
+        padding: 0.8rem;
+    }
+    
+    .trade-details {
+        gap: 0.8rem;
+    }
+    
+    .trade-commission {
+        font-size: 0.8rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .trade-item {
+        padding: 0.6rem;
+    }
+    
+    .trade-details {
+        gap: 0.6rem;
+    }
+    
+    .trade-number {
+        min-width: 30px;
+    }
 }
 
 .positive-value {
@@ -1495,5 +1541,127 @@ section li {
 
     button {
         padding: 0.8rem;
+    }
+}
+
+/* Monte Carlo Simulation Styles */
+.monte-carlo-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.monte-carlo-section h2 {
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+    text-align: center;
+}
+
+.simulation-button {
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+    background: var(--primary-color);
+    color: var(--bg-color);
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.simulation-button:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+.simulation-results {
+    display: none;
+    margin-top: 2rem;
+}
+
+.simulation-results.active {
+    display: block;
+}
+
+.stat-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: var(--stat-card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+}
+
+.stat-label {
+    color: var(--text-color);
+    opacity: 0.8;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.chart-container {
+    background: var(--stat-card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    margin-top: 2rem;
+    height: 400px;
+}
+
+@media screen and (max-width: 768px) {
+    .stat-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .chart-container {
+        height: 300px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .stat-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .chart-container {
+        height: 250px;
+        padding: 1rem;
+    }
+    
+    .monte-carlo-section {
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+    }
+}
+
+.monte-carlo-benefits {
+    margin-top: 0.5rem;
+    margin-left: 1.5rem;
+    list-style-type: disc;
+}
+
+.monte-carlo-benefits li {
+    color: var(--text-color);
+    opacity: 0.9;
+    margin-bottom: 0.3rem;
+    font-size: 0.95rem;
+}
+
+@media screen and (max-width: 768px) {
+    .monte-carlo-benefits {
+        margin-left: 1rem;
+    }
+    
+    .monte-carlo-benefits li {
+        font-size: 0.9rem;
     }
 }

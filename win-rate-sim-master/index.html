@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KHM4WHNE8K"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KHM4WHNE8K');
+    </script>
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1794773804909203"
+     crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="E-n3xzukzN1tXcncJXvriEuf8157kksZ6awrDtPoV_w" />
+    <title>Trading Risk Calculator | Monte Carlo & Win Rate Simulator</title>
+    <meta name="description" content="Advanced Trading Probability Calculator. Simulate Forex & Crypto strategies with Monte Carlo analysis, calculate Drawdown risks, and optimize position sizing with the Kelly Criterion.">
+    <meta name="keywords" content="trading risk calculator, monte carlo simulation trading, forex position size calculator, drawdown calculator, prop firm risk manager, kelly criterion calculator">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://probabilitycalculator.pro/" />
+
+    <!-- Open Graph Tags for Social Media -->
+    <meta property="og:title" content="Probability Calculator | Win Rate & Success Rate Calculator">
+    <meta property="og:description" content="Calculate probabilities, win rates, and success rates with our free online calculator. Perfect for trading, gaming, and statistical analysis.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://probabilitycalculator.pro/">
+    
+    <!-- Schema.org markup for Google -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Probability Calculator Pro",
+        "description": "A professional trading probability calculator that helps traders analyze win rates, risk-reward ratios, and calculate percent of profitable scenarios for their trading strategies.",
+        "url": "https://probabilitycalculator.pro/",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        }
+    }
+    </script>
+    
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="main-header">
+        <nav>
+            <a href="investing.html">Investing</a>
+            <a href="index.html" class="active">Probability Calculator</a>
+            <a href="winrate.html">What is my win rate?</a>
+        </nav>
+    </header>
+    <div class="container">
+        <h1>Probability Calculator</h1>
+
+        <section class="introduction">
+            <h2>Master Your Trading Probability</h2>
+            <p>Understanding probability and risk management is crucial for successful trading. This advanced calculator helps you analyze potential outcomes and optimize your trading strategy through statistical analysis and Monte Carlo simulations.</p>
+            
+            <div class="key-concepts">
+                <h3>Essential Trading Concepts</h3>
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <h4>Risk Management</h4>
+                        <p>Control potential losses through proper position sizing and risk allocation per trade.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Win Rate</h4>
+                        <p>The percentage of profitable trades in relation to total trades executed.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Risk/Reward Ratio</h4>
+                        <p>The relationship between potential profit and potential loss for each trade.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Position Sizing</h4>
+                        <p>Determining the optimal trade size based on your account balance and risk tolerance.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="how-to-use">
+            <h2>How to Use the Probability Calculator</h2>
+            <ol>
+                <li>
+                    <strong>Initial Balance:</strong>
+                    <p>Enter your starting trading account balance. This will be used as the base for calculations.</p>
+                </li>
+                <li>
+                    <strong>Risk Settings:</strong>
+                    <p>Choose between percentage-based or fixed amount risk per trade. This determines how much you're willing to risk on each position.</p>
+                </li>
+                <li>
+                    <strong>Win Rate:</strong>
+                    <p>Input your expected win rate as a percentage. This can be based on historical performance or strategy backtesting.</p>
+                </li>
+                <li>
+                    <strong>Reward/Risk Ratio:</strong>
+                    <p>Set your target reward compared to risk. A ratio of 2 means you aim to make twice what you risk per trade.</p>
+                </li>
+                <li>
+                    <strong>Monte Carlo Simulation:</strong>
+                    <p>Enter the number of simulations to run (e.g., 1000). This powerful tool helps you see potential account growth paths, understand maximum drawdown risks, calculate probability of reaching profit targets, and make data-driven decisions about position sizing.</p>
+                </li>
+            </ol>
+        </section>
+
+        <div class="calculator">
+            <div class="grid-inputs">
+                <div class="input-group">
+                    <label for="accountBalance">Initial Balance</label>
+                    <input type="number" id="accountBalance" value="1000" placeholder="Enter your starting balance">
+                </div>
+                <div class="input-group">
+                    <label for="riskType">Risk Type <span class="tooltip-icon" title="Choose between percentage of balance or fixed amount">ⓘ</span></label>
+                    <select id="riskType" class="select-input">
+                        <option value="percent">Percentage</option>
+                        <option value="fixed">Fixed Amount</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="riskPerTrade">Risk Per Trade</label>
+                    <input type="number" id="riskPerTrade" value="1" placeholder="Enter risk amount" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label for="winRate">Win Rate (%)</label>
+                    <input type="number" id="winRate" value="60" placeholder="e.g., 55" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label for="profitLossRatio">Reward/Risk Ratio <span class="tooltip-icon" title="Your profit target divided by your risk amount. Example: If you risk $100 to make $200, your ratio is 2.">ⓘ</span></label>
+                    <input type="number" id="profitLossRatio" value="1" placeholder="e.g., 2" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label for="numberOfTrades">Number of Trades</label>
+                    <input type="number" id="numberOfTrades" value="100" placeholder="e.g., 100">
+                </div>
+                <div class="input-group">
+                    <label for="commission">Commission per Trade (%) <span class="tooltip-icon" title="The percentage fee charged by your broker for each trade">ⓘ</span></label>
+                    <input type="number" id="commission" value="0.0035" placeholder="e.g., 0.1" step="0.0001">
+                </div>
+            </div>
+            <div class="commission-group">
+                <div class="input-group">
+                    <label for="simulations">Monte Carlo Simulations <span class="tooltip-icon" title="Number of times to simulate your trading strategy to get a range of possible outcomes">ⓘ</span></label>
+                    <input type="number" id="simulations" placeholder="e.g., 1000" value="1000">
+                </div>
+            </div>
+            <button onclick="calculateResults()">Calculate Results</button>
+        </div>
+
+        <section class="trading-insights">
+            <h2>Trading Strategy Insights</h2>
+            
+            <div class="strategy-tips">
+                <h3>Keys to Successful Trading</h3>
+                <ul>
+                    <li><strong>Consistent Risk Management:</strong> Maintain disciplined position sizing across all trades</li>
+                    <li><strong>Statistical Edge:</strong> Focus on strategies with positive expected value</li>
+                    <li><strong>Psychology Management:</strong> Stay objective and follow your trading plan</li>
+                    <li><strong>Portfolio Protection:</strong> Never risk more than you can afford to lose</li>
+                </ul>
+            </div>
+
+            <div class="probability-scenarios">
+                <h3>Understanding Probability Scenarios</h3>
+                <div class="scenario-grid">
+                    <div class="scenario-card">
+                        <h4>Conservative Trading</h4>
+                        <ul>
+                            <li>Lower risk per trade (1-2%)</li>
+                            <li>Higher win rate focus</li>
+                            <li>Moderate reward/risk ratios</li>
+                        </ul>
+                    </div>
+                    <div class="scenario-card">
+                        <h4>Balanced Approach</h4>
+                        <ul>
+                            <li>Medium risk per trade (2-3%)</li>
+                            <li>Balanced win rate/RR ratio</li>
+                            <li>Consistent position sizing</li>
+                        </ul>
+                    </div>
+                    <div class="scenario-card">
+                        <h4>Aggressive Strategy</h4>
+                        <ul>
+                            <li>Higher risk per trade (3-5%)</li>
+                            <li>Lower win rate acceptable</li>
+                            <li>Higher reward/risk ratios</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="results-interpretation">
+            <h2>Understanding Your Results</h2>
+            <p>The calculator provides comprehensive analysis of your trading strategy. Here's how to interpret the key metrics:</p>
+            
+            <div class="interpretation-grid">
+                <div class="interpretation-card">
+                    <h4>Expected Profit</h4>
+                    <p>The projected profit based on your win rate, risk/reward ratio, and number of trades.</p>
+                </div>
+                <div class="interpretation-card">
+                    <h4>Maximum Drawdown</h4>
+                    <p>The largest potential decline in account value during the trading period.</p>
+                </div>
+                <div class="interpretation-card">
+                    <h4>Win/Loss Distribution</h4>
+                    <p>The statistical distribution of winning and losing trades over time.</p>
+                </div>
+                <div class="interpretation-card">
+                    <h4>Kelly Criterion</h4>
+                    <p>Optimal position sizing based on your win rate and reward/risk ratio.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="simulation-results">
+            <h2>Monte Carlo Analysis</h2>
+            <div class="stat-grid">
+                <div class="stat-card" onclick="showSimulationDetails(0)">
+                    <div class="stat-label">Best Case Return</div>
+                    <div class="stat-value" id="bestCase">0%</div>
+                    <div class="stat-note">Click to view trades</div>
+                </div>
+                <div class="stat-card" onclick="showSimulationDetails(1)">
+                    <div class="stat-label">Average Return</div>
+                    <div class="stat-value" id="averageCase">0%</div>
+                    <div class="stat-note">Click to view trades</div>
+                </div>
+                <div class="stat-card" onclick="showSimulationDetails(2)">
+                    <div class="stat-label">Worst Case Return</div>
+                    <div class="stat-value" id="worstCase">0%</div>
+                    <div class="stat-note">Click to view trades</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Percent of Profitable Scenarios</div>
+                    <div class="stat-value" id="profitProb">0%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="results" id="results">
+            <h2>Expected Results</h2>
+            <div class="result-item hidden">
+                <span>Expected Profit:</span>
+                <span id="expectedProfit">$0</span>
+            </div>
+            <div class="result-item hidden">
+                <span>Final Balance:</span>
+                <span id="finalBalance">$0</span>
+            </div>
+            <div class="result-item hidden">
+                <span>Return on Investment:</span>
+                <span id="roi">0%</span>
+            </div>
+            <div class="result-item hidden">
+                <span>Total Commission Cost:</span>
+                <span id="totalCommission">$0</span>
+            </div>
+            <div class="expected-chart-container">
+                <canvas id="expectedBalanceChart"></canvas>
+            </div>
+            <div class="balance-drawdown-container">
+                <canvas id="balanceDrawdownChart"></canvas>
+            </div>
+            <div class="drawdown-container">
+                <canvas id="drawdownChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="balanceChart"></canvas>
+        </div>
+
+        <div id="tradeDetails" class="trade-details-section">
+            <h2 id="tradeDetailsTitle">Trade Details</h2>
+            <div class="trade-summary">
+                <div class="stat-group balance-group">
+                    <h3>Balance Summary</h3>
+                    <div>Initial Balance: <span id="modalInitialBalance">$999.97</span></div>
+                    <div>Final Balance: <span id="modalFinalBalance" class="value-colored positive-value">$1,211.08</span></div>
+                    <div>Total Return: <span id="modalTotalReturn" class="value-colored positive-value">21.1%</span></div>
+                    <div>Trade Profit: <span id="modalExpectedProfit" class="value-colored positive-value">$211.12</span></div>
+                    <div>Total Commission: <span id="modalTotalCommission">$3.75</span></div>
+                </div>
+                
+                <div class="stat-group risk-adjusted-group">
+                    <h3>Risk-Adjusted Metrics</h3>
+                    <div class="tooltip-container">
+                        Sharpe Ratio: <span id="modalSharpeRatio" class="value-colored">1.5</span>
+                        <span class="tooltip">Measures excess return per unit of risk. Higher is better. >1: Good, >2: Very Good, >3: Excellent</span>
+                    </div>
+                    <div class="tooltip-container">
+                        Sortino Ratio: <span id="modalSortinoRatio" class="value-colored">1.8</span>
+                        <span class="tooltip">Similar to Sharpe but only considers harmful volatility. Better for non-normal distributions</span>
+                    </div>
+                    <div class="tooltip-container">
+                        Calmar Ratio: <span id="modalCalmarRatio" class="value-colored">2.1</span>
+                        <span class="tooltip">Measures average annual return relative to maximum drawdown. Popular in managed futures</span>
+                    </div>
+                </div>
+
+                <div class="stat-group performance-group">
+                    <h3>Performance Metrics</h3>
+                    <div class="tooltip-container">
+                        Profit Factor: <span id="modalProfitFactor" class="value-colored positive-value">1.50</span>
+                        <span class="tooltip">Ratio of gross profits to gross losses. >1 indicates profitable strategy</span>
+                    </div>
+                    <div>Best Trade: <span id="modalBestTrade" class="positive-value">$11.99</span></div>
+                    <div>Worst Trade: <span id="modalWorstTrade" class="negative-value">-$12.11</span></div>
+                    <div class="tooltip-container">
+                        R-Multiple: <span id="modalRMultiple" class="value-colored">2.3</span>
+                        <span class="tooltip">R-Multiple shows how many times your risk you're making in profit. Example: If risking $100 per trade, an R-Multiple of 2.0 means you're making $200 on average. Values: <1.0: Losing more than risking, >1.0: Making more than risking, 2.0: Making twice your risk</span>
+                    </div>
+                    <div class="tooltip-container">
+                        Position Impact: <span id="modalPositionImpact" class="value-colored">1.2</span>
+                        <span class="tooltip">How position sizing affects overall returns. >1 indicates positive scaling</span>
+                    </div>
+                </div>
+
+                <div class="stat-group drawdown-group">
+                    <h3>Drawdown Analysis</h3>
+                    <div class="tooltip-container">
+                        Max Drawdown: <span id="modalMaxDrawdown">4.0%</span>
+                        <span class="tooltip">Largest peak-to-valley decline in portfolio value</span>
+                    </div>
+                    <div>Average Drawdown: <span id="modalAvgDrawdown">1.1%</span></div>
+                    <div>Recovery Time: <span id="modalRecoveryTime">5</span> trades</div>
+                    <div>Underwater Time: <span id="modalUnderwaterTime">15%</span></div>
+                    <div>Valley-to-Peak: <span id="modalValleyToPeak">8</span> trades</div>
+                </div>
+
+                <div class="stat-group streak-group">
+                    <h3>Streak Statistics</h3>
+                    <div>Max Wins in Row: <span id="modalMaxWinsRow">7</span></div>
+                    <div>Max Losses in Row: <span id="modalMaxLossesRow">3</span></div>
+                    <div>Average Win Streak: <span id="modalAvgWinStreak">2.1</span></div>
+                    <div>Average Loss Streak: <span id="modalAvgLossStreak">1.4</span></div>
+                </div>
+
+                <div class="stat-group kelly-group">
+                    <h3>Position Size Calculator (Kelly Criterion)</h3>
+                    <div class="kelly-info">
+                        Helps you decide how much to risk per trade based on your win rate and reward/risk ratio.
+                    </div>
+                    <div id="kellyMetrics" class="kelly-metrics-grid">
+                        <div class="kelly-metric-row tooltip-container">
+                            <div class="kelly-label">Aggressive (Full Kelly):</div>
+                            <div class="kelly-value"><span id="kellyFull" class="value-colored">0%</span></div>
+                            <span class="tooltip">This is the mathematically optimal risk per trade, but it's too aggressive for most traders. Example: 20% means risk $2,000 on a $10,000 account.</span>
+                        </div>
+                        <div class="kelly-metric-row tooltip-container">
+                            <div class="kelly-label">Balanced (Half Kelly):</div>
+                            <div class="kelly-value"><span id="kellyHalf" class="value-colored">0%</span></div>
+                            <span class="tooltip">This is a balanced approach - half of the aggressive size. Most professional traders use this. Example: 10% means risk $1,000 on a $10,000 account.</span>
+                        </div>
+                        <div class="kelly-metric-row tooltip-container">
+                            <div class="kelly-label">Conservative (Quarter Kelly):</div>
+                            <div class="kelly-value"><span id="kellyQuarter" class="value-colored">0%</span></div>
+                            <span class="tooltip">This is the safest approach - quarter of the aggressive size. Recommended for new strategies or volatile markets. Example: 5% means risk $500 on a $10,000 account.</span>
+                        </div>
+                        <div class="kelly-metric-row tooltip-container">
+                            <div class="kelly-label">Expected Return Per Trade:</div>
+                            <div class="kelly-value"><span id="kellyExpectedValue" class="value-colored">0</span></div>
+                            <span class="tooltip">The average return you can expect per trade. Example: 0.2 means on average you'll make 0.2 times your risk amount per trade. If risking $100, expect to make $20 per trade on average.</span>
+                        </div>
+                        <div class="kelly-recommendation">
+                            <span id="kellyRecommendation"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="trade-list" id="tradeList">
+                <!-- Trade details will be inserted here -->
+            </div>
+        </div>
+        <div class="analysis-container">
+            <h2>Trading Strategy Analysis</h2>
+            
+            <!-- Monte Carlo Results Analysis -->
+            <div class="analysis-section">
+                <h3>📊 Monte Carlo Simulation Analysis</h3>
+                <div id="monteCarloAnalysis" class="analysis-text"></div>
+            </div>
+
+            <!-- Balance and Returns Analysis -->
+            <div class="analysis-section">
+                <h3>💰 Balance and Returns Analysis</h3>
+                <div id="balanceAnalysis" class="analysis-text"></div>
+            </div>
+
+            <!-- Risk Metrics Analysis -->
+            <div class="analysis-section">
+                <h3>⚠️ Risk Analysis</h3>
+                <div id="riskAnalysis" class="analysis-text"></div>
+            </div>
+
+            <!-- Performance Metrics Analysis -->
+            <div class="analysis-section">
+                <h3>📈 Performance Analysis</h3>
+                <div id="performanceAnalysis" class="analysis-text"></div>
+            </div>
+
+            <!-- Trading Psychology Analysis -->
+            <div class="analysis-section">
+                <h3>🧠 Trading Psychology</h3>
+                <div id="psychologyAnalysis" class="analysis-text"></div>
+            </div>
+
+            <!-- Position Sizing Analysis -->
+            <div class="analysis-section">
+                <h3>📏 Position Sizing Recommendations</h3>
+                <div id="positionSizingAnalysis" class="analysis-text"></div>
+            </div>
+
+            <div class="analysis-section">
+                <h3>🎯 Strategy Improvements</h3>
+                <div id="improvementsAnalysis" class="analysis-text"></div>
+            </div>
+
+            <div class="analysis-section" style="border: 1px solid var(--success-color); background: rgba(74, 222, 128, 0.05);">
+                <h3 style="color: var(--success-color); display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                    🚀 Execute This Strategy
+                </h3>
+                
+                <div style="display: flex; flex-direction: column; gap: 20px; text-align: left;">
+                    <p style="margin: 0; color: var(--text-main);">
+                        <strong>Result Analysis:</strong> Your metrics require a broker with <span style="color: var(--success-color);">tight spreads</span> and <span style="color: var(--success-color);">fast execution</span> to maintain this edge.
+                    </p>
+                    
+                    <div style="background: var(--bg-color); padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
+                        
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            
+                            <img src="Exness_Logo.png" 
+                                 alt="Exness" 
+                                 style="height: 150px; width: auto; opacity: 0.9;">
+                            
+                            <div style="display: flex; flex-direction: column; justify-content: center;">
+                                <strong style="font-size: 1.1em; color: var(--text-main); white-space: nowrap;">
+                                    Best Execution • Lowest Commission
+                                </strong>
+                                <span style="font-size: 1.1em; color: var(--text-secondary); white-space: nowrap;">
+                                    Instant Withdrawals • Raw Spreads
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <a href="https://one.exnessonelink.com/a/c_009kle5u94" target="_blank" style="background: var(--success-color); color: #0f172a; text-decoration: none; padding: 12px 25px; border-radius: 6px; font-weight: bold; font-size: 1rem; transition: transform 0.2s, opacity 0.2s; white-space: nowrap;" onmouseover="this.style.opacity='0.9'; this.style.transform='translateY(-1px)'" onmouseout="this.style.opacity='1'; this.style.transform='translateY(0)'">
+                            Open Trading Account &rarr;
+                        </a>
+                    </div>
+                    
+                    <p style="font-size: 0.85em; color: var(--text-secondary); margin: 0; text-align: center;">
+                        *Recommended for high-frequency & algo strategies.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="contact-bubble" id="contactBubble">
+        <div class="contact-icon">?</div>
+        <div class="contact-popup" id="contactPopup">
+            Contact email: fhaleen6@gmail.com
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <footer class="main-footer">
+        <nav>
+            <a href="privacy.html">Privacy Policy</a>
+        </nav>
+    </footer>
+</body>
+</html>

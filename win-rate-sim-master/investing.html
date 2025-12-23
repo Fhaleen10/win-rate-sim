@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KHM4WHNE8K"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KHM4WHNE8K');
+    </script>
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1794773804909203"
+     crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="E-n3xzukzN1tXcncJXvriEuf8157kksZ6awrDtPoV_w" />
+    <title>Investment Calculator | Compound Interest & Investment Growth Calculator</title>
+    <meta name="description" content="Free online investment calculator for calculating compound interest, investment growth, and returns. Plan your financial future with our easy-to-use investment tools.">
+    <meta name="keywords" content="investment calculator, compound interest calculator, investment growth calculator, financial planning calculator, retirement calculator, investment returns calculator">
+    
+    <!-- Open Graph Tags for Social Media -->
+    <meta property="og:title" content="Investment Calculator | Compound Interest & Investment Growth Calculator">
+    <meta property="og:description" content="Calculate investment growth and compound interest with our free calculator. Perfect for financial planning and investment analysis.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://probabilitycalculator.pro/investing.html">
+    
+    <!-- Schema.org markup for Google -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Investment Calculator",
+        "description": "A comprehensive investment calculator for calculating compound interest, investment growth, and returns. Features weekly, monthly, quarterly, and yearly contribution options.",
+        "url": "https://probabilitycalculator.pro/investing.html",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": [
+            "Calculate compound interest",
+            "Multiple contribution frequencies",
+            "Investment growth projections",
+            "Detailed breakdown tables",
+            "Visual investment charts",
+            "Free to use"
+        ]
+    }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .table-container {
+            margin-top: 2rem;
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card-bg);
+            color: var(--text-color);
+        }
+        
+        th, td {
+            padding: 1rem;
+            text-align: right;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        th {
+            background: var(--input-bg);
+            font-weight: 600;
+        }
+        
+        tr:hover {
+            background: var(--input-bg);
+        }
+        
+        .detailed-results {
+            margin-top: 3rem;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 2rem 0;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+            width: 100%;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 0.75rem;
+            font-size: 1rem;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            border: 1px solid var(--border-color);
+            background: var(--input-bg);
+            color: var(--text-color);
+            border-radius: 4px;
+            transition: border-color 0.2s ease;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .grid-inputs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            padding: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .grid-inputs {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .green-value {
+            color: #4CAF50 !important;
+            font-weight: 600;
+        }
+
+        .result-item span:last-child {
+            font-weight: 600;
+        }
+
+        table td:nth-child(3),  /* Interest column */
+        table td:nth-child(4) { /* Balance column */
+            color: #4CAF50;
+            font-weight: 600;
+        }
+        
+        .introduction {
+            margin-bottom: 3rem;
+        }
+        
+        .key-concepts {
+            margin-bottom: 2rem;
+        }
+        
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+        
+        .concept-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .concept-card h4 {
+            margin-top: 0;
+        }
+        
+        .how-to-use {
+            margin-bottom: 3rem;
+        }
+        
+        .how-to-use ol {
+            list-style: decimal;
+            padding-left: 1.5rem;
+        }
+        
+        .how-to-use li {
+            margin-bottom: 1.5rem;
+        }
+        
+        .how-to-use li strong {
+            font-weight: 600;
+        }
+        
+        .investment-strategies {
+            margin-bottom: 3rem;
+        }
+        
+        .strategy-tips {
+            margin-bottom: 2rem;
+        }
+        
+        .strategy-tips ul {
+            list-style: disc;
+            padding-left: 1.5rem;
+        }
+        
+        .strategy-tips li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .common-scenarios {
+            margin-bottom: 2rem;
+        }
+        
+        .scenario-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        
+        .scenario-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .scenario-card h4 {
+            margin-top: 0;
+        }
+        
+        .results-interpretation {
+            margin-bottom: 3rem;
+        }
+        
+        .interpretation-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+        
+        .interpretation-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .interpretation-card h4 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <nav>
+            <a href="investing.html" class="active">Investing</a>
+            <a href="index.html">Probability Calculator</a>
+            <a href="winrate.html">What is my win rate?</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>Investment Calculator</h1>
+
+        <section class="introduction">
+            <h2>Plan Your Financial Future</h2>
+            <p>Understanding the power of compound interest and regular investments is crucial for building long-term wealth. This calculator helps you visualize how your investments can grow over time through the combined effects of contributions and investment returns.</p>
+            
+            <div class="key-concepts">
+                <h3>Key Investment Concepts</h3>
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <h4>Compound Interest</h4>
+                        <p>Earn returns not just on your initial investment, but also on your accumulated earnings over time.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Regular Contributions</h4>
+                        <p>Consistently adding to your investments can significantly boost your long-term returns.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Time Horizon</h4>
+                        <p>The longer your investment period, the more time your money has to grow through compounding.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Return Rate</h4>
+                        <p>Your expected annual return rate affects how quickly your investments will grow over time.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="how-to-use">
+            <h2>How to Use the Investment Calculator</h2>
+            <ol>
+                <li>
+                    <strong>Initial Investment:</strong>
+                    <p>Enter the amount you're starting with. This could be your current savings or a lump sum you plan to invest.</p>
+                </li>
+                <li>
+                    <strong>Contribution Amount:</strong>
+                    <p>Specify how much you plan to add to your investments regularly. This could be weekly, monthly, quarterly, or yearly.</p>
+                </li>
+                <li>
+                    <strong>Expected Annual Return:</strong>
+                    <p>Input your expected rate of return as a percentage. Historical stock market returns have averaged around 7-10% annually over the long term.</p>
+                </li>
+                <li>
+                    <strong>Investment Period:</strong>
+                    <p>Enter the number of years you plan to invest. Longer periods typically benefit more from compound interest.</p>
+                </li>
+            </ol>
+        </section>
+
+        <div class="calculator">
+            <div class="grid-inputs">
+                <div class="input-group">
+                    <label for="initialInvestment">Initial Investment ($)</label>
+                    <input type="number" id="initialInvestment" value="10000" min="0" step="100">
+                </div>
+                <div class="input-group">
+                    <label for="contributionAmount">Contribution Amount ($)</label>
+                    <input type="number" id="contributionAmount" value="500" min="0" step="50">
+                </div>
+                <div class="input-group">
+                    <label for="contributionFrequency">Contribution Frequency</label>
+                    <select id="contributionFrequency">
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly" selected>Monthly</option>
+                        <option value="quarterly">Quarterly</option>
+                        <option value="yearly">Yearly</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="annualReturn">Expected Annual Return (%)</label>
+                    <input type="number" id="annualReturn" value="8" min="-100" max="1000" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label for="investmentYears">Investment Period (Years)</label>
+                    <input type="number" id="investmentYears" value="10" min="1" max="50">
+                </div>
+                <div class="input-group">
+                    <label for="viewFrequency">View Results By</label>
+                    <select id="viewFrequency">
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly" selected>Monthly</option>
+                        <option value="quarterly">Quarterly</option>
+                        <option value="yearly">Yearly</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="results" id="results">
+                <h2>Investment Projection</h2>
+                <div class="result-item">
+                    <span>Total Amount Invested:</span>
+                    <span id="totalInvestment">$0</span>
+                </div>
+                <div class="result-item">
+                    <span>Total Interest Earned:</span>
+                    <span id="totalInterest">$0</span>
+                </div>
+                <div class="result-item">
+                    <span>Final Balance:</span>
+                    <span id="finalBalance">$0</span>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="investmentChart"></canvas>
+            </div>
+
+            <div class="detailed-results">
+                <h2>Detailed Breakdown</h2>
+                <div class="table-container">
+                    <table id="breakdownTable">
+                        <thead>
+                            <tr>
+                                <th>Period</th>
+                                <th>Amount Invested</th>
+                                <th>Interest Earned</th>
+                                <th>Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <section class="investment-strategies">
+            <h2>Investment Strategy Guidelines</h2>
+            
+            <div class="strategy-tips">
+                <h3>Tips for Successful Long-term Investing</h3>
+                <ul>
+                    <li><strong>Diversification:</strong> Spread investments across different assets to manage risk</li>
+                    <li><strong>Regular Contributions:</strong> Consistent investing helps smooth out market volatility</li>
+                    <li><strong>Long-term Perspective:</strong> Focus on long-term growth rather than short-term fluctuations</li>
+                    <li><strong>Risk Management:</strong> Adjust your portfolio based on your risk tolerance and time horizon</li>
+                </ul>
+            </div>
+
+            <div class="common-scenarios">
+                <h3>Common Investment Scenarios</h3>
+                <div class="scenario-grid">
+                    <div class="scenario-card">
+                        <h4>Retirement Planning</h4>
+                        <ul>
+                            <li>Longer investment horizon (20-40 years)</li>
+                            <li>Regular monthly contributions</li>
+                            <li>More aggressive early, conservative later</li>
+                        </ul>
+                    </div>
+                    <div class="scenario-card">
+                        <h4>Education Savings</h4>
+                        <ul>
+                            <li>Medium-term horizon (5-15 years)</li>
+                            <li>Regular contributions</li>
+                            <li>Moderate risk approach</li>
+                        </ul>
+                    </div>
+                    <div class="scenario-card">
+                        <h4>Wealth Building</h4>
+                        <ul>
+                            <li>Flexible time horizon</li>
+                            <li>Variable contribution amounts</li>
+                            <li>Balanced risk approach</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="results-interpretation">
+            <h2>Understanding Your Results</h2>
+            <p>The calculator provides a detailed breakdown of your investment growth over time. Here's how to interpret the results:</p>
+            
+            <div class="interpretation-grid">
+                <div class="interpretation-card">
+                    <h4>Total Investment Value</h4>
+                    <p>The final amount you'll have after the investment period, including your contributions and returns.</p>
+                </div>
+                <div class="interpretation-card">
+                    <h4>Total Contributions</h4>
+                    <p>The sum of your initial investment and all regular contributions over time.</p>
+                </div>
+                <div class="interpretation-card">
+                    <h4>Investment Returns</h4>
+                    <p>The amount earned through compound interest and investment returns.</p>
+                </div>
+                <div class="interpretation-card">
+                    <h4>Growth Chart</h4>
+                    <p>Visual representation of how your investment grows over time, showing the power of compound interest.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="main-footer">
+        <nav>
+            <a href="privacy.html">Privacy Policy</a>
+        </nav>
+    </footer>
+
+    <script>
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(value);
+        }
+
+        function getFrequencyMultiplier(frequency) {
+            switch(frequency) {
+                case 'weekly': return 52;
+                case 'monthly': return 12;
+                case 'quarterly': return 4;
+                case 'yearly': return 1;
+                default: return 12;
+            }
+        }
+
+        function calculateInvestment() {
+            const initialInvestment = parseFloat(document.getElementById('initialInvestment').value);
+            const contributionAmount = parseFloat(document.getElementById('contributionAmount').value);
+            const contributionFrequency = document.getElementById('contributionFrequency').value;
+            const viewFrequency = document.getElementById('viewFrequency').value;
+            const annualReturn = parseFloat(document.getElementById('annualReturn').value) / 100;
+            const years = parseInt(document.getElementById('investmentYears').value);
+
+            const contributionMultiplier = getFrequencyMultiplier(contributionFrequency);
+            const viewMultiplier = getFrequencyMultiplier(viewFrequency);
+            
+            const weeklyRate = annualReturn / 52;
+            const totalWeeks = years * 52;
+            
+            let balance = initialInvestment;
+            let totalInvested = initialInvestment;
+            let previousBalance = initialInvestment;
+            const dataPoints = [];
+            const breakdownData = [];
+            
+            dataPoints.push({ x: 0, y: balance, invested: totalInvested });
+
+            for (let week = 1; week <= totalWeeks; week++) {
+                // Add contribution if it's a contribution week
+                if (contributionFrequency === 'weekly' || 
+                    (contributionFrequency === 'monthly' && week % 4 === 0) ||
+                    (contributionFrequency === 'quarterly' && week % 13 === 0) ||
+                    (contributionFrequency === 'yearly' && week % 52 === 0)) {
+                    balance += contributionAmount;
+                    totalInvested += contributionAmount;
+                }
+
+                // Apply weekly returns
+                balance *= (1 + weeklyRate);
+
+                // Record data points based on view frequency
+                if ((viewFrequency === 'weekly') ||
+                    (viewFrequency === 'monthly' && week % 4 === 0) ||
+                    (viewFrequency === 'quarterly' && week % 13 === 0) ||
+                    (viewFrequency === 'yearly' && week % 52 === 0)) {
+                    
+                    const periodInterest = balance - previousBalance;
+                    breakdownData.push({
+                        period: formatPeriod(week, viewFrequency),
+                        invested: totalInvested,
+                        interest: periodInterest,
+                        balance: balance
+                    });
+                    
+                    dataPoints.push({ 
+                        x: week / 52, 
+                        y: balance,
+                        invested: totalInvested
+                    });
+                    
+                    previousBalance = balance;
+                }
+            }
+
+            updateResults(totalInvested, balance);
+            updateInvestmentChart(dataPoints);
+            updateBreakdownTable(breakdownData);
+        }
+
+        function formatPeriod(week, frequency) {
+            const year = Math.floor(week / 52) + 1;
+            switch(frequency) {
+                case 'weekly':
+                    return `Year ${year}, Week ${week % 52 || 52}`;
+                case 'monthly':
+                    return `Year ${year}, Month ${Math.floor((week % 52) / 4) + 1}`;
+                case 'quarterly':
+                    return `Year ${year}, Q${Math.floor((week % 52) / 13) + 1}`;
+                case 'yearly':
+                    return `Year ${year}`;
+            }
+        }
+
+        function updateResults(totalInvested, finalBalance) {
+            document.getElementById('totalInvestment').textContent = formatCurrency(totalInvested);
+            document.getElementById('totalInterest').className = 'green-value';
+            document.getElementById('totalInterest').textContent = formatCurrency(finalBalance - totalInvested);
+            document.getElementById('finalBalance').className = 'green-value';
+            document.getElementById('finalBalance').textContent = formatCurrency(finalBalance);
+        }
+
+        function updateBreakdownTable(data) {
+            const tbody = document.querySelector('#breakdownTable tbody');
+            tbody.innerHTML = '';
+            
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${row.period}</td>
+                    <td>${formatCurrency(row.invested)}</td>
+                    <td>${formatCurrency(row.interest)}</td>
+                    <td>${formatCurrency(row.balance)}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updateInvestmentChart(dataPoints) {
+            const ctx = document.getElementById('investmentChart');
+            
+            // Check if chart instance exists and is a Chart instance
+            if (window.investmentChart instanceof Chart) {
+                window.investmentChart.destroy();
+            }
+
+            window.investmentChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: 'Total Balance',
+                        data: dataPoints.map(p => ({ x: p.x, y: p.y })),
+                        borderColor: '#ffd700',
+                        backgroundColor: 'rgba(255, 215, 0, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Amount Invested',
+                        data: dataPoints.map(p => ({ x: p.x, y: p.invested })),
+                        borderColor: '#4CAF50',
+                        backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    aspectRatio: 2,
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            title: {
+                                display: true,
+                                text: 'Years'
+                            },
+                            ticks: {
+                                callback: value => `Year ${value}`
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Value ($)'
+                            },
+                            ticks: {
+                                callback: value => formatCurrency(value)
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: context => {
+                                    const label = context.dataset.label;
+                                    const value = formatCurrency(context.parsed.y);
+                                    return `${label}: ${value}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize calculator
+        const inputs = ['initialInvestment', 'contributionAmount', 'annualReturn', 'investmentYears', 'contributionFrequency', 'viewFrequency'];
+        inputs.forEach(id => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.addEventListener('input', calculateInvestment);
+                element.addEventListener('change', calculateInvestment);
+            }
+        });
+        calculateInvestment();
+    </script>
+</body>
+</html>

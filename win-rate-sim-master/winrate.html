@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KHM4WHNE8K"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KHM4WHNE8K');
+    </script>
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1794773804909203"
+     crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="E-n3xzukzN1tXcncJXvriEuf8157kksZ6awrDtPoV_w" />
+    <title>Win Rate Calculator | Calculate Success Rate and Win/Loss Ratio</title>
+    <meta name="description" content="Free online win rate calculator to determine your success rate and win/loss ratio. Perfect for traders, gamers, and anyone tracking performance metrics.">
+    <meta name="keywords" content="win rate calculator, success rate calculator, win loss ratio, performance calculator, trading win rate, gaming win rate">
+    
+    <!-- Open Graph Tags for Social Media -->
+    <meta property="og:title" content="Win Rate Calculator | Calculate Success Rate and Win/Loss Ratio">
+    <meta property="og:description" content="Calculate your win rate and success rate with our free online calculator. Perfect for traders, gamers, and performance tracking.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://probabilitycalculator.pro/winrate.html">
+    
+    <!-- Schema.org markup for Google -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Win Rate Calculator",
+        "description": "A free online calculator for determining win rates, success rates, and win/loss ratios. Perfect for traders, gamers, and performance tracking.",
+        "url": "https://probabilitycalculator.pro/winrate.html",
+        "applicationCategory": "CalculatorApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": [
+            "Calculate win rate percentage",
+            "Determine win/loss ratio",
+            "Track performance metrics",
+            "Free to use"
+        ]
+    }
+    </script>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="main-header">
+        <nav>
+            <a href="investing.html">Investing</a>
+            <a href="index.html">Probability Calculator</a>
+            <a href="winrate.html" class="active">What is my win rate?</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>Win Rate Calculator</h1>
+        
+        <section class="how-to-use">
+            <h2>How to Use the Win Rate Calculator</h2>
+            <ol>
+                <li><strong>Enter Your Wins:</strong> Input the total number of successful outcomes</li>
+                <li><strong>Enter Your Losses:</strong> Input the total number of unsuccessful outcomes</li>
+                <li><strong>View Results:</strong> Your win rate percentage and total trades will be calculated automatically</li>
+            </ol>
+            
+            <div class="tips">
+                <h3>Tips for Accurate Results</h3>
+                <ul>
+                    <li>Include all relevant trades or attempts for accurate statistics</li>
+                    <li>Keep consistent records of your wins and losses</li>
+                    <li>Use the calculator regularly to track progress over time</li>
+                </ul>
+            </div>
+        </section>
+
+        <div class="calculator">
+            <div class="input-group">
+                <label for="wins">Number of Wins</label>
+                <input type="number" id="wins" min="0" value="" placeholder="0">
+            </div>
+            <div class="input-group">
+                <label for="losses">Number of Losses</label>
+                <input type="number" id="losses" min="0" value="" placeholder="0">
+            </div>
+            <div class="input-group">
+                <label for="total">Total Trades</label>
+                <input type="number" id="total" readonly placeholder="0">
+            </div>
+            <div class="result-group">
+                <h2>Your Win Rate</h2>
+                <div id="winRate" class="win-rate">0%</div>
+            </div>
+        </div>
+
+        <section class="introduction">
+            <h2>Understanding Win Rates</h2>
+            <p>Whether you're a trader, gamer, or professional tracking performance metrics, understanding your win rate is crucial for improvement. This calculator helps you determine your success rate by analyzing your wins and losses.</p>
+            
+            <div class="key-benefits">
+                <h3>Why Track Your Win Rate?</h3>
+                <ul>
+                    <li>Measure your performance objectively</li>
+                    <li>Identify trends in your success rate</li>
+                    <li>Make data-driven decisions to improve</li>
+                    <li>Compare performance across different strategies</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="interpretation">
+            <h2>Interpreting Your Results</h2>
+            <p>Your win rate is a key performance indicator that shows the percentage of successful outcomes compared to total attempts. A higher win rate generally indicates better performance, but should be considered alongside other metrics like risk-reward ratio for a complete analysis.</p>
+            
+            <div class="win-rate-ranges">
+                <h3>Common Win Rate Ranges</h3>
+                <ul>
+                    <li><strong>40-45%:</strong> Common for high reward-risk ratio strategies</li>
+                    <li><strong>50-55%:</strong> Typical for balanced trading approaches</li>
+                    <li><strong>60%+:</strong> Excellent performance, but ensure sustainability</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const winsInput = document.getElementById('wins');
+        const lossesInput = document.getElementById('losses');
+        const totalInput = document.getElementById('total');
+        const winRateDisplay = document.getElementById('winRate');
+
+        function calculateWinRate() {
+            const wins = parseInt(winsInput.value) || 0;
+            const losses = parseInt(lossesInput.value) || 0;
+            const total = wins + losses;
+            
+            totalInput.value = total || '';
+            totalInput.placeholder = '0';
+            
+            if (total > 0) {
+                const winRate = (wins / total) * 100;
+                winRateDisplay.textContent = winRate.toFixed(2) + '%';
+            } else {
+                winRateDisplay.textContent = '0%';
+            }
+        }
+
+        winsInput.addEventListener('input', calculateWinRate);
+        lossesInput.addEventListener('input', calculateWinRate);
+    </script>
+
+    <footer class="main-footer">
+        <nav>
+            <a href="privacy.html">Privacy Policy</a>
+        </nav>
+    </footer>
+</body>
+</html>

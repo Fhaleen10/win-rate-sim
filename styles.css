@@ -1665,3 +1665,71 @@ section li {
         font-size: 0.9rem;
     }
 }
+
+/* --- Referral Section Mobile Fixes --- */
+.referral-flex-container {
+    background: var(--bg-color);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.referral-info-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.referral-logo {
+    height: 60px; /* Reduced from 150px which was way too large */
+    width: auto;
+    opacity: 0.9;
+}
+
+.referral-text-stack {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.referral-title, .referral-subtitle {
+    white-space: nowrap;
+}
+
+.referral-btn-main {
+    background: var(--success-color);
+    color: #0f172a;
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: transform 0.2s, opacity 0.2s;
+    white-space: nowrap;
+    text-align: center;
+}
+
+/* Mobile Breakpoint */
+@media screen and (max-width: 768px) {
+    .referral-flex-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .referral-info-group {
+        flex-direction: column;
+    }
+
+    .referral-title, .referral-subtitle {
+        white-space: normal; /* Allows text to wrap on phones */
+        font-size: 0.95rem;
+    }
+
+    .referral-btn-main {
+        width: 100%; /* Full width button on mobile */
+    }
+}

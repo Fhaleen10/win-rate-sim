@@ -380,7 +380,7 @@
                             <tr>
                                 <th>Period</th>
                                 <th>Amount Invested</th>
-                                <th>Interest Earned</th>
+                                <th>Interest Earned p/m</th>
                                 <th>Balance</th>
                             </tr>
                         </thead>
@@ -527,7 +527,8 @@
                     (viewFrequency === 'quarterly' && week % 13 === 0) ||
                     (viewFrequency === 'yearly' && week % 52 === 0)) {
                     
-                    const periodInterest = balance - previousBalance;
+                    // Subtract the contribution so only actual growth (interest) is shown
+                    const periodInterest = (balance - previousBalance) - (contributionFrequency === 'monthly' ? contributionAmount : 0);
                     breakdownData.push({
                         period: formatPeriod(week, viewFrequency),
                         invested: totalInvested,

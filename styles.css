@@ -10,11 +10,11 @@
     --primary-hover: #ffed4a;
     --bg-color: #0a0b0e;
     --text-color: #e2e8f0;
-    --border-color: #434d5e;
-    --card-bg: #1a1c23;
-    --input-bg: #2d3748;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --card-bg: rgba(26, 28, 35, 0.6);
+    --input-bg: rgba(0, 0, 0, 0.3);
     --gold-glow: 0 0 15px rgba(255, 215, 0, 0.1);
-    --stat-card-bg: #242731;
+    --stat-card-bg: rgba(36, 39, 49, 0.6);
     --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
     --trade-list-zlato: #ffd700;
     --success-color: #10b981;
@@ -22,7 +22,8 @@
 }
 
 body {
-    background: var(--bg-color);
+    background: radial-gradient(circle at 50% 0%, #1f2937 0%, #0a0b0e 100%);
+    min-height: 100vh;
     color: var(--text-color);
     line-height: 1.6;
 }
@@ -35,15 +36,20 @@ body {
 
 h1 {
     text-align: center;
-    color: var(--primary-color);
+    background: linear-gradient(to right, #ffd700, #fff5cc);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
     margin-bottom: 2rem;
     font-size: 2.5rem;
     font-weight: 700;
-    text-shadow: var(--gold-glow);
+    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.2));
 }
 
 .calculator {
     background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     padding: 2.5rem;
     border-radius: 16px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
@@ -135,7 +141,7 @@ input:focus {
 button {
     width: 100%;
     padding: 1rem;
-    background: var(--primary-color);
+    background: linear-gradient(135deg, #ffd700 0%, #e6c200 100%);
     color: #000;
     border: none;
     border-radius: 8px;
@@ -145,16 +151,19 @@ button {
     transition: all 0.2s ease;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
 }
 
 button:hover {
-    background: var(--primary-hover);
+    background: linear-gradient(135deg, #ffed4a 0%, #ffd700 100%);
     transform: translateY(-1px);
-    box-shadow: var(--gold-glow);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
 }
 
 .results {
     background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     padding: 2.5rem;
     border-radius: 16px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
@@ -166,7 +175,7 @@ button:hover {
     margin-bottom: 1.5rem;
     text-align: center;
     font-size: 1.8rem;
-    text-shadow: var(--gold-glow);
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));
 }
 
 .result-item {
@@ -183,6 +192,8 @@ button:hover {
 
 .chart-container {
     background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     padding: 2rem;
     border-radius: 16px;
     margin-top: 2rem;
@@ -205,6 +216,8 @@ canvas {
 .simulation-results {
     margin-top: 2rem;
     background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     padding: 2rem;
     border-radius: 16px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
@@ -220,6 +233,8 @@ canvas {
 
 .stat-card {
     background: var(--stat-card-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     padding: 1.5rem;
     border-radius: 12px;
     text-align: center;
@@ -239,7 +254,7 @@ canvas {
     font-weight: 700;
     color: var(--primary-color);
     margin-top: 0.5rem;
-    text-shadow: var(--gold-glow);
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.2));
 }
 
 .stat-label {
@@ -289,6 +304,8 @@ canvas {
 
 .modal-content {
     background: var(--card-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     margin: 2rem auto;
     padding: 2rem;
     border-radius: 16px;
@@ -315,6 +332,8 @@ canvas {
 
 .trade-details-section {
     background: var(--stat-card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-radius: 12px;
     padding: 2rem;
     margin-top: 2rem;
@@ -816,6 +835,8 @@ canvas {
 
 .analysis-container {
     background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-radius: 12px;
     padding: 2rem;
     margin-top: 2rem;
@@ -890,7 +911,11 @@ canvas {
 }
 
 .main-header {
-    background: var(--card-bg);
+    background: rgba(26, 28, 35, 0.8);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
     padding: 1.2rem 0;
     margin-bottom: 2rem;
     box-shadow: var(--card-shadow);
@@ -1059,6 +1084,8 @@ canvas {
 /* Content Sections */
 section {
     background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     padding: 2rem;
     border-radius: 12px;
     margin-bottom: 2rem;

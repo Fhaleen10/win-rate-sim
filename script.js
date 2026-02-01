@@ -747,6 +747,10 @@ function updateChart(finalBalances, initialBalance) {
 
     // Create new chart
     const ctx = document.getElementById('balanceChart').getContext('2d');
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, 'rgba(37, 99, 235, 0.5)');
+    gradient.addColorStop(1, 'rgba(37, 99, 235, 0.1)');
+
     balanceChart = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -754,7 +758,7 @@ function updateChart(finalBalances, initialBalance) {
             datasets: [{
                 label: 'Distribution of Final Balances',
                 data: data,
-                backgroundColor: 'rgba(37, 99, 235, 0.5)',
+                backgroundColor: gradient,
                 borderColor: 'rgba(37, 99, 235, 1)',
                 borderWidth: 1
             }]
@@ -856,6 +860,9 @@ function updateBalanceChart(returns) {
     }
     
     const labels = Array.from({ length: returns.length }, (_, i) => i);
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, 'rgba(0, 179, 65, 0.2)');
+    gradient.addColorStop(1, 'rgba(0, 179, 65, 0)');
     
     balanceDrawdownChart = new Chart(ctx, {
         type: 'line',
@@ -865,7 +872,7 @@ function updateBalanceChart(returns) {
                 label: 'Total Return %',
                 data: returns,
                 borderColor: '#00b341',
-                backgroundColor: 'rgba(0, 179, 65, 0.1)',
+                backgroundColor: gradient,
                 fill: true,
                 borderWidth: 2,
                 pointRadius: 0,
@@ -947,6 +954,10 @@ function updateDrawdownChart(drawdowns) {
     const labels = Array.from({ length: drawdowns.length }, (_, i) => i);
     const maxDrawdown = Math.max(...drawdowns);
     const yAxisMax = Math.max(5, Math.ceil(maxDrawdown * 1.2)); // At least 5% or 20% above max
+    
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, 'rgba(255, 68, 68, 0.2)');
+    gradient.addColorStop(1, 'rgba(255, 68, 68, 0)');
 
     drawdownChart = new Chart(ctx, {
         type: 'line',
@@ -957,7 +968,7 @@ function updateDrawdownChart(drawdowns) {
                     label: 'Drawdown',
                     data: drawdowns,
                     borderColor: '#ff4444',
-                    backgroundColor: 'rgba(255, 68, 68, 0.1)',
+                    backgroundColor: gradient,
                     fill: true,
                     borderWidth: 2,
                     pointRadius: 0,

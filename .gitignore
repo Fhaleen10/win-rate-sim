@@ -1,0 +1,26 @@
+# Operating System files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Editor directories and files
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+
+# Node.js (if you decide to use it later)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build output (if you decide to use a bundler later)
+dist/
+build/
+
+# Local environment variables
+.env
+.env.local

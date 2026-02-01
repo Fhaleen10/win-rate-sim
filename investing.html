@@ -597,6 +597,14 @@
                 window.investmentChart.destroy();
             }
 
+            const gradient1 = ctx.getContext('2d').createLinearGradient(0, 0, 0, 400);
+            gradient1.addColorStop(0, 'rgba(255, 215, 0, 0.2)');
+            gradient1.addColorStop(1, 'rgba(255, 215, 0, 0)');
+
+            const gradient2 = ctx.getContext('2d').createLinearGradient(0, 0, 0, 400);
+            gradient2.addColorStop(0, 'rgba(76, 175, 80, 0.2)');
+            gradient2.addColorStop(1, 'rgba(76, 175, 80, 0)');
+
             window.investmentChart = new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -604,7 +612,7 @@
                         label: 'Total Balance',
                         data: dataPoints.map(p => ({ x: p.x, y: p.y })),
                         borderColor: '#ffd700',
-                        backgroundColor: 'rgba(255, 215, 0, 0.1)',
+                        backgroundColor: gradient1,
                         fill: true,
                         tension: 0.4
                     },
@@ -612,7 +620,7 @@
                         label: 'Amount Invested',
                         data: dataPoints.map(p => ({ x: p.x, y: p.invested })),
                         borderColor: '#4CAF50',
-                        backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                        backgroundColor: gradient2,
                         fill: true,
                         tension: 0.4
                     }]

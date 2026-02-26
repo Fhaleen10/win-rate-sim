@@ -322,41 +322,42 @@
             const ratePerPeriod = apr / n;
             const periodsPerYear = n;
 
-            let totalRewardTokens = 0;
-            let prevTokens = tokens;
+            let rewardTokensTotal = 0;  // accurate cumulative staking rewards
+            let prevRewardTokens  = 0;
+            let prevTokens        = tokens;
 
             for (let y = 1; y <= years; y++) {
                 // Compound staking for each period in this year
                 for (let p = 0; p < periodsPerYear; p++) {
-                    // Monthly additional purchase (approximate: add per month = addMonthly)
+                    // Monthly additional purchase
                     if (p % Math.max(1, Math.floor(periodsPerYear/12)) === 0 && addMonthly > 0) {
                         tokens += addMonthly / price;
                         totalInvUSD += addMonthly;
                     }
-                    // Compound rewards
-                    const periodReward = tokens * ratePerPeriod;
-                    const netReward = periodReward * (1 - taxRate);
+                    // Staking reward — tracked in its own counter
+                    const netReward = tokens * ratePerPeriod * (1 - taxRate);
+                    rewardTokensTotal += netReward;
                     tokens += netReward;
                 }
                 // Price appreciation per year
                 price *= (1 + priceGrowth);
 
-                totalRewardTokens = tokens - initialTokens - (totalInvUSD - initialUSD) / tokenPrice;
-
                 tableData.push({
                     year: y,
                     tokens,
-                    rewardsThisYear: tokens - prevTokens - (addMonthly * 12 / price),
+                    rewardsThisYear: rewardTokensTotal - prevRewardTokens,
                     price,
                     value: tokens * price,
                     annualYield: (tokens - prevTokens) * price,
                     investedSoFar: totalInvUSD
                 });
-                prevTokens = tokens;
+
+                prevTokens       = tokens;
+                prevRewardTokens = rewardTokensTotal;
 
                 chartValue.push({x: y, y: tokens * price});
                 chartInvested.push({x: y, y: totalInvUSD});
-                chartRewards.push({x: y, y: totalRewardTokens * price});
+                chartRewards.push({x: y, y: rewardTokensTotal * price});
             }
 
             const finalValue = tokens * price;
@@ -364,7 +365,7 @@
 
             document.getElementById('initialTokens').textContent  = fmtN(initialTokens, 6);
             document.getElementById('finalTokens').textContent    = fmtN(tokens, 4);
-            document.getElementById('rewardTokens').textContent   = fmtN(Math.max(0, tokens - initialTokens - (totalInvUSD - initialUSD)/tokenPrice), 4);
+            document.getElementById('rewardTokens').textContent   = fmtN(rewardTokensTotal, 4);
             document.getElementById('finalTokenPrice').textContent= fmtP(price);
             document.getElementById('finalValue').textContent     = fmt(finalValue);
             document.getElementById('totalInvested').textContent  = fmt(totalInvUSD);

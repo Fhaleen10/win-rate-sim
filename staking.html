@@ -349,7 +349,8 @@
                     rewardsThisYear: tokens - prevTokens - (addMonthly * 12 / price),
                     price,
                     value: tokens * price,
-                    annualYield: (tokens - prevTokens) * price
+                    annualYield: (tokens - prevTokens) * price,
+                    investedSoFar: totalInvUSD
                 });
                 prevTokens = tokens;
 
@@ -411,7 +412,7 @@
             tbody.innerHTML = '';
             let runningValue = totalInvested;
             data.forEach(row => {
-                const roi = ((row.value - totalInvested) / totalInvested * 100);
+                const roi = ((row.value - row.investedSoFar) / row.investedSoFar * 100);
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>Year ${row.year}</td>

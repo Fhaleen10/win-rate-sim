@@ -14,7 +14,31 @@
     </url>
     <url>
         <loc>https://probabilitycalculator.pro/investing.html</loc>
-        <lastmod>2025-01-07</lastmod>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://probabilitycalculator.pro/dca.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://probabilitycalculator.pro/dividend.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://probabilitycalculator.pro/staking.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://probabilitycalculator.pro/portfolio.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>

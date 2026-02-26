@@ -54,11 +54,31 @@
 <body>
     <header class="main-header">
         <nav>
-            <a href="investing.html">Investing</a>
+            <div class="nav-dropdown" id="investingDropdown">
+                <a class="nav-dropdown-trigger" onclick="toggleDropdown(event)">Investing Tools &#9660;</a>
+                <div class="nav-dropdown-menu">
+                    <a href="investing.html">Investment Calculator</a>
+                    <a href="dca.html">DCA Calculator</a>
+                    <a href="dividend.html">Dividend / DRIP</a>
+                    <a href="staking.html">Crypto Staking</a>
+                    <a href="portfolio.html">Portfolio Allocator</a>
+                </div>
+            </div>
             <a href="index.html" class="active">Probability Calculator</a>
-            <a href="winrate.html">What is my win rate?</a>
+            <a href="winrate.html">Win Rate Calculator</a>
         </nav>
     </header>
+    <script>
+        function toggleDropdown(e) {
+            e.preventDefault();
+            const dd = document.getElementById('investingDropdown');
+            dd.classList.toggle('open');
+        }
+        document.addEventListener('click', function(e) {
+            const dd = document.getElementById('investingDropdown');
+            if (dd && !dd.contains(e.target)) dd.classList.remove('open');
+        });
+    </script>
     <div class="container">
         <h1>Probability Calculator</h1>
 

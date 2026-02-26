@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KHM4WHNE8K"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KHM4WHNE8K');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1794773804909203" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCA Calculator | Dollar Cost Averaging Calculator</title>
+    <meta name="description" content="Free Dollar Cost Averaging (DCA) calculator. Compare DCA vs lump sum investing, calculate your average cost basis, and see projected returns for stocks, ETFs, and crypto.">
+    <meta name="keywords" content="DCA calculator, dollar cost averaging, average cost basis calculator, DCA vs lump sum, crypto DCA, stock DCA calculator">
+    <link rel="canonical" href="https://probabilitycalculator.pro/dca.html" />
+    <meta property="og:title" content="DCA Calculator | Dollar Cost Averaging Calculator">
+    <meta property="og:description" content="Calculate your dollar cost averaging strategy. Compare DCA vs lump sum and see your average cost basis over time.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://probabilitycalculator.pro/dca.html">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .table-container { margin-top: 2rem; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; background: var(--card-bg); color: var(--text-color); }
+        th, td { padding: 0.85rem 1rem; text-align: right; border-bottom: 1px solid var(--border-color); font-size: 0.9rem; }
+        th { background: var(--input-bg); font-weight: 600; }
+        th:first-child, td:first-child { text-align: left; }
+        tr:hover { background: var(--input-bg); }
+        .chart-container { position: relative; height: 400px; margin: 2rem 0; }
+        .input-group { margin-bottom: 1.5rem; }
+        .input-group label { display: block; margin-bottom: 0.5rem; font-size: 0.95rem; font-weight: 500; }
+        .input-group input, .input-group select {
+            width: 100%; padding: 0.75rem 1rem; font-size: 1rem;
+            font-family: inherit; border: 1px solid var(--border-color);
+            background: var(--input-bg); color: var(--text-color);
+            border-radius: 8px; transition: border-color 0.2s ease;
+        }
+        .input-group input:focus, .input-group select:focus {
+            outline: none; border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255,215,0,0.1);
+        }
+        .grid-inputs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; padding: 1.5rem; }
+        @media (max-width: 768px) { .grid-inputs { grid-template-columns: 1fr; } }
+        .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; padding: 1.5rem; }
+        .result-card { background: var(--stat-card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; text-align: center; }
+        .result-card .label { font-size: 0.8rem; color: #9ca3af; margin-bottom: 0.4rem; }
+        .result-card .value { font-size: 1.4rem; font-weight: 700; color: var(--primary-color); }
+        .result-card .value.green { color: var(--success-color); }
+        .result-card .value.red { color: var(--danger-color); }
+        .concept-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+        .concept-card { background: var(--card-bg); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color); }
+        .concept-card h4 { margin-top: 0; color: var(--primary-color); margin-bottom: 0.5rem; }
+        @media (max-width: 600px) { .concept-grid { grid-template-columns: 1fr; } }
+        .vs-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: rgba(255,215,0,0.08); border: 1px solid var(--primary-color);
+            color: var(--primary-color); border-radius: 8px; padding: 0.5rem 1rem;
+            font-size: 0.85rem; font-weight: 600; margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <nav>
+            <div class="nav-dropdown open" id="investingDropdown">
+                <a class="nav-dropdown-trigger active" onclick="toggleDropdown(event)">Investing Tools &#9660;</a>
+                <div class="nav-dropdown-menu">
+                    <a href="investing.html">Investment Calculator</a>
+                    <a href="dca.html" class="active">DCA Calculator</a>
+                    <a href="dividend.html">Dividend / DRIP</a>
+                    <a href="staking.html">Crypto Staking</a>
+                    <a href="portfolio.html">Portfolio Allocator</a>
+                </div>
+            </div>
+            <a href="index.html">Probability Calculator</a>
+            <a href="winrate.html">Win Rate Calculator</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>DCA Calculator</h1>
+
+        <section class="introduction">
+            <h2>Dollar Cost Averaging — The Disciplined Investor's Edge</h2>
+            <p>Dollar Cost Averaging (DCA) is a strategy where you invest a fixed amount at regular intervals, regardless of price. When prices are low you buy more units; when prices are high you buy fewer — automatically lowering your average cost basis over time.</p>
+            <div class="key-concepts" style="margin-top:1.5rem;">
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <h4>Average Cost Basis</h4>
+                        <p>Your blended entry price across all purchases. DCA typically produces a lower average than a single entry at any random point in a trending market.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>DCA vs Lump Sum</h4>
+                        <p>In a steadily rising market, lump sum investing outperforms DCA. But in volatile markets, DCA reduces the risk of buying at peak prices.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Removes Emotion</h4>
+                        <p>By committing to a fixed schedule, DCA prevents you from trying to "time the market" — one of the most common costly mistakes investors make.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Works for Any Asset</h4>
+                        <p>Stocks, ETFs, crypto, index funds — DCA is asset-agnostic. It's the preferred strategy for long-term wealth building with regular income.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="calculator">
+            <div class="preset-buttons no-print">
+                <span style="font-size:0.8rem;color:#9ca3af;align-self:center;margin-right:0.25rem;">Presets:</span>
+                <button class="preset-btn" onclick="applyPreset('btc')">BTC Monthly DCA</button>
+                <button class="preset-btn" onclick="applyPreset('sp500')">S&amp;P 500 Weekly</button>
+                <button class="preset-btn" onclick="applyPreset('aggressive')">Aggressive Growth</button>
+            </div>
+
+            <div class="grid-inputs">
+                <div class="input-group">
+                    <label for="lumpSum">Initial Purchase ($)</label>
+                    <input type="number" id="lumpSum" value="1000" min="0" step="100">
+                </div>
+                <div class="input-group">
+                    <label for="recurringAmount">Recurring Buy Amount ($)</label>
+                    <input type="number" id="recurringAmount" value="200" min="0" step="50">
+                </div>
+                <div class="input-group">
+                    <label for="frequency">Buy Frequency</label>
+                    <select id="frequency">
+                        <option value="weekly">Weekly</option>
+                        <option value="biweekly">Bi-Weekly</option>
+                        <option value="monthly" selected>Monthly</option>
+                        <option value="quarterly">Quarterly</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="duration">Duration (Years)</label>
+                    <input type="number" id="duration" value="5" min="1" max="50" step="1">
+                </div>
+                <div class="input-group">
+                    <label for="startPrice">Starting Asset Price ($)</label>
+                    <input type="number" id="startPrice" value="100" min="0.01" step="1">
+                </div>
+                <div class="input-group">
+                    <label for="annualReturn">Expected Annual Return (%)</label>
+                    <input type="number" id="annualReturn" value="10" min="-50" max="500" step="0.5">
+                </div>
+            </div>
+
+            <div id="results" style="padding: 0 1.5rem 1.5rem;">
+                <h2 style="color:var(--primary-color);margin-bottom:1rem;text-align:center;font-size:1.6rem;filter:drop-shadow(0 0 10px rgba(255,215,0,0.3));">DCA Results</h2>
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="label">Total Invested</div>
+                        <div class="value" id="totalInvested">$0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="label">Total Units Acquired</div>
+                        <div class="value" id="totalUnits">0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="label">Avg Cost Basis</div>
+                        <div class="value" id="avgCost">$0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="label">Final Asset Price</div>
+                        <div class="value" id="finalPrice">$0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="label">DCA Portfolio Value</div>
+                        <div class="value green" id="dcaValue">$0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="label">Total Profit / Loss</div>
+                        <div class="value green" id="profitLoss">$0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="label">ROI</div>
+                        <div class="value green" id="roi">0%</div>
+                    </div>
+                    <div class="result-card" style="border-color:rgba(96,165,250,0.4)">
+                        <div class="label">Lump Sum Alternative</div>
+                        <div class="value" id="lumpSumValue" style="color:#60a5fa;">$0</div>
+                    </div>
+                </div>
+                <div style="text-align:center;margin-top:0.5rem;">
+                    <span class="vs-badge" id="vsLabel">—</span>
+                </div>
+            </div>
+
+            <div style="padding: 0 1.5rem;">
+                <div class="chart-container">
+                    <canvas id="dcaChart"></canvas>
+                </div>
+            </div>
+
+            <div style="padding: 0 1.5rem 1.5rem;">
+                <div style="display:flex;justify-content:flex-end;margin-bottom:1rem;">
+                    <button class="export-btn no-print" onclick="window.print()">&#128438; Export PDF</button>
+                </div>
+                <h2 style="color:var(--primary-color);margin-bottom:1rem;font-size:1.4rem;">Year-by-Year Breakdown</h2>
+                <div class="table-container">
+                    <table id="dcaTable">
+                        <thead>
+                            <tr>
+                                <th>Year</th>
+                                <th>Total Invested</th>
+                                <th>Units Owned</th>
+                                <th>Avg Cost Basis</th>
+                                <th>Asset Price</th>
+                                <th>Portfolio Value</th>
+                                <th>Gain / Loss</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <section>
+            <h2>How DCA Works in Practice</h2>
+            <p>Suppose you invest $200/month into an ETF priced at $100. In month 1 you buy 2 units. If the price drops to $80 in month 2, you buy 2.5 units. If it rises to $120 in month 3, you buy 1.67 units. Your average cost = $600 ÷ 6.17 units = <strong style="color:var(--primary-color);">$97.25</strong> — lower than any single price you paid.</p>
+            <h3>When DCA Outperforms Lump Sum</h3>
+            <ul>
+                <li>High-volatility assets (crypto, growth stocks, emerging markets)</li>
+                <li>When you receive income in regular intervals (salary-based investing)</li>
+                <li>When you are psychologically unable to commit a large lump sum</li>
+                <li>Bear markets or sideways price action — DCA accumulates cheaply</li>
+            </ul>
+            <h3>When Lump Sum Outperforms DCA</h3>
+            <ul>
+                <li>Steadily rising markets — money invested sooner earns longer</li>
+                <li>Studies show lump sum beats DCA ~66% of the time in the S&amp;P 500</li>
+                <li>If you have idle cash earning 0%, DCA delays deployment unnecessarily</li>
+            </ul>
+        </section>
+    </div>
+
+    <footer class="main-footer">
+        <nav>
+            <a href="privacy.html">Privacy Policy</a>
+        </nav>
+    </footer>
+
+    <script>
+        function toggleDropdown(e) {
+            e.preventDefault();
+            const dd = document.getElementById('investingDropdown');
+            dd.classList.toggle('open');
+        }
+        document.addEventListener('click', function(e) {
+            const dd = document.getElementById('investingDropdown');
+            if (!dd.contains(e.target)) dd.classList.remove('open');
+        });
+
+        const presets = {
+            btc:        { lumpSum: 5000, recurringAmount: 500, frequency: 'monthly',   duration: 4,  startPrice: 30000, annualReturn: 40 },
+            sp500:      { lumpSum: 2000, recurringAmount: 100, frequency: 'weekly',    duration: 10, startPrice: 500,   annualReturn: 10 },
+            aggressive: { lumpSum: 500,  recurringAmount: 300, frequency: 'biweekly',  duration: 7,  startPrice: 50,    annualReturn: 18 }
+        };
+
+        function applyPreset(key) {
+            const p = presets[key];
+            document.getElementById('lumpSum').value         = p.lumpSum;
+            document.getElementById('recurringAmount').value = p.recurringAmount;
+            document.getElementById('frequency').value       = p.frequency;
+            document.getElementById('duration').value        = p.duration;
+            document.getElementById('startPrice').value      = p.startPrice;
+            document.getElementById('annualReturn').value    = p.annualReturn;
+            document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active-preset'));
+            event.target.classList.add('active-preset');
+            calculate();
+        }
+
+        function fmt(v) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(v);
+        }
+        function fmtPrecise(v) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v);
+        }
+        function fmtUnits(v) {
+            if (v >= 1000) return new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(v);
+            return new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 6 }).format(v);
+        }
+
+        function periodsPerYear(freq) {
+            return { weekly: 52, biweekly: 26, monthly: 12, quarterly: 4 }[freq];
+        }
+
+        function calculate() {
+            const lumpSum       = parseFloat(document.getElementById('lumpSum').value) || 0;
+            const recurring     = parseFloat(document.getElementById('recurringAmount').value) || 0;
+            const freq          = document.getElementById('frequency').value;
+            const years         = parseFloat(document.getElementById('duration').value) || 1;
+            const startPrice    = parseFloat(document.getElementById('startPrice').value) || 1;
+            const annualReturn  = parseFloat(document.getElementById('annualReturn').value) / 100;
+
+            const ppy           = periodsPerYear(freq);
+            const totalPeriods  = Math.round(years * ppy);
+            const growthPerPeriod = Math.pow(1 + annualReturn, 1 / ppy) - 1;
+
+            let price       = startPrice;
+            let totalUnits  = lumpSum > 0 ? lumpSum / price : 0;
+            let totalInv    = lumpSum;
+
+            const annualData = [];     // for table
+            const chartData  = [];     // for chart
+
+            chartData.push({ x: 0, invested: totalInv, value: totalUnits * price });
+
+            // Total investment that will be made (for lump-sum comparison)
+            const totalEventualInvestment = lumpSum + recurring * totalPeriods;
+
+            for (let i = 1; i <= totalPeriods; i++) {
+                price *= (1 + growthPerPeriod);
+                if (recurring > 0) {
+                    totalUnits += recurring / price;
+                    totalInv   += recurring;
+                }
+
+                const year = i / ppy;
+                if (i % ppy === 0 || i === totalPeriods) {
+                    annualData.push({
+                        year:    Math.ceil(year),
+                        invested: totalInv,
+                        units:    totalUnits,
+                        avgCost:  totalInv / totalUnits,
+                        price:    price,
+                        value:    totalUnits * price
+                    });
+                }
+
+                if (i % Math.max(1, Math.floor(totalPeriods / 80)) === 0 || i === totalPeriods) {
+                    chartData.push({ x: year, invested: totalInv, value: totalUnits * price });
+                }
+            }
+
+            const finalValue    = totalUnits * price;
+            const avgCost       = totalInv / totalUnits;
+            const profit        = finalValue - totalInv;
+            const roi           = (profit / totalInv) * 100;
+
+            // Lump sum: invest full eventual total on day 1
+            const lumpSumFinalValue = (totalEventualInvestment / startPrice) * price;
+            const lsGain = lumpSumFinalValue - totalEventualInvestment;
+
+            // Update result cards
+            document.getElementById('totalInvested').textContent = fmt(totalInv);
+            document.getElementById('totalUnits').textContent    = fmtUnits(totalUnits);
+            document.getElementById('avgCost').textContent       = fmtPrecise(avgCost);
+            document.getElementById('finalPrice').textContent    = fmtPrecise(price);
+
+            const dcaEl = document.getElementById('dcaValue');
+            dcaEl.textContent  = fmt(finalValue);
+            dcaEl.className    = 'value ' + (profit >= 0 ? 'green' : 'red');
+
+            const plEl = document.getElementById('profitLoss');
+            plEl.textContent   = (profit >= 0 ? '+' : '') + fmt(profit);
+            plEl.className     = 'value ' + (profit >= 0 ? 'green' : 'red');
+
+            const roiEl = document.getElementById('roi');
+            roiEl.textContent  = (roi >= 0 ? '+' : '') + roi.toFixed(1) + '%';
+            roiEl.className    = 'value ' + (roi >= 0 ? 'green' : 'red');
+
+            document.getElementById('lumpSumValue').textContent = fmt(lumpSumFinalValue);
+
+            const diff = finalValue - lumpSumFinalValue;
+            const vsEl = document.getElementById('vsLabel');
+            if (Math.abs(diff) < 1) {
+                vsEl.textContent = 'DCA ≈ Lump Sum';
+            } else if (diff > 0) {
+                vsEl.innerHTML = `DCA outperforms lump sum by <strong>+${fmt(diff)}</strong>`;
+            } else {
+                vsEl.innerHTML = `Lump sum outperforms DCA by <strong>+${fmt(-diff)}</strong> — typical in rising markets`;
+            }
+
+            updateChart(chartData, totalEventualInvestment, startPrice);
+            updateTable(annualData);
+        }
+
+        let chartInstance = null;
+        function updateChart(data, totalEventualInv, startPrice) {
+            const ctx = document.getElementById('dcaChart');
+            if (chartInstance) chartInstance.destroy();
+
+            const lsStartVal = totalEventualInv;
+            // Lump sum grows from day 0 at the same rate
+            const years = data[data.length - 1]?.x || 1;
+            const annualReturn = parseFloat(document.getElementById('annualReturn').value) / 100;
+            const lsData = data.map(p => ({
+                x: p.x,
+                y: (totalEventualInv / parseFloat(document.getElementById('startPrice').value)) *
+                   parseFloat(document.getElementById('startPrice').value) *
+                   Math.pow(1 + annualReturn, p.x)
+            }));
+
+            const g1 = ctx.getContext('2d').createLinearGradient(0, 0, 0, 400);
+            g1.addColorStop(0, 'rgba(255,215,0,0.25)');
+            g1.addColorStop(1, 'rgba(255,215,0,0)');
+            const g2 = ctx.getContext('2d').createLinearGradient(0, 0, 0, 400);
+            g2.addColorStop(0, 'rgba(16,185,129,0.2)');
+            g2.addColorStop(1, 'rgba(16,185,129,0)');
+            const g3 = ctx.getContext('2d').createLinearGradient(0, 0, 0, 400);
+            g3.addColorStop(0, 'rgba(96,165,250,0.15)');
+            g3.addColorStop(1, 'rgba(96,165,250,0)');
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: [
+                        {
+                            label: 'DCA Portfolio Value',
+                            data: data.map(p => ({ x: p.x, y: p.value })),
+                            borderColor: '#ffd700',
+                            backgroundColor: g1,
+                            fill: true,
+                            tension: 0.4,
+                            borderWidth: 2,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'Total Invested (DCA)',
+                            data: data.map(p => ({ x: p.x, y: p.invested })),
+                            borderColor: '#10b981',
+                            backgroundColor: g2,
+                            fill: true,
+                            tension: 0.1,
+                            borderWidth: 1.5,
+                            borderDash: [5, 3],
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'Lump Sum Alternative',
+                            data: lsData,
+                            borderColor: '#60a5fa',
+                            backgroundColor: g3,
+                            fill: false,
+                            tension: 0.4,
+                            borderWidth: 2,
+                            borderDash: [8, 4],
+                            pointRadius: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            title: { display: true, text: 'Years', color: '#9ca3af' },
+                            ticks: { callback: v => `Yr ${v}`, color: '#9ca3af' },
+                            grid: { color: 'rgba(255,255,255,0.05)' }
+                        },
+                        y: {
+                            title: { display: true, text: 'Value ($)', color: '#9ca3af' },
+                            ticks: { callback: v => fmt(v), color: '#9ca3af' },
+                            grid: { color: 'rgba(255,255,255,0.05)' }
+                        }
+                    },
+                    plugins: {
+                        legend: { labels: { color: '#e2e8f0', font: { size: 12 } } },
+                        tooltip: {
+                            callbacks: {
+                                title: ctx => `Year ${ctx[0].parsed.x.toFixed(1)}`,
+                                label: ctx => `${ctx.dataset.label}: ${fmt(ctx.parsed.y)}`
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateTable(data) {
+            const tbody = document.querySelector('#dcaTable tbody');
+            tbody.innerHTML = '';
+            data.forEach(row => {
+                const gain = row.value - row.invested;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>Year ${row.year}</td>
+                    <td>${fmt(row.invested)}</td>
+                    <td>${fmtUnits(row.units)}</td>
+                    <td>${fmtPrecise(row.avgCost)}</td>
+                    <td>${fmtPrecise(row.price)}</td>
+                    <td style="color:var(--primary-color);font-weight:600;">${fmt(row.value)}</td>
+                    <td style="color:${gain>=0?'#10b981':'#ef4444'};font-weight:600;">${gain>=0?'+':''}${fmt(gain)}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        const inputs = ['lumpSum','recurringAmount','frequency','duration','startPrice','annualReturn'];
+        inputs.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) { el.addEventListener('input', calculate); el.addEventListener('change', calculate); }
+        });
+        calculate();
+    </script>
+</body>
+</html>

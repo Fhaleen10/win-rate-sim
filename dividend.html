@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KHM4WHNE8K"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KHM4WHNE8K');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1794773804909203" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dividend &amp; DRIP Calculator | Dividend Reinvestment Growth Calculator</title>
+    <meta name="description" content="Calculate dividend income and DRIP (Dividend Reinvestment Plan) growth. See how reinvesting dividends compounds your shares and income over time.">
+    <meta name="keywords" content="dividend calculator, DRIP calculator, dividend reinvestment calculator, yield on cost, dividend growth calculator, passive income calculator">
+    <link rel="canonical" href="https://probabilitycalculator.pro/dividend.html" />
+    <meta property="og:title" content="Dividend &amp; DRIP Calculator | Dividend Reinvestment Growth">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://probabilitycalculator.pro/dividend.html">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .table-container { margin-top: 2rem; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; background: var(--card-bg); color: var(--text-color); }
+        th, td { padding: 0.85rem 1rem; text-align: right; border-bottom: 1px solid var(--border-color); font-size: 0.88rem; }
+        th { background: var(--input-bg); font-weight: 600; }
+        th:first-child, td:first-child { text-align: left; }
+        tr:hover { background: var(--input-bg); }
+        .chart-container { position: relative; height: 420px; margin: 2rem 0; }
+        .input-group { margin-bottom: 1.5rem; }
+        .input-group label { display: block; margin-bottom: 0.5rem; font-size: 0.95rem; font-weight: 500; }
+        .input-group input, .input-group select {
+            width: 100%; padding: 0.75rem 1rem; font-size: 1rem;
+            font-family: inherit; border: 1px solid var(--border-color);
+            background: var(--input-bg); color: var(--text-color);
+            border-radius: 8px; transition: border-color 0.2s ease;
+        }
+        .input-group input:focus, .input-group select:focus {
+            outline: none; border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255,215,0,0.1);
+        }
+        .grid-inputs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; padding: 1.5rem; }
+        @media (max-width: 768px) { .grid-inputs { grid-template-columns: 1fr; } }
+        .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 1rem; padding: 1.5rem; }
+        .result-card { background: var(--stat-card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; text-align: center; }
+        .result-card .label { font-size: 0.78rem; color: #9ca3af; margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .result-card .value { font-size: 1.4rem; font-weight: 700; color: var(--primary-color); }
+        .result-card .value.green { color: var(--success-color); }
+        .toggle-row { display: flex; align-items: center; gap: 1rem; padding: 0 1.5rem; margin-bottom: 1rem; }
+        .toggle-label { font-size: 0.95rem; font-weight: 500; }
+        .drip-toggle {
+            position: relative; width: 48px; height: 26px;
+            background: var(--input-bg); border: 1px solid var(--border-color);
+            border-radius: 13px; cursor: pointer; transition: background 0.3s;
+        }
+        .drip-toggle.on { background: var(--success-color); border-color: var(--success-color); }
+        .drip-toggle::after {
+            content: ''; position: absolute; top: 3px; left: 3px;
+            width: 18px; height: 18px; border-radius: 50%; background: white;
+            transition: left 0.3s;
+        }
+        .drip-toggle.on::after { left: 27px; }
+        .concept-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+        .concept-card { background: var(--card-bg); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color); }
+        .concept-card h4 { margin-top: 0; color: var(--primary-color); margin-bottom: 0.5rem; }
+        @media (max-width: 600px) { .concept-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <nav>
+            <div class="nav-dropdown" id="investingDropdown">
+                <a class="nav-dropdown-trigger active" onclick="toggleDropdown(event)">Investing Tools &#9660;</a>
+                <div class="nav-dropdown-menu">
+                    <a href="investing.html">Investment Calculator</a>
+                    <a href="dca.html">DCA Calculator</a>
+                    <a href="dividend.html" class="active">Dividend / DRIP</a>
+                    <a href="staking.html">Crypto Staking</a>
+                    <a href="portfolio.html">Portfolio Allocator</a>
+                </div>
+            </div>
+            <a href="index.html">Probability Calculator</a>
+            <a href="winrate.html">Win Rate Calculator</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>Dividend &amp; DRIP Calculator</h1>
+
+        <section class="introduction">
+            <h2>Build a Growing Passive Income Stream</h2>
+            <p>Dividend investing rewards you with regular cash payments for holding stocks or funds. The DRIP (Dividend Reinvestment Plan) strategy automatically buys more shares with every dividend — turning each payment into future dividends, creating a powerful compounding cycle.</p>
+            <div class="key-concepts" style="margin-top:1.5rem;">
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <h4>Dividend Yield</h4>
+                        <p>Annual dividend income expressed as a % of the share price. A $100 stock paying $4/year has a 4% yield.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>DRIP Compounding</h4>
+                        <p>Reinvesting dividends buys more shares → more dividends → more shares. Over decades this creates exponential, not linear, growth.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Dividend Growth Rate</h4>
+                        <p>Quality companies raise their dividend every year. A 7% DGR means a stock paying $3 today will pay ~$5.90 in 10 years.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Yield on Cost</h4>
+                        <p>Your dividend income as a % of your original cost basis. This grows every year with dividend raises — the key metric for long-term dividend investors.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="calculator">
+            <div class="preset-buttons no-print">
+                <span style="font-size:0.8rem;color:#9ca3af;align-self:center;margin-right:0.25rem;">Presets:</span>
+                <button class="preset-btn" onclick="applyPreset('dividend_aristocrat')">Dividend Aristocrat</button>
+                <button class="preset-btn" onclick="applyPreset('high_yield')">High Yield REIT</button>
+                <button class="preset-btn" onclick="applyPreset('growth')">Growth + Dividend</button>
+            </div>
+
+            <div class="toggle-row no-print">
+                <span class="toggle-label">DRIP (Reinvest Dividends)</span>
+                <div class="drip-toggle on" id="dripToggle" onclick="toggleDRIP()"></div>
+                <span id="dripStatus" style="color:var(--success-color);font-weight:600;font-size:0.9rem;">ON</span>
+            </div>
+
+            <div class="grid-inputs">
+                <div class="input-group">
+                    <label for="initialShares">Initial Shares Owned</label>
+                    <input type="number" id="initialShares" value="100" min="1" step="1">
+                </div>
+                <div class="input-group">
+                    <label for="sharePrice">Share Price ($)</label>
+                    <input type="number" id="sharePrice" value="50" min="0.01" step="0.5">
+                </div>
+                <div class="input-group">
+                    <label for="annualDividend">Annual Dividend Per Share ($)</label>
+                    <input type="number" id="annualDividend" value="2.00" min="0" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label for="dividendGrowth">Annual Dividend Growth Rate (%)</label>
+                    <input type="number" id="dividendGrowth" value="6" min="0" max="50" step="0.5">
+                </div>
+                <div class="input-group">
+                    <label for="priceAppreciation">Annual Share Price Appreciation (%)</label>
+                    <input type="number" id="priceAppreciation" value="7" min="-20" max="100" step="0.5">
+                </div>
+                <div class="input-group">
+                    <label for="additionalShares">Additional Monthly Purchase ($)</label>
+                    <input type="number" id="additionalShares" value="0" min="0" step="50">
+                </div>
+                <div class="input-group">
+                    <label for="years">Investment Period (Years)</label>
+                    <input type="number" id="years" value="20" min="1" max="50">
+                </div>
+                <div class="input-group">
+                    <label for="taxRate">Dividend Tax Rate (%)</label>
+                    <input type="number" id="taxRate" value="15" min="0" max="50" step="1">
+                </div>
+            </div>
+
+            <div id="results" style="padding: 0 1.5rem 1.5rem;">
+                <h2 style="color:var(--primary-color);margin-bottom:1rem;text-align:center;font-size:1.6rem;filter:drop-shadow(0 0 10px rgba(255,215,0,0.3));">Portfolio Projection</h2>
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="label">Final Shares</div>
+                        <div class="value" id="finalShares">0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="label">Final Share Price</div>
+                        <div class="value" id="finalSharePrice">$0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="label">Portfolio Value</div>
+                        <div class="value green" id="portfolioValue">$0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="label">Total Dividends Received</div>
+                        <div class="value green" id="totalDividends">$0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="label">Annual Income (Final Year)</div>
+                        <div class="value green" id="finalAnnualIncome">$0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="label">Yield on Cost</div>
+                        <div class="value" id="yieldOnCost">0%</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="label">Initial Investment</div>
+                        <div class="value" id="initialInvestment">$0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="label">Total Return</div>
+                        <div class="value green" id="totalReturn">0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="padding: 0 1.5rem;">
+                <div class="chart-container">
+                    <canvas id="dividendChart"></canvas>
+                </div>
+            </div>
+
+            <div style="padding: 0 1.5rem 1.5rem;">
+                <div style="display:flex;justify-content:flex-end;margin-bottom:1rem;">
+                    <button class="export-btn no-print" onclick="window.print()">&#128438; Export PDF</button>
+                </div>
+                <h2 style="color:var(--primary-color);margin-bottom:1rem;font-size:1.4rem;">Year-by-Year Breakdown</h2>
+                <div class="table-container">
+                    <table id="dividendTable">
+                        <thead>
+                            <tr>
+                                <th>Year</th>
+                                <th>Shares</th>
+                                <th>Share Price</th>
+                                <th>Dividend/Share</th>
+                                <th>Annual Dividend</th>
+                                <th>Yield on Cost</th>
+                                <th>Portfolio Value</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <section>
+            <h2>The Power of Dividend Compounding</h2>
+            <p>Consider two investors who each buy 100 shares of a $50 stock (4% yield, 6% DGR, 7% price growth):</p>
+            <ul>
+                <li><strong style="color:var(--success-color);">Investor A</strong> enables DRIP — every dividend buys more shares automatically</li>
+                <li><strong style="color:#9ca3af;">Investor B</strong> takes dividends as cash and spends them</li>
+            </ul>
+            <p>After 20 years, Investor A has significantly more shares and a much higher annual income — all from the same starting position. The difference is pure compounding.</p>
+            <h3>Dividend Investment Tips</h3>
+            <ul>
+                <li><strong>Dividend Aristocrats:</strong> S&amp;P 500 companies that have raised dividends for 25+ consecutive years</li>
+                <li><strong>REITs:</strong> Real Estate Investment Trusts are required to distribute 90%+ of income as dividends — often 4–8% yields</li>
+                <li><strong>Dividend Safety:</strong> Look for payout ratios below 60% to ensure dividends are sustainable</li>
+                <li><strong>Tax Efficiency:</strong> Qualified dividends are taxed at capital gains rates (0%, 15%, or 20%) vs ordinary income</li>
+            </ul>
+        </section>
+    </div>
+
+    <footer class="main-footer">
+        <nav><a href="privacy.html">Privacy Policy</a></nav>
+    </footer>
+
+    <script>
+        let dripEnabled = true;
+
+        function toggleDropdown(e) {
+            e.preventDefault();
+            const dd = document.getElementById('investingDropdown');
+            dd.classList.toggle('open');
+        }
+        document.addEventListener('click', function(e) {
+            const dd = document.getElementById('investingDropdown');
+            if (!dd.contains(e.target)) dd.classList.remove('open');
+        });
+
+        function toggleDRIP() {
+            dripEnabled = !dripEnabled;
+            const el = document.getElementById('dripToggle');
+            const st = document.getElementById('dripStatus');
+            el.classList.toggle('on', dripEnabled);
+            st.textContent = dripEnabled ? 'ON' : 'OFF';
+            st.style.color = dripEnabled ? 'var(--success-color)' : '#9ca3af';
+            calculate();
+        }
+
+        const presets = {
+            dividend_aristocrat: { initialShares:200, sharePrice:60,  annualDividend:2.40, dividendGrowth:6,  priceAppreciation:7,  additionalShares:200, years:25, taxRate:15 },
+            high_yield:          { initialShares:100, sharePrice:25,  annualDividend:2.00, dividendGrowth:2,  priceAppreciation:3,  additionalShares:0,   years:20, taxRate:15 },
+            growth:              { initialShares:50,  sharePrice:200, annualDividend:2.00, dividendGrowth:10, priceAppreciation:12, additionalShares:500, years:15, taxRate:15 }
+        };
+
+        function applyPreset(key) {
+            const p = presets[key];
+            document.getElementById('initialShares').value    = p.initialShares;
+            document.getElementById('sharePrice').value       = p.sharePrice;
+            document.getElementById('annualDividend').value   = p.annualDividend;
+            document.getElementById('dividendGrowth').value   = p.dividendGrowth;
+            document.getElementById('priceAppreciation').value= p.priceAppreciation;
+            document.getElementById('additionalShares').value = p.additionalShares;
+            document.getElementById('years').value            = p.years;
+            document.getElementById('taxRate').value          = p.taxRate;
+            document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active-preset'));
+            event.target.classList.add('active-preset');
+            calculate();
+        }
+
+        function fmt(v) { return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(v); }
+        function fmtP(v) { return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:2,maximumFractionDigits:2}).format(v); }
+        function fmtN(v,d=2) { return new Intl.NumberFormat('en-US',{minimumFractionDigits:d,maximumFractionDigits:d}).format(v); }
+
+        function calculate() {
+            const initShares    = parseFloat(document.getElementById('initialShares').value)     || 0;
+            const initPrice     = parseFloat(document.getElementById('sharePrice').value)         || 1;
+            const annDiv        = parseFloat(document.getElementById('annualDividend').value)      || 0;
+            const divGrowth     = parseFloat(document.getElementById('dividendGrowth').value)/100  || 0;
+            const priceGrowth   = parseFloat(document.getElementById('priceAppreciation').value)/100 || 0;
+            const addMonthly    = parseFloat(document.getElementById('additionalShares').value)    || 0;
+            const years         = parseInt(document.getElementById('years').value)                 || 1;
+            const taxRate       = parseFloat(document.getElementById('taxRate').value)/100         || 0;
+
+            const initialCostBasis = initShares * initPrice;
+            let shares      = initShares;
+            let price       = initPrice;
+            let divPerShare = annDiv;
+            let totalDivReceived = 0;
+            let totalAdditional  = 0;
+
+            const tableData  = [];
+            const chartIncome = [];
+            const chartValue  = [];
+            const chartInvested = [];
+
+            for (let y = 1; y <= years; y++) {
+                // Price and dividend grow
+                price       *= (1 + priceGrowth);
+                divPerShare *= (1 + divGrowth);
+
+                // Annual dividend (gross)
+                const grossDiv = shares * divPerShare;
+                const netDiv   = grossDiv * (1 - taxRate);
+                totalDivReceived += netDiv;
+
+                // DRIP: buy fractional shares with net dividend
+                if (dripEnabled && netDiv > 0) {
+                    shares += netDiv / price;
+                }
+
+                // Additional monthly purchases
+                if (addMonthly > 0) {
+                    const annualAdd = addMonthly * 12;
+                    shares += annualAdd / price;
+                    totalAdditional += annualAdd;
+                }
+
+                const yoc = (shares * divPerShare) / (initialCostBasis + totalAdditional) * 100;
+
+                tableData.push({ year: y, shares, price, divPerShare, annDiv: shares * divPerShare, yoc, value: shares * price });
+                chartIncome.push({ x: y, y: shares * divPerShare });
+                chartValue.push({ x: y, y: shares * price });
+                chartInvested.push({ x: y, y: initialCostBasis + totalAdditional });
+            }
+
+            const last = tableData[tableData.length - 1];
+            const totalInvested = initialCostBasis + totalAdditional;
+            const totalReturn = ((last.value + totalDivReceived - totalInvested) / totalInvested) * 100;
+
+            document.getElementById('finalShares').textContent       = fmtN(last.shares, 2);
+            document.getElementById('finalSharePrice').textContent   = fmtP(last.price);
+            document.getElementById('portfolioValue').textContent    = fmt(last.value);
+            document.getElementById('totalDividends').textContent    = fmt(totalDivReceived);
+            document.getElementById('finalAnnualIncome').textContent = fmt(last.annDiv);
+            document.getElementById('yieldOnCost').textContent       = last.yoc.toFixed(1) + '%';
+            document.getElementById('initialInvestment').textContent = fmt(totalInvested);
+            document.getElementById('totalReturn').textContent       = '+' + totalReturn.toFixed(0) + '%';
+
+            updateChart(chartValue, chartIncome, chartInvested);
+            updateTable(tableData);
+        }
+
+        let chartInstance = null;
+        function updateChart(valueData, incomeData, investedData) {
+            const ctx = document.getElementById('dividendChart');
+            if (chartInstance) chartInstance.destroy();
+            const g1 = ctx.getContext('2d').createLinearGradient(0,0,0,420);
+            g1.addColorStop(0,'rgba(255,215,0,0.25)'); g1.addColorStop(1,'rgba(255,215,0,0)');
+            const g2 = ctx.getContext('2d').createLinearGradient(0,0,0,420);
+            g2.addColorStop(0,'rgba(16,185,129,0.2)'); g2.addColorStop(1,'rgba(16,185,129,0)');
+            const g3 = ctx.getContext('2d').createLinearGradient(0,0,0,420);
+            g3.addColorStop(0,'rgba(239,68,68,0.15)'); g3.addColorStop(1,'rgba(239,68,68,0)');
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: [
+                        { label:'Portfolio Value', data:valueData.map(p=>({x:p.x,y:p.y})), borderColor:'#ffd700', backgroundColor:g1, fill:true, tension:0.4, borderWidth:2, pointRadius:0 },
+                        { label:'Annual Dividend Income', data:incomeData.map(p=>({x:p.x,y:p.y})), borderColor:'#10b981', backgroundColor:g2, fill:true, tension:0.4, borderWidth:2, pointRadius:0, yAxisID:'y2' },
+                        { label:'Total Invested', data:investedData.map(p=>({x:p.x,y:p.y})), borderColor:'#ef4444', backgroundColor:g3, fill:false, tension:0.1, borderWidth:1.5, borderDash:[5,3], pointRadius:0 }
+                    ]
+                },
+                options: {
+                    responsive:true, maintainAspectRatio:false,
+                    interaction:{ mode:'index', intersect:false },
+                    scales: {
+                        x:{ type:'linear', title:{display:true,text:'Years',color:'#9ca3af'}, ticks:{callback:v=>`Yr ${v}`,color:'#9ca3af'}, grid:{color:'rgba(255,255,255,0.05)'} },
+                        y:{ title:{display:true,text:'Portfolio Value ($)',color:'#9ca3af'}, ticks:{callback:v=>fmt(v),color:'#9ca3af'}, grid:{color:'rgba(255,255,255,0.05)'} },
+                        y2:{ position:'right', title:{display:true,text:'Annual Income ($)',color:'#10b981'}, ticks:{callback:v=>fmt(v),color:'#10b981'}, grid:{display:false} }
+                    },
+                    plugins: {
+                        legend:{ labels:{ color:'#e2e8f0', font:{size:12} } },
+                        tooltip:{ callbacks:{ title:ctx=>`Year ${ctx[0].parsed.x}`, label:ctx=>`${ctx.dataset.label}: ${fmt(ctx.parsed.y)}` } }
+                    }
+                }
+            });
+        }
+
+        function updateTable(data) {
+            const tbody = document.querySelector('#dividendTable tbody');
+            tbody.innerHTML = '';
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>Year ${row.year}</td>
+                    <td>${fmtN(row.shares,2)}</td>
+                    <td style="color:var(--primary-color);">${fmtP(row.price)}</td>
+                    <td>${fmtP(row.divPerShare)}</td>
+                    <td style="color:#10b981;font-weight:600;">${fmt(row.annDiv)}</td>
+                    <td style="color:var(--primary-color);font-weight:600;">${row.yoc.toFixed(2)}%</td>
+                    <td style="color:var(--primary-color);font-weight:600;">${fmt(row.value)}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        const inputs = ['initialShares','sharePrice','annualDividend','dividendGrowth','priceAppreciation','additionalShares','years','taxRate'];
+        inputs.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) { el.addEventListener('input', calculate); el.addEventListener('change', calculate); }
+        });
+        calculate();
+    </script>
+</body>
+</html>

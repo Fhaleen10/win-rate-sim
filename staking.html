@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KHM4WHNE8K"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KHM4WHNE8K');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1794773804909203" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Staking Calculator | APY &amp; Staking Rewards Calculator</title>
+    <meta name="description" content="Calculate crypto staking rewards and APY returns. See how staking compounds your holdings over time with configurable compounding frequency and price appreciation.">
+    <meta name="keywords" content="crypto staking calculator, staking rewards calculator, APY calculator, DeFi yield calculator, ETH staking calculator, staking compound interest">
+    <link rel="canonical" href="https://probabilitycalculator.pro/staking.html" />
+    <meta property="og:title" content="Crypto Staking Calculator | APY &amp; Rewards">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://probabilitycalculator.pro/staking.html">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .table-container { margin-top: 2rem; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; background: var(--card-bg); color: var(--text-color); }
+        th, td { padding: 0.85rem 1rem; text-align: right; border-bottom: 1px solid var(--border-color); font-size: 0.88rem; }
+        th { background: var(--input-bg); font-weight: 600; }
+        th:first-child, td:first-child { text-align: left; }
+        tr:hover { background: var(--input-bg); }
+        .chart-container { position: relative; height: 400px; margin: 2rem 0; }
+        .input-group { margin-bottom: 1.5rem; }
+        .input-group label { display: block; margin-bottom: 0.5rem; font-size: 0.95rem; font-weight: 500; }
+        .input-group input, .input-group select {
+            width: 100%; padding: 0.75rem 1rem; font-size: 1rem;
+            font-family: inherit; border: 1px solid var(--border-color);
+            background: var(--input-bg); color: var(--text-color);
+            border-radius: 8px; transition: border-color 0.2s ease;
+        }
+        .input-group input:focus, .input-group select:focus {
+            outline: none; border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255,215,0,0.1);
+        }
+        .grid-inputs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; padding: 1.5rem; }
+        @media (max-width: 768px) { .grid-inputs { grid-template-columns: 1fr; } }
+        .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 1rem; padding: 1.5rem; }
+        .result-card { background: var(--stat-card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; text-align: center; }
+        .result-card .label { font-size: 0.78rem; color: #9ca3af; margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .result-card .value { font-size: 1.4rem; font-weight: 700; color: var(--primary-color); }
+        .result-card .value.green { color: var(--success-color); }
+        .concept-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+        .concept-card { background: var(--card-bg); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color); }
+        .concept-card h4 { margin-top: 0; color: var(--primary-color); margin-bottom: 0.5rem; }
+        @media (max-width: 600px) { .concept-grid { grid-template-columns: 1fr; } }
+        .apy-pill {
+            display: inline-block; padding: 0.2rem 0.75rem; border-radius: 99px;
+            background: rgba(255,215,0,0.1); border: 1px solid var(--primary-color);
+            color: var(--primary-color); font-size: 0.8rem; font-weight: 600;
+        }
+        .info-note {
+            background: rgba(255,215,0,0.05); border: 1px solid rgba(255,215,0,0.2);
+            border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.85rem; color: #9ca3af;
+            margin: 0 1.5rem 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <nav>
+            <div class="nav-dropdown" id="investingDropdown">
+                <a class="nav-dropdown-trigger active" onclick="toggleDropdown(event)">Investing Tools &#9660;</a>
+                <div class="nav-dropdown-menu">
+                    <a href="investing.html">Investment Calculator</a>
+                    <a href="dca.html">DCA Calculator</a>
+                    <a href="dividend.html">Dividend / DRIP</a>
+                    <a href="staking.html" class="active">Crypto Staking</a>
+                    <a href="portfolio.html">Portfolio Allocator</a>
+                </div>
+            </div>
+            <a href="index.html">Probability Calculator</a>
+            <a href="winrate.html">Win Rate Calculator</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>Crypto Staking Calculator</h1>
+
+        <section class="introduction">
+            <h2>Earn Passive Rewards on Your Crypto Holdings</h2>
+            <p>Staking lets you earn rewards for locking crypto into a blockchain network to help validate transactions. Instead of letting assets sit idle, staking generates yield — compounded over time into a significantly larger holding.</p>
+            <div class="key-concepts" style="margin-top:1.5rem;">
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <h4>APY vs APR</h4>
+                        <p>APR (Annual Percentage Rate) is the raw reward rate. APY (Annual Percentage Yield) includes compounding — the more frequently rewards compound, the higher your effective APY.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Compounding Frequency</h4>
+                        <p>Daily compounding of a 10% APR gives you ~10.52% APY. Weekly gives ~10.51%. The difference grows larger at higher rates.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Price Appreciation</h4>
+                        <p>Staking rewards compound your coin count. If the coin's price also rises, your USD-denominated returns multiply. Price risk works both ways.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Lock-up Periods</h4>
+                        <p>Some protocols require locked staking (e.g., ETH validators had 2-year lockups). Others offer flexible staking with lower rates. Factor in liquidity risk.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="calculator">
+            <div class="preset-buttons no-print">
+                <span style="font-size:0.8rem;color:#9ca3af;align-self:center;margin-right:0.25rem;">Presets:</span>
+                <button class="preset-btn" onclick="applyPreset('eth')">ETH Staking (~4%)</button>
+                <button class="preset-btn" onclick="applyPreset('sol')">SOL Staking (~7%)</button>
+                <button class="preset-btn" onclick="applyPreset('defi')">DeFi High Yield (20%)</button>
+            </div>
+
+            <p class="info-note">&#9432; &nbsp;This calculator models token compounding. Real-world rates fluctuate. Price appreciation is speculative — set to 0% for a conservative coins-only view.</p>
+
+            <div class="grid-inputs">
+                <div class="input-group">
+                    <label for="initialAmount">Initial Staking Amount ($)</label>
+                    <input type="number" id="initialAmount" value="10000" min="1" step="100">
+                </div>
+                <div class="input-group">
+                    <label for="tokenPrice">Current Token Price ($)</label>
+                    <input type="number" id="tokenPrice" value="2000" min="0.001" step="1">
+                </div>
+                <div class="input-group">
+                    <label for="apr">Staking APR (%)</label>
+                    <input type="number" id="apr" value="5" min="0.1" max="500" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label for="compoundFreq">Compounding Frequency</label>
+                    <select id="compoundFreq">
+                        <option value="365">Daily</option>
+                        <option value="52">Weekly</option>
+                        <option value="12" selected>Monthly</option>
+                        <option value="4">Quarterly</option>
+                        <option value="1">Yearly</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="stakingYears">Staking Period (Years)</label>
+                    <input type="number" id="stakingYears" value="5" min="1" max="30">
+                </div>
+                <div class="input-group">
+                    <label for="additionalMonthly">Additional Monthly Stake ($)</label>
+                    <input type="number" id="additionalMonthly" value="0" min="0" step="100">
+                </div>
+                <div class="input-group">
+                    <label for="priceAppreciation">Expected Annual Price Change (%)</label>
+                    <input type="number" id="priceAppreciation" value="0" min="-90" max="1000" step="1">
+                </div>
+                <div class="input-group">
+                    <label for="stakingTax">Tax Rate on Rewards (%)</label>
+                    <input type="number" id="stakingTax" value="30" min="0" max="55" step="1">
+                </div>
+            </div>
+
+            <div id="results" style="padding: 0 1.5rem 1.5rem;">
+                <h2 style="color:var(--primary-color);margin-bottom:1rem;text-align:center;font-size:1.6rem;filter:drop-shadow(0 0 10px rgba(255,215,0,0.3));">Staking Projection</h2>
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="label">Effective APY</div>
+                        <div class="value" id="effectiveAPY">0%</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="label">Initial Tokens</div>
+                        <div class="value" id="initialTokens">0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="label">Final Tokens</div>
+                        <div class="value green" id="finalTokens">0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="label">Staking Rewards (tokens)</div>
+                        <div class="value green" id="rewardTokens">0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="label">Final Token Price</div>
+                        <div class="value" id="finalTokenPrice">$0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="label">Final Portfolio Value</div>
+                        <div class="value green" id="finalValue">$0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="label">Total Invested</div>
+                        <div class="value" id="totalInvested">$0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="label">Total ROI</div>
+                        <div class="value green" id="totalROI">0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="padding: 0 1.5rem;">
+                <div class="chart-container">
+                    <canvas id="stakingChart"></canvas>
+                </div>
+            </div>
+
+            <div style="padding: 0 1.5rem 1.5rem;">
+                <div style="display:flex;justify-content:flex-end;margin-bottom:1rem;">
+                    <button class="export-btn no-print" onclick="window.print()">&#128438; Export PDF</button>
+                </div>
+                <h2 style="color:var(--primary-color);margin-bottom:1rem;font-size:1.4rem;">Year-by-Year Breakdown</h2>
+                <div class="table-container">
+                    <table id="stakingTable">
+                        <thead>
+                            <tr>
+                                <th>Year</th>
+                                <th>Tokens Staked</th>
+                                <th>Rewards Earned</th>
+                                <th>Token Price</th>
+                                <th>Portfolio Value (USD)</th>
+                                <th>Annual Yield ($)</th>
+                                <th>ROI</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <section>
+            <h2>Understanding Staking Returns</h2>
+            <h3>APR vs APY — Why It Matters</h3>
+            <p>A 10% APR compounded daily = <strong style="color:var(--primary-color);">10.52% APY</strong>. At 20% APR, daily compounding yields <strong style="color:var(--primary-color);">22.13% APY</strong>. Always check whether a protocol quotes APR or APY — they can look similar but compound to very different outcomes.</p>
+            <h3>Common Staking Options (approximate rates)</h3>
+            <ul>
+                <li><strong>Ethereum (ETH):</strong> ~3–5% APR — secure, decentralized, liquid via liquid staking</li>
+                <li><strong>Solana (SOL):</strong> ~6–8% APR — highly liquid, rewards paid every epoch (~2 days)</li>
+                <li><strong>Cardano (ADA):</strong> ~4–5% APR — no lockup, fully liquid staking</li>
+                <li><strong>Cosmos (ATOM):</strong> ~14–20% APR — 21-day unbonding period</li>
+                <li><strong>DeFi Protocols:</strong> 5–100%+ APY — higher risk, smart contract risk, impermanent loss possible</li>
+            </ul>
+            <h3>Key Risks to Understand</h3>
+            <ul>
+                <li><strong>Price Volatility:</strong> High APY cannot compensate for severe price decline</li>
+                <li><strong>Slashing Risk:</strong> Validator misbehavior can result in staked tokens being partially destroyed</li>
+                <li><strong>Smart Contract Risk:</strong> DeFi protocols can be exploited or have bugs</li>
+                <li><strong>Tax Treatment:</strong> In most jurisdictions, staking rewards are taxable as ordinary income when received</li>
+            </ul>
+        </section>
+    </div>
+
+    <footer class="main-footer">
+        <nav><a href="privacy.html">Privacy Policy</a></nav>
+    </footer>
+
+    <script>
+        function toggleDropdown(e) {
+            e.preventDefault();
+            const dd = document.getElementById('investingDropdown');
+            dd.classList.toggle('open');
+        }
+        document.addEventListener('click', function(e) {
+            const dd = document.getElementById('investingDropdown');
+            if (!dd.contains(e.target)) dd.classList.remove('open');
+        });
+
+        const presets = {
+            eth:  { initialAmount: 20000, tokenPrice: 3000, apr: 4,  compoundFreq: '12',  stakingYears: 5,  additionalMonthly: 0,   priceAppreciation: 0,  stakingTax: 30 },
+            sol:  { initialAmount: 10000, tokenPrice: 150,  apr: 7,  compoundFreq: '365', stakingYears: 4,  additionalMonthly: 200, priceAppreciation: 0,  stakingTax: 30 },
+            defi: { initialAmount: 5000,  tokenPrice: 1,    apr: 20, compoundFreq: '365', stakingYears: 3,  additionalMonthly: 500, priceAppreciation: 0,  stakingTax: 30 }
+        };
+
+        function applyPreset(key) {
+            const p = presets[key];
+            document.getElementById('initialAmount').value      = p.initialAmount;
+            document.getElementById('tokenPrice').value         = p.tokenPrice;
+            document.getElementById('apr').value                = p.apr;
+            document.getElementById('compoundFreq').value       = p.compoundFreq;
+            document.getElementById('stakingYears').value       = p.stakingYears;
+            document.getElementById('additionalMonthly').value  = p.additionalMonthly;
+            document.getElementById('priceAppreciation').value  = p.priceAppreciation;
+            document.getElementById('stakingTax').value         = p.stakingTax;
+            document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active-preset'));
+            event.target.classList.add('active-preset');
+            calculate();
+        }
+
+        function fmt(v) { return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(v); }
+        function fmtP(v) { return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:2,maximumFractionDigits:2}).format(v); }
+        function fmtN(v,d=4) { return new Intl.NumberFormat('en-US',{minimumFractionDigits:2,maximumFractionDigits:d}).format(v); }
+
+        function calculate() {
+            const initialUSD  = parseFloat(document.getElementById('initialAmount').value)    || 1;
+            const tokenPrice  = parseFloat(document.getElementById('tokenPrice').value)        || 1;
+            const apr         = parseFloat(document.getElementById('apr').value)/100           || 0;
+            const n           = parseInt(document.getElementById('compoundFreq').value)        || 12;
+            const years       = parseInt(document.getElementById('stakingYears').value)        || 1;
+            const addMonthly  = parseFloat(document.getElementById('additionalMonthly').value) || 0;
+            const priceGrowth = parseFloat(document.getElementById('priceAppreciation').value)/100 || 0;
+            const taxRate     = parseFloat(document.getElementById('stakingTax').value)/100    || 0;
+
+            // Effective APY from APR compounded n times/year
+            const apy = Math.pow(1 + apr/n, n) - 1;
+            document.getElementById('effectiveAPY').textContent = (apy * 100).toFixed(3) + '%';
+
+            const initialTokens = initialUSD / tokenPrice;
+            let tokens      = initialTokens;
+            let price       = tokenPrice;
+            let totalInvUSD = initialUSD;
+
+            const tableData  = [];
+            const chartValue = [];
+            const chartInvested = [];
+            const chartRewards  = [];
+
+            chartValue.push({x:0, y:initialUSD});
+            chartInvested.push({x:0, y:initialUSD});
+            chartRewards.push({x:0, y:0});
+
+            const ratePerPeriod = apr / n;
+            const periodsPerYear = n;
+
+            let totalRewardTokens = 0;
+            let prevTokens = tokens;
+
+            for (let y = 1; y <= years; y++) {
+                // Compound staking for each period in this year
+                for (let p = 0; p < periodsPerYear; p++) {
+                    // Monthly additional purchase (approximate: add per month = addMonthly)
+                    if (p % Math.max(1, Math.floor(periodsPerYear/12)) === 0 && addMonthly > 0) {
+                        tokens += addMonthly / price;
+                        totalInvUSD += addMonthly;
+                    }
+                    // Compound rewards
+                    const periodReward = tokens * ratePerPeriod;
+                    const netReward = periodReward * (1 - taxRate);
+                    tokens += netReward;
+                }
+                // Price appreciation per year
+                price *= (1 + priceGrowth);
+
+                totalRewardTokens = tokens - initialTokens - (totalInvUSD - initialUSD) / tokenPrice;
+
+                tableData.push({
+                    year: y,
+                    tokens,
+                    rewardsThisYear: tokens - prevTokens - (addMonthly * 12 / price),
+                    price,
+                    value: tokens * price,
+                    annualYield: (tokens - prevTokens) * price
+                });
+                prevTokens = tokens;
+
+                chartValue.push({x: y, y: tokens * price});
+                chartInvested.push({x: y, y: totalInvUSD});
+                chartRewards.push({x: y, y: totalRewardTokens * price});
+            }
+
+            const finalValue = tokens * price;
+            const roi = ((finalValue - totalInvUSD) / totalInvUSD) * 100;
+
+            document.getElementById('initialTokens').textContent  = fmtN(initialTokens, 6);
+            document.getElementById('finalTokens').textContent    = fmtN(tokens, 4);
+            document.getElementById('rewardTokens').textContent   = fmtN(Math.max(0, tokens - initialTokens - (totalInvUSD - initialUSD)/tokenPrice), 4);
+            document.getElementById('finalTokenPrice').textContent= fmtP(price);
+            document.getElementById('finalValue').textContent     = fmt(finalValue);
+            document.getElementById('totalInvested').textContent  = fmt(totalInvUSD);
+            document.getElementById('totalROI').textContent       = (roi >= 0 ? '+' : '') + roi.toFixed(1) + '%';
+
+            updateChart(chartValue, chartInvested, chartRewards);
+            updateTable(tableData, totalInvUSD);
+        }
+
+        let chartInstance = null;
+        function updateChart(valueData, investedData, rewardsData) {
+            const ctx = document.getElementById('stakingChart');
+            if (chartInstance) chartInstance.destroy();
+            const g1 = ctx.getContext('2d').createLinearGradient(0,0,0,400);
+            g1.addColorStop(0,'rgba(255,215,0,0.25)'); g1.addColorStop(1,'rgba(255,215,0,0)');
+            const g2 = ctx.getContext('2d').createLinearGradient(0,0,0,400);
+            g2.addColorStop(0,'rgba(16,185,129,0.2)'); g2.addColorStop(1,'rgba(16,185,129,0)');
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: [
+                        { label:'Portfolio Value ($)', data:valueData, borderColor:'#ffd700', backgroundColor:g1, fill:true, tension:0.4, borderWidth:2, pointRadius:0 },
+                        { label:'Total Invested ($)', data:investedData, borderColor:'#ef4444', backgroundColor:'transparent', fill:false, tension:0.1, borderWidth:1.5, borderDash:[5,3], pointRadius:0 },
+                        { label:'Staking Rewards Value ($)', data:rewardsData, borderColor:'#10b981', backgroundColor:g2, fill:true, tension:0.4, borderWidth:2, pointRadius:0 }
+                    ]
+                },
+                options: {
+                    responsive:true, maintainAspectRatio:false,
+                    interaction:{ mode:'index', intersect:false },
+                    scales: {
+                        x:{ type:'linear', title:{display:true,text:'Years',color:'#9ca3af'}, ticks:{callback:v=>`Yr ${v}`,color:'#9ca3af'}, grid:{color:'rgba(255,255,255,0.05)'} },
+                        y:{ title:{display:true,text:'Value (USD)',color:'#9ca3af'}, ticks:{callback:v=>fmt(v),color:'#9ca3af'}, grid:{color:'rgba(255,255,255,0.05)'} }
+                    },
+                    plugins: {
+                        legend:{ labels:{ color:'#e2e8f0', font:{size:12} } },
+                        tooltip:{ callbacks:{ title:ctx=>`Year ${ctx[0].parsed.x}`, label:ctx=>`${ctx.dataset.label}: ${fmt(ctx.parsed.y)}` } }
+                    }
+                }
+            });
+        }
+
+        function updateTable(data, totalInvested) {
+            const tbody = document.querySelector('#stakingTable tbody');
+            tbody.innerHTML = '';
+            let runningValue = totalInvested;
+            data.forEach(row => {
+                const roi = ((row.value - totalInvested) / totalInvested * 100);
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>Year ${row.year}</td>
+                    <td>${fmtN(row.tokens, 4)}</td>
+                    <td style="color:#10b981;">${fmtN(Math.max(0,row.rewardsThisYear),4)}</td>
+                    <td style="color:var(--primary-color);">${fmtP(row.price)}</td>
+                    <td style="color:var(--primary-color);font-weight:600;">${fmt(row.value)}</td>
+                    <td style="color:#10b981;font-weight:600;">${fmt(row.annualYield)}</td>
+                    <td style="color:${roi>=0?'#10b981':'#ef4444'};font-weight:600;">${roi>=0?'+':''}${roi.toFixed(1)}%</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        const inputs = ['initialAmount','tokenPrice','apr','compoundFreq','stakingYears','additionalMonthly','priceAppreciation','stakingTax'];
+        inputs.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) { el.addEventListener('input', calculate); el.addEventListener('change', calculate); }
+        });
+        calculate();
+    </script>
+</body>
+</html>

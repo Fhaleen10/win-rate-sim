@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KHM4WHNE8K"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KHM4WHNE8K');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1794773804909203" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Allocator | Multi-Asset Portfolio Builder &amp; Calculator</title>
+    <meta name="description" content="Build and analyze your investment portfolio allocation across stocks, bonds, crypto, real estate, and cash. Calculate expected returns, risk level, and projected growth.">
+    <meta name="keywords" content="portfolio allocator, portfolio calculator, asset allocation calculator, investment portfolio builder, portfolio diversification, stocks bonds crypto allocation">
+    <link rel="canonical" href="https://probabilitycalculator.pro/portfolio.html" />
+    <meta property="og:title" content="Portfolio Allocator | Multi-Asset Portfolio Builder">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://probabilitycalculator.pro/portfolio.html">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .chart-container { position: relative; height: 400px; margin: 2rem 0; }
+        .pie-container  { position: relative; height: 340px; margin: 1rem auto; max-width: 340px; }
+        .grid-inputs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; padding: 1.5rem; }
+        @media (max-width: 768px) { .grid-inputs { grid-template-columns: 1fr; } }
+        .input-group { margin-bottom: 1.5rem; }
+        .input-group label { display: block; margin-bottom: 0.5rem; font-size: 0.95rem; font-weight: 500; }
+        .input-group input, .input-group select {
+            width: 100%; padding: 0.75rem 1rem; font-size: 1rem;
+            font-family: inherit; border: 1px solid var(--border-color);
+            background: var(--input-bg); color: var(--text-color);
+            border-radius: 8px; transition: border-color 0.2s ease;
+        }
+        .input-group input:focus, .input-group select:focus {
+            outline: none; border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255,215,0,0.1);
+        }
+        .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 1rem; padding: 1.5rem; }
+        .result-card { background: var(--stat-card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; text-align: center; }
+        .result-card .label { font-size: 0.78rem; color: #9ca3af; margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .result-card .value { font-size: 1.4rem; font-weight: 700; color: var(--primary-color); }
+        .result-card .value.green { color: var(--success-color); }
+        .result-card .value.red   { color: var(--danger-color); }
+
+        /* Asset allocation table */
+        .alloc-table { width: 100%; border-collapse: collapse; margin: 0 0 1rem; }
+        .alloc-table th, .alloc-table td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border-color); font-size: 0.9rem; }
+        .alloc-table th { background: var(--input-bg); font-weight: 600; text-align: center; }
+        .alloc-table td { vertical-align: middle; }
+        .alloc-table td:first-child { font-weight: 600; }
+        .alloc-table input[type=range] { width: 100%; accent-color: var(--primary-color); cursor: pointer; height: 6px; }
+        .alloc-table input[type=number] {
+            width: 70px; padding: 0.3rem 0.5rem; font-size: 0.88rem; text-align: right;
+            border: 1px solid var(--border-color); background: var(--input-bg);
+            color: var(--text-color); border-radius: 6px;
+        }
+        .color-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; }
+        .alloc-row td { text-align: center; }
+        .alloc-row td:first-child { text-align: left; }
+        .alloc-warning { color: var(--danger-color); font-weight: 600; font-size: 0.85rem; text-align: center; margin: 0.5rem 0; display: none; }
+        .alloc-ok { color: var(--success-color); font-weight: 600; font-size: 0.85rem; text-align: center; margin: 0.5rem 0; display: none; }
+        .alloc-sum { font-weight: 700; font-size: 1rem; text-align: right; padding: 0.75rem 1rem; }
+        .risk-meter { height: 8px; border-radius: 4px; background: linear-gradient(to right,#10b981,#ffd700,#ef4444); position: relative; margin-top: 0.75rem; }
+        .risk-needle { position: absolute; top: -4px; width: 16px; height: 16px; border-radius: 50%; background: white; border: 2px solid #fff; box-shadow: 0 0 6px rgba(0,0,0,0.6); transform: translateX(-50%); transition: left 0.4s ease; }
+        .concept-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+        .concept-card { background: var(--card-bg); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color); }
+        .concept-card h4 { margin-top: 0; color: var(--primary-color); margin-bottom: 0.5rem; }
+        @media (max-width: 600px) { .concept-grid { grid-template-columns: 1fr; } }
+        .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; padding: 0 1.5rem; }
+        @media (max-width: 768px) { .charts-row { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <nav>
+            <div class="nav-dropdown" id="investingDropdown">
+                <a class="nav-dropdown-trigger active" onclick="toggleDropdown(event)">Investing Tools &#9660;</a>
+                <div class="nav-dropdown-menu">
+                    <a href="investing.html">Investment Calculator</a>
+                    <a href="dca.html">DCA Calculator</a>
+                    <a href="dividend.html">Dividend / DRIP</a>
+                    <a href="staking.html">Crypto Staking</a>
+                    <a href="portfolio.html" class="active">Portfolio Allocator</a>
+                </div>
+            </div>
+            <a href="index.html">Probability Calculator</a>
+            <a href="winrate.html">Win Rate Calculator</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>Portfolio Allocator</h1>
+
+        <section class="introduction">
+            <h2>Build a Diversified Multi-Asset Portfolio</h2>
+            <p>Asset allocation is the most important decision in investing — studies show it explains over 90% of long-term portfolio returns. This tool lets you build your ideal portfolio across major asset classes, see your blended expected return, risk level, and projected growth over time.</p>
+            <div class="key-concepts" style="margin-top:1.5rem;">
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <h4>Diversification</h4>
+                        <p>Combining assets with low correlation reduces overall portfolio risk without necessarily sacrificing return. Bonds tend to rise when stocks fall — the classic hedge.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Risk vs Return</h4>
+                        <p>Higher expected returns come with higher volatility. Crypto may offer 20%+ long-term returns, but with 80%+ drawdowns. Bonds offer stability at 3–5% annual return.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Rebalancing</h4>
+                        <p>Over time, winning assets grow to dominate your portfolio. Annual rebalancing forces you to trim winners and buy laggards — systematically buying low and selling high.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Time Horizon</h4>
+                        <p>Younger investors can tolerate more risk (more stocks/crypto). Those near retirement should shift toward capital preservation (bonds, cash, dividend stocks).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="calculator">
+            <div class="preset-buttons no-print">
+                <span style="font-size:0.8rem;color:#9ca3af;align-self:center;margin-right:0.25rem;">Presets:</span>
+                <button class="preset-btn" onclick="applyPreset('aggressive')">Aggressive Growth</button>
+                <button class="preset-btn" onclick="applyPreset('balanced')">Balanced (60/40)</button>
+                <button class="preset-btn" onclick="applyPreset('conservative')">Conservative Income</button>
+                <button class="preset-btn" onclick="applyPreset('crypto')">Crypto-Heavy</button>
+            </div>
+
+            <div class="grid-inputs">
+                <div class="input-group">
+                    <label for="totalAmount">Total Investment Amount ($)</label>
+                    <input type="number" id="totalAmount" value="50000" min="1000" step="1000">
+                </div>
+                <div class="input-group">
+                    <label for="monthlyContrib">Monthly Contribution ($)</label>
+                    <input type="number" id="monthlyContrib" value="500" min="0" step="50">
+                </div>
+                <div class="input-group">
+                    <label for="horizonYears">Time Horizon (Years)</label>
+                    <input type="number" id="horizonYears" value="20" min="1" max="50">
+                </div>
+                <div class="input-group">
+                    <label for="inflationRate">Inflation Rate (%)</label>
+                    <input type="number" id="inflationRate" value="3" min="0" max="20" step="0.5">
+                </div>
+            </div>
+
+            <!-- Asset Allocation Table -->
+            <div style="padding: 0 1.5rem 1rem;">
+                <h3 style="color:var(--text-color);margin-bottom:1rem;font-size:1.1rem;">Asset Allocation <span style="color:#9ca3af;font-weight:400;font-size:0.9rem;">— drag sliders or type percentages</span></h3>
+                <table class="alloc-table">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Asset Class</th>
+                            <th>Allocation %</th>
+                            <th>Slider</th>
+                            <th>Exp. Return %</th>
+                            <th>Risk Level</th>
+                        </tr>
+                    </thead>
+                    <tbody id="allocBody"></tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5" class="alloc-sum">
+                                Total: <span id="allocSum" style="color:var(--primary-color);">0%</span>
+                                <span id="allocWarning" class="alloc-warning">Must equal 100%</span>
+                                <span id="allocOK" class="alloc-ok">&#10003; Valid</span>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <div id="riskSection" style="margin-top:1rem;">
+                    <div style="display:flex;justify-content:space-between;font-size:0.8rem;color:#9ca3af;">
+                        <span>Conservative</span><span>Balanced</span><span>Aggressive</span>
+                    </div>
+                    <div class="risk-meter"><div class="risk-needle" id="riskNeedle" style="left:50%"></div></div>
+                </div>
+            </div>
+
+            <div id="results" style="padding: 0 1.5rem 1.5rem;">
+                <h2 style="color:var(--primary-color);margin-bottom:1rem;text-align:center;font-size:1.6rem;filter:drop-shadow(0 0 10px rgba(255,215,0,0.3));">Portfolio Projection</h2>
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="label">Weighted Return</div>
+                        <div class="value" id="weightedReturn">0%</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="label">Total Invested</div>
+                        <div class="value" id="totalInvested">$0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="label">Projected Final Value</div>
+                        <div class="value green" id="projectedValue">$0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="label">Inflation-Adj. Value</div>
+                        <div class="value" id="realValue">$0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="label">Total Gain</div>
+                        <div class="value green" id="totalGain">$0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="label">Portfolio ROI</div>
+                        <div class="value green" id="portfolioROI">0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="charts-row">
+                <div>
+                    <h3 style="text-align:center;color:var(--text-color);padding:0 0 0.5rem;font-size:1rem;">Allocation Breakdown</h3>
+                    <div class="pie-container">
+                        <canvas id="pieChart"></canvas>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="text-align:center;color:var(--text-color);padding:0 0 0.5rem;font-size:1rem;">Projected Growth</h3>
+                    <div class="chart-container" style="height:340px;margin:0;">
+                        <canvas id="growthChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div style="padding: 1.5rem;">
+                <div style="display:flex;justify-content:flex-end;margin-bottom:1rem;">
+                    <button class="export-btn no-print" onclick="window.print()">&#128438; Export PDF</button>
+                </div>
+            </div>
+        </div>
+
+        <section>
+            <h2>Asset Allocation Strategies</h2>
+            <h3>Classic Frameworks</h3>
+            <ul>
+                <li><strong>60/40 Portfolio:</strong> 60% stocks, 40% bonds — the traditional balanced portfolio. Has averaged ~8% annually. Struggled in 2022 when both fell simultaneously.</li>
+                <li><strong>All-Weather Portfolio (Ray Dalio):</strong> 30% stocks, 40% bonds, 15% intermediate bonds, 7.5% gold, 7.5% commodities. Designed to perform in all economic environments.</li>
+                <li><strong>3-Fund Portfolio:</strong> Total US market + international stocks + bonds. Simple, low-cost, highly diversified.</li>
+                <li><strong>FIRE Portfolio:</strong> 90%+ stocks, minimal bonds. Maximizes growth for long time horizons (25+ years to retirement).</li>
+            </ul>
+            <h3>Adjusting for Risk Tolerance</h3>
+            <ul>
+                <li><strong>Aggressive (20–35 years old):</strong> 80–100% growth assets (stocks, crypto), minimal bonds</li>
+                <li><strong>Moderate (35–50 years old):</strong> 60–80% stocks, 15–25% bonds, small crypto allocation</li>
+                <li><strong>Conservative (50+ or near retirement):</strong> 40–60% stocks, 30–40% bonds, high cash/real estate</li>
+            </ul>
+        </section>
+    </div>
+
+    <footer class="main-footer">
+        <nav><a href="privacy.html">Privacy Policy</a></nav>
+    </footer>
+
+    <script>
+        function toggleDropdown(e) {
+            e.preventDefault();
+            const dd = document.getElementById('investingDropdown');
+            dd.classList.toggle('open');
+        }
+        document.addEventListener('click', function(e) {
+            const dd = document.getElementById('investingDropdown');
+            if (!dd.contains(e.target)) dd.classList.remove('open');
+        });
+
+        // Asset class definitions
+        const ASSETS = [
+            { id:'stocks',    name:'US Stocks',       color:'#ffd700', defaultAlloc:50, defaultReturn:10, risk:3 },
+            { id:'intl',      name:'Intl. Stocks',    color:'#60a5fa', defaultAlloc:10, defaultReturn:8,  risk:3 },
+            { id:'bonds',     name:'Bonds',           color:'#10b981', defaultAlloc:20, defaultReturn:4,  risk:1 },
+            { id:'realestate',name:'Real Estate',     color:'#f59e0b', defaultAlloc:10, defaultReturn:7,  risk:2 },
+            { id:'crypto',    name:'Cryptocurrency',  color:'#a78bfa', defaultAlloc:5,  defaultReturn:20, risk:5 },
+            { id:'cash',      name:'Cash / Money Mkt',color:'#9ca3af', defaultAlloc:5,  defaultReturn:4.5,risk:0 }
+        ];
+
+        const RISK_LABELS = ['Very Low','Low','Medium','High','Very High','Extreme'];
+
+        const presets = {
+            aggressive:  [70, 15, 0,  5,  10, 0],
+            balanced:    [50, 10, 30, 5,  0,  5],
+            conservative:[30, 5,  45, 10, 0,  10],
+            crypto:      [30, 10, 10, 5,  40, 5]
+        };
+
+        // Build table
+        function buildTable() {
+            const tbody = document.getElementById('allocBody');
+            tbody.innerHTML = '';
+            ASSETS.forEach(asset => {
+                const tr = document.createElement('tr');
+                tr.className = 'alloc-row';
+                tr.innerHTML = `
+                    <td><span class="color-dot" style="background:${asset.color}"></span>${asset.name}</td>
+                    <td><input type="number" id="alloc_${asset.id}" value="${asset.defaultAlloc}" min="0" max="100" step="1" style="width:65px;" oninput="syncSlider('${asset.id}');calculate()"> %</td>
+                    <td style="min-width:140px;"><input type="range" id="range_${asset.id}" value="${asset.defaultAlloc}" min="0" max="100" step="1" oninput="syncNum('${asset.id}');calculate()"></td>
+                    <td><input type="number" id="ret_${asset.id}" value="${asset.defaultReturn}" min="-20" max="100" step="0.5" style="width:65px;" oninput="calculate()"> %</td>
+                    <td style="color:${riskColor(asset.risk)};font-weight:600;font-size:0.85rem;">${RISK_LABELS[asset.risk]}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function riskColor(r) {
+            if (r <= 1) return '#10b981';
+            if (r <= 2) return '#60a5fa';
+            if (r <= 3) return '#ffd700';
+            if (r <= 4) return '#f59e0b';
+            return '#ef4444';
+        }
+
+        function syncSlider(id) {
+            const v = parseInt(document.getElementById('alloc_'+id).value)||0;
+            document.getElementById('range_'+id).value = v;
+        }
+        function syncNum(id) {
+            const v = parseInt(document.getElementById('range_'+id).value)||0;
+            document.getElementById('alloc_'+id).value = v;
+        }
+
+        function applyPreset(key) {
+            const allocs = presets[key];
+            ASSETS.forEach((a, i) => {
+                document.getElementById('alloc_'+a.id).value = allocs[i];
+                document.getElementById('range_'+a.id).value = allocs[i];
+            });
+            document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active-preset'));
+            event.target.classList.add('active-preset');
+            calculate();
+        }
+
+        function fmt(v) { return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(v); }
+
+        function calculate() {
+            const totalAmt    = parseFloat(document.getElementById('totalAmount').value)    || 0;
+            const monthly     = parseFloat(document.getElementById('monthlyContrib').value)  || 0;
+            const years       = parseInt(document.getElementById('horizonYears').value)      || 1;
+            const inflRate    = parseFloat(document.getElementById('inflationRate').value)/100|| 0;
+
+            // Get allocations
+            let allocSum = 0;
+            let weightedReturn = 0;
+            let weightedRisk = 0;
+            const allocations = [];
+            const pieData = [];
+            const pieColors = [];
+
+            ASSETS.forEach(asset => {
+                const pct = parseFloat(document.getElementById('alloc_'+asset.id).value)||0;
+                const ret = parseFloat(document.getElementById('ret_'+asset.id).value)||0;
+                allocSum += pct;
+                weightedReturn += (pct/100) * ret;
+                weightedRisk   += (pct/100) * asset.risk;
+                allocations.push({ ...asset, pct, ret });
+                if (pct > 0) { pieData.push(pct); pieColors.push(asset.color); }
+            });
+
+            // Validate sum
+            document.getElementById('allocSum').textContent = allocSum.toFixed(0) + '%';
+            const warn = document.getElementById('allocWarning');
+            const ok   = document.getElementById('allocOK');
+            if (Math.abs(allocSum - 100) > 0.5) {
+                warn.style.display = 'inline'; ok.style.display = 'none';
+            } else {
+                warn.style.display = 'none'; ok.style.display = 'inline';
+            }
+
+            // Risk needle position (0–5 scale → 0–100%)
+            const riskPct = Math.min(100, weightedRisk / 5 * 100);
+            document.getElementById('riskNeedle').style.left = riskPct.toFixed(0) + '%';
+
+            // Project growth
+            const annualReturn = weightedReturn / 100;
+            const periodsPerYear = 12;
+            const totalPeriods = years * periodsPerYear;
+            const monthlyRate = Math.pow(1 + annualReturn, 1/12) - 1;
+
+            let balance = totalAmt;
+            let totalInvested = totalAmt;
+            const growthData = [{ x:0, y:balance }];
+            const investedData = [{ x:0, y:totalInvested }];
+
+            for (let m = 1; m <= totalPeriods; m++) {
+                balance = balance * (1 + monthlyRate) + monthly;
+                totalInvested += monthly;
+                if (m % periodsPerYear === 0 || m === totalPeriods) {
+                    growthData.push({ x: m/periodsPerYear, y: balance });
+                    investedData.push({ x: m/periodsPerYear, y: totalInvested });
+                }
+            }
+
+            const finalValue  = balance;
+            const realValue   = finalValue / Math.pow(1 + inflRate, years);
+            const totalGain   = finalValue - totalInvested;
+            const roi         = (totalGain / totalInvested) * 100;
+
+            document.getElementById('weightedReturn').textContent = weightedReturn.toFixed(2) + '%';
+            document.getElementById('totalInvested').textContent  = fmt(totalInvested);
+            document.getElementById('projectedValue').textContent = fmt(finalValue);
+            document.getElementById('realValue').textContent      = fmt(realValue);
+            document.getElementById('totalGain').textContent      = '+' + fmt(totalGain);
+            document.getElementById('portfolioROI').textContent   = '+' + roi.toFixed(0) + '%';
+
+            updatePie(allocations.filter(a=>a.pct>0));
+            updateGrowthChart(growthData, investedData);
+        }
+
+        let pieChart = null, growthChart = null;
+
+        function updatePie(allocations) {
+            const ctx = document.getElementById('pieChart');
+            if (pieChart) pieChart.destroy();
+            pieChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: allocations.map(a=>a.name),
+                    datasets: [{
+                        data: allocations.map(a=>a.pct),
+                        backgroundColor: allocations.map(a=>a.color),
+                        borderColor: 'rgba(0,0,0,0.3)',
+                        borderWidth: 2,
+                        hoverOffset: 6
+                    }]
+                },
+                options: {
+                    responsive:true, maintainAspectRatio:false,
+                    plugins: {
+                        legend: { position:'bottom', labels:{ color:'#e2e8f0', font:{size:11}, padding:8, boxWidth:12 } },
+                        tooltip: { callbacks:{ label: ctx => `${ctx.label}: ${ctx.parsed}%` } }
+                    },
+                    cutout: '60%'
+                }
+            });
+        }
+
+        function updateGrowthChart(growthData, investedData) {
+            const ctx = document.getElementById('growthChart');
+            if (growthChart) growthChart.destroy();
+            const g1 = ctx.getContext('2d').createLinearGradient(0,0,0,340);
+            g1.addColorStop(0,'rgba(255,215,0,0.25)'); g1.addColorStop(1,'rgba(255,215,0,0)');
+            const g2 = ctx.getContext('2d').createLinearGradient(0,0,0,340);
+            g2.addColorStop(0,'rgba(16,185,129,0.15)'); g2.addColorStop(1,'rgba(16,185,129,0)');
+
+            growthChart = new Chart(ctx, {
+                type:'line',
+                data: {
+                    datasets: [
+                        { label:'Portfolio Value', data:growthData, borderColor:'#ffd700', backgroundColor:g1, fill:true, tension:0.4, borderWidth:2, pointRadius:0 },
+                        { label:'Total Invested',  data:investedData, borderColor:'#10b981', backgroundColor:g2, fill:true, tension:0.1, borderWidth:1.5, borderDash:[5,3], pointRadius:0 }
+                    ]
+                },
+                options: {
+                    responsive:true, maintainAspectRatio:false,
+                    interaction:{ mode:'index', intersect:false },
+                    scales: {
+                        x:{ type:'linear', title:{display:true,text:'Years',color:'#9ca3af'}, ticks:{callback:v=>`Yr ${v}`,color:'#9ca3af'}, grid:{color:'rgba(255,255,255,0.05)'} },
+                        y:{ ticks:{callback:v=>fmt(v),color:'#9ca3af'}, grid:{color:'rgba(255,255,255,0.05)'} }
+                    },
+                    plugins: {
+                        legend:{ labels:{ color:'#e2e8f0', font:{size:11} } },
+                        tooltip:{ callbacks:{ title:ctx=>`Year ${ctx[0].parsed.x}`, label:ctx=>`${ctx.dataset.label}: ${fmt(ctx.parsed.y)}` } }
+                    }
+                }
+            });
+        }
+
+        const topInputs = ['totalAmount','monthlyContrib','horizonYears','inflationRate'];
+        topInputs.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) { el.addEventListener('input', calculate); el.addEventListener('change', calculate); }
+        });
+
+        buildTable();
+        calculate();
+    </script>
+</body>
+</html>

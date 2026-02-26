@@ -9,256 +9,112 @@
         gtag('js', new Date());
         gtag('config', 'G-KHM4WHNE8K');
     </script>
-    
+
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1794773804909203"
      crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="E-n3xzukzN1tXcncJXvriEuf8157kksZ6awrDtPoV_w" />
-    <title>Investment Calculator | Compound Interest & Investment Growth Calculator</title>
-    <meta name="description" content="Free online investment calculator for calculating compound interest, investment growth, and returns. Plan your financial future with our easy-to-use investment tools.">
-    <meta name="keywords" content="investment calculator, compound interest calculator, investment growth calculator, financial planning calculator, retirement calculator, investment returns calculator">
-    
-    <!-- Open Graph Tags for Social Media -->
-    <meta property="og:title" content="Investment Calculator | Compound Interest & Investment Growth Calculator">
-    <meta property="og:description" content="Calculate investment growth and compound interest with our free calculator. Perfect for financial planning and investment analysis.">
+    <title>Investment Calculator | Compound Interest &amp; Investment Growth Calculator</title>
+    <meta name="description" content="Free online investment calculator with inflation adjustment, benchmark comparison, tax estimates, and preset scenarios. Plan your financial future with our comprehensive investment tools.">
+    <meta name="keywords" content="investment calculator, compound interest calculator, investment growth calculator, financial planning calculator, retirement calculator, FIRE calculator, investment returns calculator">
+
+    <meta property="og:title" content="Investment Calculator | Compound Interest &amp; Investment Growth Calculator">
+    <meta property="og:description" content="Calculate investment growth and compound interest with our free calculator. Includes inflation-adjusted returns, S&P 500 benchmark comparison, tax estimates, and preset scenarios.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://probabilitycalculator.pro/investing.html">
-    
-    <!-- Schema.org markup for Google -->
+
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "WebApplication",
         "name": "Investment Calculator",
-        "description": "A comprehensive investment calculator for calculating compound interest, investment growth, and returns. Features weekly, monthly, quarterly, and yearly contribution options.",
+        "description": "A comprehensive investment calculator with inflation adjustment, benchmark comparison, tax estimates, and FIRE planning presets.",
         "url": "https://probabilitycalculator.pro/investing.html",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-        },
-        "featureList": [
-            "Calculate compound interest",
-            "Multiple contribution frequencies",
-            "Investment growth projections",
-            "Detailed breakdown tables",
-            "Visual investment charts",
-            "Free to use"
-        ]
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
     }
     </script>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        .table-container {
-            margin-top: 2rem;
-            overflow-x: auto;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: var(--card-bg);
-            color: var(--text-color);
-        }
-        
-        th, td {
-            padding: 1rem;
-            text-align: right;
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        th {
-            background: var(--input-bg);
-            font-weight: 600;
-        }
-        
-        tr:hover {
-            background: var(--input-bg);
-        }
-        
-        .detailed-results {
-            margin-top: 3rem;
-        }
-        
-        .chart-container {
-            position: relative;
-            height: 400px;
-            margin: 2rem 0;
-        }
-
-        .input-group {
-            margin-bottom: 1.5rem;
-            width: 100%;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--text-color);
-        }
-
-        .input-group input,
-        .input-group select {
-            width: 100%;
-            padding: 0.75rem;
-            font-size: 1rem;
+        .table-container { margin-top: 2rem; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; background: var(--card-bg); color: var(--text-color); }
+        th, td { padding: 0.9rem 1rem; text-align: right; border-bottom: 1px solid var(--border-color); font-size: 0.88rem; }
+        th { background: var(--input-bg); font-weight: 600; }
+        th:first-child, td:first-child { text-align: left; }
+        tr:hover { background: var(--input-bg); }
+        .detailed-results { margin-top: 3rem; }
+        .chart-container { position: relative; height: 420px; margin: 2rem 0; }
+        .input-group { margin-bottom: 1.5rem; width: 100%; }
+        .input-group label { display: block; margin-bottom: 0.5rem; font-size: 1rem; font-weight: 500; color: var(--text-color); }
+        .input-group input, .input-group select {
+            width: 100%; padding: 0.75rem; font-size: 1rem;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            border: 1px solid var(--border-color);
-            background: var(--input-bg);
-            color: var(--text-color);
-            border-radius: 4px;
-            transition: border-color 0.2s ease;
+            border: 1px solid var(--border-color); background: var(--input-bg);
+            color: var(--text-color); border-radius: 8px; transition: border-color 0.2s ease;
         }
-
-        .input-group input:focus,
-        .input-group select:focus {
-            outline: none;
-            border-color: var(--primary-color);
+        .input-group input:focus, .input-group select:focus {
+            outline: none; border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255,215,0,0.1);
         }
-
-        .grid-inputs {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-            padding: 1.5rem;
-        }
-
+        .grid-inputs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; padding: 1.5rem; }
+        @media (max-width: 768px) { .grid-inputs { grid-template-columns: 1fr; } }
+        .green-value { color: #4CAF50 !important; font-weight: 600; }
+        .result-item { display: flex; justify-content: space-between; align-items: center; padding: 0.85rem 0; border-bottom: 1px solid var(--border-color); }
+        .result-item:last-child { border-bottom: none; }
+        .result-item span:first-child { color: #9ca3af; }
+        .result-item span:last-child { font-weight: 600; }
+        table td:nth-child(3), table td:nth-child(4) { color: #4CAF50; font-weight: 600; }
+        .concept-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+        .concept-card { background: var(--card-bg); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color); }
+        .concept-card h4 { margin-top: 0; color: var(--primary-color); }
+        .scenario-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .scenario-card { background: var(--card-bg); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color); }
+        .scenario-card h4 { margin-top: 0; color: var(--primary-color); }
+        .interpretation-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+        .interpretation-card { background: var(--card-bg); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color); }
+        .interpretation-card h4 { margin-top: 0; }
         @media (max-width: 768px) {
-            .grid-inputs {
-                grid-template-columns: 1fr;
-            }
+            .concept-grid, .interpretation-grid { grid-template-columns: 1fr; }
+            .scenario-grid { grid-template-columns: 1fr; }
         }
-
-        .green-value {
-            color: #4CAF50 !important;
-            font-weight: 600;
+        /* Enhanced results panel */
+        .results-section { padding: 1.5rem; }
+        .results-group { margin-bottom: 1.5rem; }
+        .results-group-title {
+            font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em;
+            color: #9ca3af; margin-bottom: 0.75rem; font-weight: 600;
         }
-
-        .result-item span:last-child {
-            font-weight: 600;
+        /* Section separator */
+        .input-section-title {
+            font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em;
+            color: #9ca3af; padding: 0 1.5rem 0.25rem; font-weight: 600;
         }
-
-        table td:nth-child(3),  /* Interest column */
-        table td:nth-child(4) { /* Balance column */
-            color: #4CAF50;
-            font-weight: 600;
-        }
-        
-        .introduction {
-            margin-bottom: 3rem;
-        }
-        
-        .key-concepts {
-            margin-bottom: 2rem;
-        }
-        
-        .concept-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-        }
-        
-        .concept-card {
-            background: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: 4px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .concept-card h4 {
-            margin-top: 0;
-        }
-        
-        .how-to-use {
-            margin-bottom: 3rem;
-        }
-        
-        .how-to-use ol {
-            list-style: decimal;
-            padding-left: 1.5rem;
-        }
-        
-        .how-to-use li {
-            margin-bottom: 1.5rem;
-        }
-        
-        .how-to-use li strong {
-            font-weight: 600;
-        }
-        
-        .investment-strategies {
-            margin-bottom: 3rem;
-        }
-        
-        .strategy-tips {
-            margin-bottom: 2rem;
-        }
-        
-        .strategy-tips ul {
-            list-style: disc;
-            padding-left: 1.5rem;
-        }
-        
-        .strategy-tips li {
-            margin-bottom: 0.5rem;
-        }
-        
-        .common-scenarios {
-            margin-bottom: 2rem;
-        }
-        
-        .scenario-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-        }
-        
-        .scenario-card {
-            background: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: 4px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .scenario-card h4 {
-            margin-top: 0;
-        }
-        
-        .results-interpretation {
-            margin-bottom: 3rem;
-        }
-        
-        .interpretation-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-        }
-        
-        .interpretation-card {
-            background: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: 4px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .interpretation-card h4 {
-            margin-top: 0;
+        .section-divider {
+            border: none; border-top: 1px solid var(--border-color);
+            margin: 0.5rem 1.5rem 1.25rem;
         }
     </style>
 </head>
 <body>
     <header class="main-header">
         <nav>
-            <a href="investing.html" class="active">Investing</a>
+            <div class="nav-dropdown" id="investingDropdown">
+                <a class="nav-dropdown-trigger active" onclick="toggleDropdown(event)">Investing Tools &#9660;</a>
+                <div class="nav-dropdown-menu">
+                    <a href="investing.html" class="active">Investment Calculator</a>
+                    <a href="dca.html">DCA Calculator</a>
+                    <a href="dividend.html">Dividend / DRIP</a>
+                    <a href="staking.html">Crypto Staking</a>
+                    <a href="portfolio.html">Portfolio Allocator</a>
+                </div>
+            </div>
             <a href="index.html">Probability Calculator</a>
-            <a href="winrate.html">What is my win rate?</a>
+            <a href="winrate.html">Win Rate Calculator</a>
         </nav>
     </header>
 
@@ -267,10 +123,9 @@
 
         <section class="introduction">
             <h2>Plan Your Financial Future</h2>
-            <p>Understanding the power of compound interest and regular investments is crucial for building long-term wealth. This calculator helps you visualize how your investments can grow over time through the combined effects of contributions and investment returns.</p>
-            
-            <div class="key-concepts">
-                <h3>Key Investment Concepts</h3>
+            <p>Understanding the power of compound interest and regular investments is crucial for building long-term wealth. This calculator helps you visualize how your investments grow over time — with inflation adjustment, benchmark comparison, tax estimates, and preset scenarios for different investor profiles.</p>
+
+            <div class="key-concepts" style="margin-top:1.5rem;">
                 <div class="concept-grid">
                     <div class="concept-card">
                         <h4>Compound Interest</h4>
@@ -278,44 +133,33 @@
                     </div>
                     <div class="concept-card">
                         <h4>Regular Contributions</h4>
-                        <p>Consistently adding to your investments can significantly boost your long-term returns.</p>
+                        <p>Consistently adding to your investments significantly boosts long-term returns through dollar-cost averaging.</p>
                     </div>
                     <div class="concept-card">
-                        <h4>Time Horizon</h4>
-                        <p>The longer your investment period, the more time your money has to grow through compounding.</p>
+                        <h4>Inflation-Adjusted Returns</h4>
+                        <p>Nominal returns look great on paper. Real returns (adjusted for inflation) show your actual purchasing power growth.</p>
                     </div>
                     <div class="concept-card">
-                        <h4>Return Rate</h4>
-                        <p>Your expected annual return rate affects how quickly your investments will grow over time.</p>
+                        <h4>After-Tax Returns</h4>
+                        <p>Capital gains taxes reduce your final return. Knowing your after-tax outcome helps you plan realistically.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="how-to-use">
-            <h2>How to Use the Investment Calculator</h2>
-            <ol>
-                <li>
-                    <strong>Initial Investment:</strong>
-                    <p>Enter the amount you're starting with. This could be your current savings or a lump sum you plan to invest.</p>
-                </li>
-                <li>
-                    <strong>Contribution Amount:</strong>
-                    <p>Specify how much you plan to add to your investments regularly. This could be weekly, monthly, quarterly, or yearly.</p>
-                </li>
-                <li>
-                    <strong>Expected Annual Return:</strong>
-                    <p>Input your expected rate of return as a percentage. Historical stock market returns have averaged around 7-10% annually over the long term.</p>
-                </li>
-                <li>
-                    <strong>Investment Period:</strong>
-                    <p>Enter the number of years you plan to invest. Longer periods typically benefit more from compound interest.</p>
-                </li>
-            </ol>
-        </section>
-
         <div class="calculator">
-            <div class="grid-inputs">
+            <!-- Preset Scenarios -->
+            <div class="preset-buttons no-print">
+                <span style="font-size:0.8rem;color:#9ca3af;align-self:center;margin-right:0.25rem;">Presets:</span>
+                <button class="preset-btn" onclick="applyPreset('fire')">&#128293; FIRE Planner</button>
+                <button class="preset-btn" onclick="applyPreset('growth')">&#128200; Growth Investor</button>
+                <button class="preset-btn" onclick="applyPreset('conservative')">&#128274; Conservative Saver</button>
+            </div>
+
+            <!-- Core Inputs -->
+            <p class="input-section-title">Core Parameters</p>
+            <hr class="section-divider">
+            <div class="grid-inputs" style="padding-top:0;">
                 <div class="input-group">
                     <label for="initialInvestment">Initial Investment ($)</label>
                     <input type="number" id="initialInvestment" value="10000" min="0" step="100">
@@ -344,48 +188,121 @@
                 <div class="input-group">
                     <label for="viewFrequency">View Results By</label>
                     <select id="viewFrequency">
-                        <option value="weekly">Weekly</option>
                         <option value="monthly" selected>Monthly</option>
                         <option value="quarterly">Quarterly</option>
                         <option value="yearly">Yearly</option>
                     </select>
                 </div>
             </div>
-            
-            <div class="results" id="results">
-                <h2>Investment Projection</h2>
-                <div class="result-item">
-                    <span>Total Amount Invested:</span>
-                    <span id="totalInvestment">$0</span>
+
+            <!-- Advanced Inputs -->
+            <p class="input-section-title">Advanced Settings</p>
+            <hr class="section-divider">
+            <div class="grid-inputs" style="padding-top:0;">
+                <div class="input-group">
+                    <label for="inflationRate">Inflation Rate (%)</label>
+                    <input type="number" id="inflationRate" value="3" min="0" max="20" step="0.1">
                 </div>
-                <div class="result-item">
-                    <span>Total Interest Earned:</span>
-                    <span id="totalInterest">$0</span>
+                <div class="input-group">
+                    <label for="taxRate">Capital Gains Tax Rate (%)</label>
+                    <select id="taxRate">
+                        <option value="0">0% — Tax-advantaged (401k, IRA)</option>
+                        <option value="15" selected>15% — Long-term (most filers)</option>
+                        <option value="20">20% — Long-term (high income)</option>
+                        <option value="22">22% — Short-term bracket</option>
+                        <option value="32">32% — Short-term bracket</option>
+                        <option value="37">37% — Short-term (top bracket)</option>
+                    </select>
                 </div>
-                <div class="result-item">
-                    <span>Final Balance:</span>
-                    <span id="finalBalance">$0</span>
+                <div class="input-group">
+                    <label for="benchmarkSP500">Show S&amp;P 500 Benchmark (10% avg)</label>
+                    <select id="benchmarkSP500">
+                        <option value="yes" selected>Yes — compare to S&amp;P 500</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="benchmarkBond">Show Bond Benchmark (4% avg)</label>
+                    <select id="benchmarkBond">
+                        <option value="yes" selected>Yes — compare to bonds</option>
+                        <option value="no">No</option>
+                    </select>
                 </div>
             </div>
 
-            <div class="chart-container">
-                <canvas id="investmentChart"></canvas>
+            <!-- Results -->
+            <div class="results-section">
+                <h2 style="color:var(--primary-color);margin-bottom:1.25rem;text-align:center;font-size:1.7rem;filter:drop-shadow(0 0 10px rgba(255,215,0,0.3));">Investment Projection</h2>
+
+                <div class="results-group">
+                    <div class="results-group-title">Nominal Returns</div>
+                    <div class="result-item">
+                        <span>Total Amount Invested:</span>
+                        <span id="totalInvestment">$0</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Total Interest / Gains:</span>
+                        <span id="totalInterest" class="green-value">$0</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Final Balance (Nominal):</span>
+                        <span id="finalBalance" class="green-value">$0</span>
+                    </div>
+                </div>
+
+                <div class="results-group">
+                    <div class="results-group-title">After Inflation <span style="color:#9ca3af;font-weight:400;font-size:0.75rem;">(real purchasing power)</span></div>
+                    <div class="result-item">
+                        <span>Inflation-Adjusted Final Balance:</span>
+                        <span id="realBalance" style="color:#60a5fa;font-weight:600;">$0</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Real Return (after inflation):</span>
+                        <span id="realReturn" style="color:#60a5fa;font-weight:600;">0%</span>
+                    </div>
+                </div>
+
+                <div class="results-group">
+                    <div class="results-group-title">After Tax</div>
+                    <div class="result-item">
+                        <span>Estimated Tax on Gains:</span>
+                        <span id="taxAmount" style="color:#ef4444;font-weight:600;">$0</span>
+                    </div>
+                    <div class="result-item">
+                        <span>After-Tax Final Balance:</span>
+                        <span id="afterTaxBalance" style="color:#10b981;font-weight:600;">$0</span>
+                    </div>
+                    <div class="result-item">
+                        <span>After-Tax, Inflation-Adjusted:</span>
+                        <span id="realAfterTax" style="color:#10b981;font-weight:600;">$0</span>
+                    </div>
+                </div>
+
+                <div style="display:flex;justify-content:flex-end;margin-top:1rem;">
+                    <button class="export-btn no-print" onclick="window.print()">&#128438; Export PDF</button>
+                </div>
             </div>
 
-            <div class="detailed-results">
-                <h2>Detailed Breakdown</h2>
+            <div style="padding: 0 1.5rem;">
+                <div class="chart-container">
+                    <canvas id="investmentChart"></canvas>
+                </div>
+            </div>
+
+            <div class="detailed-results" style="padding: 0 1.5rem 1.5rem;">
+                <h2 style="color:var(--primary-color);margin-bottom:1rem;font-size:1.4rem;">Detailed Breakdown</h2>
                 <div class="table-container">
                     <table id="breakdownTable">
                         <thead>
                             <tr>
                                 <th>Period</th>
                                 <th>Amount Invested</th>
-                                <th>Interest Earned p/m</th>
-                                <th>Balance</th>
+                                <th>Interest Earned</th>
+                                <th>Balance (Nominal)</th>
+                                <th>Balance (Real)</th>
                             </tr>
                         </thead>
-                        <tbody>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
@@ -393,8 +310,8 @@
 
         <section class="investment-strategies">
             <h2>Investment Strategy Guidelines</h2>
-            
-            <div class="strategy-tips">
+
+            <div class="strategy-tips" style="margin-bottom:2rem;">
                 <h3>Tips for Successful Long-term Investing</h3>
                 <ul>
                     <li><strong>Diversification:</strong> Spread investments across different assets to manage risk</li>
@@ -404,57 +321,54 @@
                 </ul>
             </div>
 
-            <div class="common-scenarios">
-                <h3>Common Investment Scenarios</h3>
-                <div class="scenario-grid">
-                    <div class="scenario-card">
-                        <h4>Retirement Planning</h4>
-                        <ul>
-                            <li>Longer investment horizon (20-40 years)</li>
-                            <li>Regular monthly contributions</li>
-                            <li>More aggressive early, conservative later</li>
-                        </ul>
-                    </div>
-                    <div class="scenario-card">
-                        <h4>Education Savings</h4>
-                        <ul>
-                            <li>Medium-term horizon (5-15 years)</li>
-                            <li>Regular contributions</li>
-                            <li>Moderate risk approach</li>
-                        </ul>
-                    </div>
-                    <div class="scenario-card">
-                        <h4>Wealth Building</h4>
-                        <ul>
-                            <li>Flexible time horizon</li>
-                            <li>Variable contribution amounts</li>
-                            <li>Balanced risk approach</li>
-                        </ul>
-                    </div>
+            <h3>Common Investment Scenarios</h3>
+            <div class="scenario-grid">
+                <div class="scenario-card">
+                    <h4>&#128293; FIRE Planning</h4>
+                    <ul>
+                        <li>Long horizon (20–35 years)</li>
+                        <li>High savings rate (20–50%)</li>
+                        <li>Aggressive return target (10–12%)</li>
+                        <li>Target: 25× annual expenses</li>
+                    </ul>
+                </div>
+                <div class="scenario-card">
+                    <h4>&#127941; Retirement (401k/IRA)</h4>
+                    <ul>
+                        <li>Tax-advantaged (set tax to 0%)</li>
+                        <li>Medium horizon (20–40 years)</li>
+                        <li>Balanced returns (7–10%)</li>
+                    </ul>
+                </div>
+                <div class="scenario-card">
+                    <h4>&#128274; Conservative Saver</h4>
+                    <ul>
+                        <li>Capital preservation priority</li>
+                        <li>Lower return (4–6%)</li>
+                        <li>Regular monthly contributions</li>
+                    </ul>
                 </div>
             </div>
         </section>
 
         <section class="results-interpretation">
             <h2>Understanding Your Results</h2>
-            <p>The calculator provides a detailed breakdown of your investment growth over time. Here's how to interpret the results:</p>
-            
             <div class="interpretation-grid">
                 <div class="interpretation-card">
-                    <h4>Total Investment Value</h4>
-                    <p>The final amount you'll have after the investment period, including your contributions and returns.</p>
+                    <h4>Nominal vs Real Returns</h4>
+                    <p>Nominal returns are what your account shows. Real returns subtract inflation — if you earn 8% but inflation is 3%, your real purchasing power grows at about 5% per year.</p>
                 </div>
                 <div class="interpretation-card">
-                    <h4>Total Contributions</h4>
-                    <p>The sum of your initial investment and all regular contributions over time.</p>
+                    <h4>Benchmark Lines on Chart</h4>
+                    <p>The S&amp;P 500 has averaged ~10% annually over the long term. Bonds average ~4%. These benchmarks help you gauge whether your return assumption is realistic.</p>
                 </div>
                 <div class="interpretation-card">
-                    <h4>Investment Returns</h4>
-                    <p>The amount earned through compound interest and investment returns.</p>
+                    <h4>Capital Gains Tax</h4>
+                    <p>Long-term gains (assets held 1+ year) qualify for lower tax rates (0–20%). Short-term gains are taxed as ordinary income. Tax-advantaged accounts (IRA, 401k) defer or eliminate this.</p>
                 </div>
                 <div class="interpretation-card">
                     <h4>Growth Chart</h4>
-                    <p>Visual representation of how your investment grows over time, showing the power of compound interest.</p>
+                    <p>Visual representation of how your investment grows. The gap between the "Total Balance" and "Amount Invested" lines shows the power of compounding returns over time.</p>
                 </div>
             </div>
         </section>
@@ -467,116 +381,168 @@
     </footer>
 
     <script>
+        function toggleDropdown(e) {
+            e.preventDefault();
+            const dd = document.getElementById('investingDropdown');
+            dd.classList.toggle('open');
+        }
+        document.addEventListener('click', function(e) {
+            const dd = document.getElementById('investingDropdown');
+            if (!dd.contains(e.target)) dd.classList.remove('open');
+        });
+
+        // Presets
+        const presets = {
+            fire:        { initialInvestment: 10000, contributionAmount: 1500, contributionFrequency: 'monthly', annualReturn: 10, investmentYears: 25, inflationRate: 3, taxRate: '15' },
+            growth:      { initialInvestment: 5000,  contributionAmount: 500,  contributionFrequency: 'monthly', annualReturn: 12, investmentYears: 20, inflationRate: 3, taxRate: '15' },
+            conservative:{ initialInvestment: 20000, contributionAmount: 300,  contributionFrequency: 'monthly', annualReturn: 5,  investmentYears: 30, inflationRate: 3, taxRate: '15' }
+        };
+
+        function applyPreset(key) {
+            const p = presets[key];
+            document.getElementById('initialInvestment').value      = p.initialInvestment;
+            document.getElementById('contributionAmount').value     = p.contributionAmount;
+            document.getElementById('contributionFrequency').value  = p.contributionFrequency;
+            document.getElementById('annualReturn').value           = p.annualReturn;
+            document.getElementById('investmentYears').value        = p.investmentYears;
+            document.getElementById('inflationRate').value          = p.inflationRate;
+            document.getElementById('taxRate').value                = p.taxRate;
+            document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active-preset'));
+            event.target.classList.add('active-preset');
+            calculateInvestment();
+        }
+
         function formatCurrency(value) {
             return new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
+                style: 'currency', currency: 'USD',
+                minimumFractionDigits: 0, maximumFractionDigits: 0
             }).format(value);
         }
 
         function getFrequencyMultiplier(frequency) {
             switch(frequency) {
-                case 'weekly': return 52;
-                case 'monthly': return 12;
+                case 'weekly':    return 52;
+                case 'monthly':   return 12;
                 case 'quarterly': return 4;
-                case 'yearly': return 1;
-                default: return 12;
+                case 'yearly':    return 1;
+                default:          return 12;
             }
         }
 
         function calculateInvestment() {
-            const initialInvestment = parseFloat(document.getElementById('initialInvestment').value);
-            const contributionAmount = parseFloat(document.getElementById('contributionAmount').value);
-            const contributionFrequency = document.getElementById('contributionFrequency').value;
-            const viewFrequency = document.getElementById('viewFrequency').value;
-            const annualReturn = parseFloat(document.getElementById('annualReturn').value) / 100;
-            const years = parseInt(document.getElementById('investmentYears').value);
+            const initialInvestment      = parseFloat(document.getElementById('initialInvestment').value)      || 0;
+            const contributionAmount     = parseFloat(document.getElementById('contributionAmount').value)     || 0;
+            const contributionFrequency  = document.getElementById('contributionFrequency').value;
+            const viewFrequency          = document.getElementById('viewFrequency').value;
+            const annualReturn           = parseFloat(document.getElementById('annualReturn').value) / 100;
+            const years                  = parseInt(document.getElementById('investmentYears').value)          || 1;
+            const inflationRate          = parseFloat(document.getElementById('inflationRate').value) / 100    || 0;
+            const taxRate                = parseFloat(document.getElementById('taxRate').value) / 100          || 0;
+            const showSP500              = document.getElementById('benchmarkSP500').value === 'yes';
+            const showBond               = document.getElementById('benchmarkBond').value === 'yes';
 
             const contributionMultiplier = getFrequencyMultiplier(contributionFrequency);
-            const viewMultiplier = getFrequencyMultiplier(viewFrequency);
-            
-            const weeklyRate = annualReturn / 52;
-            const totalWeeks = years * 52;
-            
-            let balance = initialInvestment;
-            let totalInvested = initialInvestment;
+            const weeklyRate             = annualReturn / 52;
+            const totalWeeks             = years * 52;
+
+            // Benchmark rates
+            const sp500WeeklyRate = 0.10 / 52;
+            const bondWeeklyRate  = 0.04 / 52;
+
+            let balance        = initialInvestment;
+            let totalInvested  = initialInvestment;
             let previousBalance = initialInvestment;
-            const dataPoints = [];
+
+            // Benchmark balances
+            let sp500Balance   = initialInvestment;
+            let bondBalance    = initialInvestment;
+
+            const dataPoints   = [];
             const breakdownData = [];
-            
-            dataPoints.push({ x: 0, y: balance, invested: totalInvested });
+
+            dataPoints.push({ x: 0, y: balance, invested: totalInvested, sp500: sp500Balance, bond: bondBalance });
 
             for (let week = 1; week <= totalWeeks; week++) {
-                // Add contribution if it's a contribution week
-                if (contributionFrequency === 'weekly' || 
-                    (contributionFrequency === 'monthly' && week % 4 === 0) ||
+                const isContribWeek =
+                    contributionFrequency === 'weekly' ||
+                    (contributionFrequency === 'monthly'   && week % 4  === 0) ||
                     (contributionFrequency === 'quarterly' && week % 13 === 0) ||
-                    (contributionFrequency === 'yearly' && week % 52 === 0)) {
-                    balance += contributionAmount;
+                    (contributionFrequency === 'yearly'    && week % 52 === 0);
+
+                if (isContribWeek) {
+                    balance       += contributionAmount;
+                    sp500Balance  += contributionAmount;
+                    bondBalance   += contributionAmount;
                     totalInvested += contributionAmount;
                 }
 
-                // Apply weekly returns
-                balance *= (1 + weeklyRate);
+                balance      *= (1 + weeklyRate);
+                sp500Balance *= (1 + sp500WeeklyRate);
+                bondBalance  *= (1 + bondWeeklyRate);
 
-                // Record data points based on view frequency
-                if ((viewFrequency === 'weekly') ||
-                    (viewFrequency === 'monthly' && week % 4 === 0) ||
+                const viewWeek =
+                    (viewFrequency === 'monthly'   && week % 4  === 0) ||
                     (viewFrequency === 'quarterly' && week % 13 === 0) ||
-                    (viewFrequency === 'yearly' && week % 52 === 0)) {
-                    
-                    // Subtract the contribution so only actual growth (interest) is shown
-                    const periodInterest = (balance - previousBalance) - (contributionFrequency === 'monthly' ? contributionAmount : 0);
+                    (viewFrequency === 'yearly'    && week % 52 === 0);
+
+                if (viewWeek) {
+                    const periodInterest = (balance - previousBalance) -
+                        (contributionFrequency === 'monthly' && viewFrequency === 'monthly' ? contributionAmount : 0);
+                    const realBal = balance / Math.pow(1 + inflationRate, week / 52);
+
                     breakdownData.push({
-                        period: formatPeriod(week, viewFrequency),
+                        period:   formatPeriod(week, viewFrequency),
                         invested: totalInvested,
                         interest: periodInterest,
-                        balance: balance
+                        balance,
+                        realBalance: realBal
                     });
-                    
-                    dataPoints.push({ 
-                        x: week / 52, 
-                        y: balance,
-                        invested: totalInvested
+                    dataPoints.push({
+                        x: week / 52, y: balance,
+                        invested: totalInvested,
+                        sp500: sp500Balance,
+                        bond: bondBalance
                     });
-                    
                     previousBalance = balance;
                 }
             }
 
-            updateResults(totalInvested, balance);
-            updateInvestmentChart(dataPoints);
+            // Compute derived values
+            const gains           = balance - totalInvested;
+            const taxAmount       = gains > 0 ? gains * taxRate : 0;
+            const afterTaxBalance = totalInvested + gains - taxAmount;
+            const realBalance     = balance / Math.pow(1 + inflationRate, years);
+            const realAfterTax    = afterTaxBalance / Math.pow(1 + inflationRate, years);
+            const realReturnPct   = ((realBalance / totalInvested) - 1) * 100;
+
+            updateResults(totalInvested, balance, realBalance, taxAmount, afterTaxBalance, realAfterTax, realReturnPct);
+            updateInvestmentChart(dataPoints, showSP500, showBond);
             updateBreakdownTable(breakdownData);
         }
 
         function formatPeriod(week, frequency) {
             const year = Math.floor(week / 52) + 1;
             switch(frequency) {
-                case 'weekly':
-                    return `Year ${year}, Week ${week % 52 || 52}`;
-                case 'monthly':
-                    return `Year ${year}, Month ${Math.floor((week % 52) / 4) + 1}`;
-                case 'quarterly':
-                    return `Year ${year}, Q${Math.floor((week % 52) / 13) + 1}`;
-                case 'yearly':
-                    return `Year ${year}`;
+                case 'monthly':   return `Year ${year}, Month ${Math.floor((week % 52) / 4) + 1}`;
+                case 'quarterly': return `Year ${year}, Q${Math.floor((week % 52) / 13) + 1}`;
+                case 'yearly':    return `Year ${year}`;
             }
         }
 
-        function updateResults(totalInvested, finalBalance) {
-            document.getElementById('totalInvestment').textContent = formatCurrency(totalInvested);
-            document.getElementById('totalInterest').className = 'green-value';
-            document.getElementById('totalInterest').textContent = formatCurrency(finalBalance - totalInvested);
-            document.getElementById('finalBalance').className = 'green-value';
-            document.getElementById('finalBalance').textContent = formatCurrency(finalBalance);
+        function updateResults(totalInvested, finalBalance, realBalance, taxAmount, afterTaxBalance, realAfterTax, realReturnPct) {
+            document.getElementById('totalInvestment').textContent  = formatCurrency(totalInvested);
+            document.getElementById('totalInterest').textContent    = formatCurrency(finalBalance - totalInvested);
+            document.getElementById('finalBalance').textContent     = formatCurrency(finalBalance);
+            document.getElementById('realBalance').textContent      = formatCurrency(realBalance);
+            document.getElementById('realReturn').textContent       = (realReturnPct >= 0 ? '+' : '') + realReturnPct.toFixed(1) + '%';
+            document.getElementById('taxAmount').textContent        = formatCurrency(taxAmount);
+            document.getElementById('afterTaxBalance').textContent  = formatCurrency(afterTaxBalance);
+            document.getElementById('realAfterTax').textContent     = formatCurrency(realAfterTax);
         }
 
         function updateBreakdownTable(data) {
             const tbody = document.querySelector('#breakdownTable tbody');
             tbody.innerHTML = '';
-            
             data.forEach(row => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
@@ -584,80 +550,78 @@
                     <td>${formatCurrency(row.invested)}</td>
                     <td>${formatCurrency(row.interest)}</td>
                     <td>${formatCurrency(row.balance)}</td>
+                    <td style="color:#60a5fa;font-weight:600;">${formatCurrency(row.realBalance)}</td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
-        function updateInvestmentChart(dataPoints) {
+        function updateInvestmentChart(dataPoints, showSP500, showBond) {
             const ctx = document.getElementById('investmentChart');
-            
-            // Check if chart instance exists and is a Chart instance
-            if (window.investmentChart instanceof Chart) {
-                window.investmentChart.destroy();
+            if (window.investmentChart instanceof Chart) window.investmentChart.destroy();
+
+            const g1 = ctx.getContext('2d').createLinearGradient(0, 0, 0, 420);
+            g1.addColorStop(0, 'rgba(255,215,0,0.22)'); g1.addColorStop(1, 'rgba(255,215,0,0)');
+            const g2 = ctx.getContext('2d').createLinearGradient(0, 0, 0, 420);
+            g2.addColorStop(0, 'rgba(76,175,80,0.18)'); g2.addColorStop(1, 'rgba(76,175,80,0)');
+
+            const datasets = [
+                {
+                    label: 'Your Portfolio',
+                    data: dataPoints.map(p => ({ x: p.x, y: p.y })),
+                    borderColor: '#ffd700', backgroundColor: g1,
+                    fill: true, tension: 0.4, borderWidth: 2.5, pointRadius: 0
+                },
+                {
+                    label: 'Amount Invested',
+                    data: dataPoints.map(p => ({ x: p.x, y: p.invested })),
+                    borderColor: '#4CAF50', backgroundColor: g2,
+                    fill: true, tension: 0.1, borderWidth: 1.5, borderDash:[5,3], pointRadius: 0
+                }
+            ];
+
+            if (showSP500) {
+                datasets.push({
+                    label: 'S&P 500 (10% avg)',
+                    data: dataPoints.map(p => ({ x: p.x, y: p.sp500 })),
+                    borderColor: '#60a5fa', backgroundColor: 'transparent',
+                    fill: false, tension: 0.4, borderWidth: 1.5, borderDash:[8,4], pointRadius: 0
+                });
             }
-
-            const gradient1 = ctx.getContext('2d').createLinearGradient(0, 0, 0, 400);
-            gradient1.addColorStop(0, 'rgba(255, 215, 0, 0.2)');
-            gradient1.addColorStop(1, 'rgba(255, 215, 0, 0)');
-
-            const gradient2 = ctx.getContext('2d').createLinearGradient(0, 0, 0, 400);
-            gradient2.addColorStop(0, 'rgba(76, 175, 80, 0.2)');
-            gradient2.addColorStop(1, 'rgba(76, 175, 80, 0)');
+            if (showBond) {
+                datasets.push({
+                    label: 'Bonds (4% avg)',
+                    data: dataPoints.map(p => ({ x: p.x, y: p.bond })),
+                    borderColor: '#a78bfa', backgroundColor: 'transparent',
+                    fill: false, tension: 0.4, borderWidth: 1.5, borderDash:[4,4], pointRadius: 0
+                });
+            }
 
             window.investmentChart = new Chart(ctx, {
                 type: 'line',
-                data: {
-                    datasets: [{
-                        label: 'Total Balance',
-                        data: dataPoints.map(p => ({ x: p.x, y: p.y })),
-                        borderColor: '#ffd700',
-                        backgroundColor: gradient1,
-                        fill: true,
-                        tension: 0.4
-                    },
-                    {
-                        label: 'Amount Invested',
-                        data: dataPoints.map(p => ({ x: p.x, y: p.invested })),
-                        borderColor: '#4CAF50',
-                        backgroundColor: gradient2,
-                        fill: true,
-                        tension: 0.4
-                    }]
-                },
+                data: { datasets },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    aspectRatio: 2,
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
                     scales: {
                         x: {
                             type: 'linear',
-                            title: {
-                                display: true,
-                                text: 'Years'
-                            },
-                            ticks: {
-                                callback: value => `Year ${value}`
-                            }
+                            title: { display: true, text: 'Years', color: '#9ca3af' },
+                            ticks: { callback: v => `Year ${v}`, color: '#9ca3af' },
+                            grid: { color: 'rgba(255,255,255,0.05)' }
                         },
                         y: {
-                            title: {
-                                display: true,
-                                text: 'Value ($)'
-                            },
-                            ticks: {
-                                callback: value => formatCurrency(value)
-                            }
+                            title: { display: true, text: 'Value ($)', color: '#9ca3af' },
+                            ticks: { callback: v => formatCurrency(v), color: '#9ca3af' },
+                            grid: { color: 'rgba(255,255,255,0.05)' }
                         }
                     },
                     plugins: {
+                        legend: { labels: { color: '#e2e8f0', font: { size: 12 } } },
                         tooltip: {
                             callbacks: {
-                                label: context => {
-                                    const label = context.dataset.label;
-                                    const value = formatCurrency(context.parsed.y);
-                                    return `${label}: ${value}`;
-                                }
+                                title: ctx => `Year ${parseFloat(ctx[0].label).toFixed(1)}`,
+                                label: ctx => `${ctx.dataset.label}: ${formatCurrency(ctx.parsed.y)}`
                             }
                         }
                     }
@@ -665,13 +629,14 @@
             });
         }
 
-        // Initialize calculator
-        const inputs = ['initialInvestment', 'contributionAmount', 'annualReturn', 'investmentYears', 'contributionFrequency', 'viewFrequency'];
-        inputs.forEach(id => {
-            const element = document.getElementById(id);
-            if (element) {
-                element.addEventListener('input', calculateInvestment);
-                element.addEventListener('change', calculateInvestment);
+        const inputIds = ['initialInvestment','contributionAmount','annualReturn','investmentYears',
+                          'contributionFrequency','viewFrequency','inflationRate','taxRate',
+                          'benchmarkSP500','benchmarkBond'];
+        inputIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener('input', calculateInvestment);
+                el.addEventListener('change', calculateInvestment);
             }
         });
         calculateInvestment();
